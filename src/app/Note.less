@@ -1,0 +1,79 @@
+.note-text {
+    font-size: 14px;
+    padding: 8px;
+    background-color: #efebe0;
+    border-radius: 4px;
+    text-align: justify;
+    margin-bottom: 8px;
+}
+
+.note-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    > div:first-child > button {
+        margin-right: 8px;
+        cursor: pointer;
+    }
+
+    > div:last-child > button {
+        margin-left: 8px;
+        cursor: pointer;
+    }
+}
+
+.note-edit {
+    > textarea {
+        width: 100%;
+        height: 100px;
+        display: block;
+        font-family: Arial;
+        margin-bottom: 8px;
+        resize: none;
+    }
+
+    > div {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    button[disabled] {
+        cursor: not-allowed;
+    }
+}
+
+.list-header {
+    display: flex;
+    margin-bottom: 8px;
+
+    > div {
+        padding: 4px 8px;
+        cursor: pointer;
+    }
+
+    .selected {
+        background-color: #79d6ff;
+    }
+}
+
+.comment-item {
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+    }
+
+    .buttons > button {
+        cursor: pointer;
+
+        &:last-child {
+            margin-left: 4px;
+        }
+    }
+}

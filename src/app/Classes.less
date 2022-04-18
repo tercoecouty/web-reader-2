@@ -1,0 +1,28 @@
+.classes-select {
+    width: 100%;
+    padding: 8px;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.student-list > div {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+
+    > div {
+        width: 50%;
+        text-align: center;
+    }
+}
+
+.student-list-row {
+    &:hover {
+        cursor: pointer;
+        background-color: #91d5ff;
+    }
+
+    &.selected {
+        background-color: #91d5ff;
+    }
+}

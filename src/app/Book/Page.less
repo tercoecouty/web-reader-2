@@ -1,0 +1,56 @@
+.page {
+    width: 50%;
+
+    &:first-child {
+        border-right: 1px solid black;
+    }
+
+    &:only-child {
+        border-left: 1px solid black;
+    }
+
+    &:nth-child(2) {
+        border-left: 1px solid black;
+    }
+}
+
+.page-head {
+    height: 36px;
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.page-body {
+    height: calc(100vh - 36px * 2);
+    padding: 0 24px;
+}
+
+.page-content {
+    height: 100%;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    line-height: 1.2;
+
+    > .char-measurement {
+        position: absolute;
+        opacity: 0;
+    }
+}
+
+.page-loading {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-foot {
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    font-size: 14px;
+    border-top: 1px solid black;
+}
