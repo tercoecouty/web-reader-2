@@ -1,5 +1,7 @@
 import "./UserInfo.less";
 
+import DefaultAvatarImage from "./default-avatar.png";
+
 interface IUserInfoProps {
     name: string;
     dateTime: number;
@@ -20,7 +22,7 @@ const getDateTimeText = (timestamp) => {
 export default function UserInfo(props: IUserInfoProps) {
     return (
         <div className="user-info">
-            <div className="user-info-avatar">{props.name[0]}</div>
+            <img className="user-info-avatar" src={DefaultAvatarImage} />
             <div>
                 <div style={{ marginBottom: "4px" }}>{props.name}</div>
                 <div style={{ color: "gray", fontSize: "12px" }}>{getDateTimeText(props.dateTime)}</div>

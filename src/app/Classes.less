@@ -1,8 +1,11 @@
+@import "../less/_color.less";
+
 .classes-select {
     width: 100%;
     padding: 8px;
     cursor: pointer;
     margin-bottom: 8px;
+    outline: none;
 }
 
 .student-list > div {
@@ -19,10 +22,10 @@
 .student-list-row {
     &:hover {
         cursor: pointer;
-        background-color: #91d5ff;
+        background-color: @gray-4;
     }
 
     &.selected {
-        background-color: #91d5ff;
+        color: @blue-5;
     }
 }

@@ -141,10 +141,10 @@ export default function Note() {
             </div>
             <div className="list-header">
                 <div className={listType === "comment" ? "selected" : ""} onClick={() => setListType("comment")}>
-                    评论({comments.length})
+                    评论（{comments.length}）
                 </div>
                 <div className={listType === "like" ? "selected" : ""} onClick={() => setListType("like")}>
-                    点赞({likes.length})
+                    点赞（{likes.length}）
                 </div>
             </div>
             {listType === "comment" && <div>{renderComments()}</div>}
