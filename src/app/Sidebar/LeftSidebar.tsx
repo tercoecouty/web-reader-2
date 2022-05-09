@@ -14,7 +14,7 @@ import Bookmarks from "../Bookmarks";
 
 export default function LeftSidebar() {
     const [showClasses, setShowClasses] = useState(false);
-    const [showNotes, setShowNotes] = useState(false);
+    const [showNotes, setShowNotes] = useState(true);
     const [showBookmarks, setShowBookmarks] = useState(false);
 
     return (

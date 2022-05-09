@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./Note.less";
 
-import UserInfo from "../component/UserInfo";
+import Button from "../component/Button/Button";
+
+import UserInfo from "../component/UserInfo/UserInfo";
 import { selectCurrentNoteId } from "../slice/bookSlice";
 import { selectNotes, updateNote } from "../slice/noteSlice";
 import { selectComments, addComment, deleteComment, fetchComments } from "../slice/commentSlice";
@@ -56,6 +58,10 @@ export default function Note() {
     };
 
     const renderComments = () => {
+        if (comments.length === 0) {
+            return <div className="empty-list">没有评论</div>;
+        }
+
         return comments.map((item) => {
             return (
                 <div className="comment-item" key={item.id}>
@@ -65,7 +71,7 @@ export default function Note() {
                             dateTime={note.dateTime}
                         />
                         <div className="buttons">
-                            <button
+                            <Button
                                 onClick={() => {
                                     setToUserId(item.fromUserId);
                                     setToUserName(item.fromUserName);
@@ -73,9 +79,11 @@ export default function Note() {
                                 }}
                             >
                                 回复
-                            </button>
+                            </Button>
                             {item.fromUserId === loginUser.id && (
-                                <button onClick={() => dispatch(deleteComment(item.id))}>删除评论</button>
+                                <Button onClick={() => dispatch(deleteComment(item.id))} danger>
+                                    删除评论
+                                </Button>
                             )}
                         </div>
                     </div>
@@ -86,6 +94,10 @@ export default function Note() {
     };
 
     const renderLikes = () => {
+        if (likes.length === 0) {
+            return <div className="empty-list">没有点赞</div>;
+        }
+
         return likes.map((item) => {
             return (
                 <div className="likeItem" key={item.id}>
@@ -102,17 +114,13 @@ export default function Note() {
                 <div>
                     <div style={{ fontSize: "14px" }}>{editValue.length} / 120</div>
                     <div>
-                        <button onClick={() => setEdit(false)}>返回</button>
-                        <button
-                            disabled={editValue === "" || editValue.length > 120}
-                            onClick={editCommit}
-                            style={{ marginLeft: "8px" }}
-                        >
+                        <Button onClick={() => setEdit(false)}>返回</Button>
+                        <Button disabled={editValue === "" || editValue.length > 120} onClick={editCommit}>
                             {note.userId === loginUser.id && editType === "editNote" && note.content && "修改笔记"}
                             {note.userId === loginUser.id && editType === "editNote" && !note.content && "添加笔记"}
                             {editType === "addComment" && "添加评论"}
                             {editType === "replyComment" && "回复"}
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -126,16 +134,18 @@ export default function Note() {
             {note.content && <div style={{ fontSize: "14px", marginBottom: "8px" }}>{note.content}</div>}
             <div className="note-buttons">
                 <div>
-                    <button onClick={() => showEdit("addComment")}>添加评论</button>
-                    {hasLike && <button onClick={() => dispatch(unlike(hasLike.id))}>取消点赞</button>}
-                    {!hasLike && <button onClick={() => dispatch(like(currentNoteId))}>点赞</button>}
+                    <Button onClick={() => showEdit("addComment")}>添加评论</Button>
+                    {hasLike && <Button onClick={() => dispatch(unlike(hasLike.id))}>取消点赞</Button>}
+                    {!hasLike && <Button onClick={() => dispatch(like(currentNoteId))}>点赞</Button>}
                 </div>
                 <div>
                     {note.userId === loginUser.id && note.content && (
-                        <button onClick={() => dispatch(updateNote(currentNoteId, ""))}>删除笔记</button>
+                        <Button onClick={() => dispatch(updateNote(currentNoteId, ""))} danger>
+                            删除笔记
+                        </Button>
                     )}
                     {note.userId === loginUser.id && (
-                        <button onClick={() => showEdit("editNote")}>{note.content ? "修改笔记" : "添加笔记"}</button>
+                        <Button onClick={() => showEdit("editNote")}>{note.content ? "修改笔记" : "添加笔记"}</Button>
                     )}
                 </div>
             </div>

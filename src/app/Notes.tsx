@@ -1,5 +1,5 @@
 import "./Notes.less";
 
 export default function Notes() {
-    return <div>Notes</div>;
+    return <div className="notes">notes</div>;
 }

@@ -1,0 +1,30 @@
+@import "../../less/_color.less";
+
+.button {
+    display: inline-block;
+    padding: 3px 6px;
+    font-size: 14px;
+    color: @blue-6;
+    cursor: pointer;
+
+    &:hover {
+        color: @blue-5;
+    }
+
+    &.danger {
+        color: @red-6;
+
+        &:hover {
+            color: @red-5;
+        }
+    }
+
+    &.disabled {
+        cursor: not-allowed;
+        color: @gray-10;
+
+        &:hover {
+            color: @gray-10;
+        }
+    }
+}

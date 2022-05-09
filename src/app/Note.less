@@ -32,7 +32,10 @@
         display: block;
         font-family: Arial;
         margin-bottom: 8px;
-        resize: none;
+        resize: vertical;
+        outline: none;
+        border-color: @gray-6;
+        border-radius: 2px;
     }
 
     > div {
@@ -70,7 +73,6 @@
 
     .selected {
         border-bottom: 2px solid @blue-6;
-        font-weight: bold;
     }
 }
 
@@ -89,4 +91,10 @@
             margin-left: 4px;
         }
     }
+}
+
+.empty-list {
+    text-align: center;
+    padding: 24px 0;
+    color: @gray-7;
 }
