@@ -18,7 +18,7 @@ import {
     nextPage,
     prevPage,
 } from "../../slice/bookSlice";
-import { addNote, deleteNote } from "../../slice/noteSlice";
+import { addNote, deleteNote, selectNotes } from "../../slice/noteSlice";
 import { selectLoginUser, selectNotesUser } from "../../slice/appSlice";
 
 import Drawer from "../../component/Drawer";
@@ -32,10 +32,21 @@ export default function RightSidebar() {
     const canNextPage = useSelector(selectCanNextPage);
     const loginUser = useSelector(selectLoginUser);
     const notesUser = useSelector(selectNotesUser);
+    const notes = useSelector(selectNotes);
     const { setSelection, setCurrentNoteId } = bookActions;
     const [editNote, setEditNote] = useState(false);
 
     const handleAddNote = () => {
+        const isNoteCross = notes.some((note) => {
+            if (note.lastCharId < selection.firstCharId || note.firstCharId > selection.lastCharId) return false;
+            return true;
+        });
+
+        if (isNoteCross) {
+            alert("当前划线的句子有重叠！");
+            return;
+        }
+
         dispatch(addNote(selection));
         dispatch(setSelection(null));
     };
