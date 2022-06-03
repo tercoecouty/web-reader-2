@@ -73,6 +73,11 @@ export default function RightSidebar() {
                     dispatch(nextPage);
                     break;
                 case "Enter":
+                    if (currentNoteId) {
+                        setEditNote(true);
+                        break;
+                    }
+
                     if (!selection || notesUser.id !== loginUser.id) return;
                     handleAddNote();
                     document.getSelection().removeAllRanges();
