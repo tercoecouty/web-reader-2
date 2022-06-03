@@ -1,4 +1,4 @@
-import bookText from "./book/short.txt?raw";
+import bookText from "./bookText.txt?raw";
 import usersData from "./data/users.json";
 import bookmarksData from "./data/bookmarks.json";
 import notesData from "./data/notes.json";
