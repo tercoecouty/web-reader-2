@@ -18,37 +18,80 @@ export default function Line(props: ILineProps) {
     const notesUser = useSelector(selectNotesUser);
 
     const renderSpans = () => {
-        const dom_spans = [];
-        for (let index = 0; index < line.text.length; index++) {
+        let dom_spans = [];
+        let text = "";
+        let spanText = "";
+        let noteId = null;
+        let index = 0;
+        for (; index < line.text.length; index++) {
             const char = line.text[index];
             const charId = line.firstCharId + index;
 
-            let noteId = null;
-
+            let isInNote = false;
             for (const note of notes) {
                 if (charId >= note.firstCharId && charId <= note.lastCharId) {
+                    isInNote = true;
                     noteId = note.id;
                     break;
                 }
             }
 
-            if (noteId) {
-                let className = "";
-                if (currentNoteId === noteId) className = "underline-selected";
-                else if (loginUser.id !== notesUser.id) className = "underline-others";
-                else className = "underline";
+            if (isInNote) {
+                if (text) {
+                    const firstCharId = line.firstCharId + index - text.length;
+                    dom_spans.push(
+                        <span data-first-char-id={firstCharId} key={firstCharId}>
+                            {text}
+                        </span>
+                    );
+                    text = "";
+                }
+                spanText += char;
+            } else {
+                if (spanText) {
+                    let className = "";
+                    if (noteId && currentNoteId === noteId) className = "underline-selected";
+                    else if (loginUser.id !== notesUser.id) className = "underline-others";
+                    else className = "underline";
 
-                dom_spans.push(
-                    <span data-note-id={noteId} data-char-id={charId} key={index} className={className}>
-                        {char}
-                    </span>
-                );
-                continue;
+                    const firstCharId = line.firstCharId + index - spanText.length;
+                    dom_spans.push(
+                        <span
+                            data-note-id={noteId}
+                            className={className}
+                            data-first-char-id={firstCharId}
+                            key={firstCharId}
+                        >
+                            {spanText}
+                        </span>
+                    );
+
+                    spanText = "";
+                }
+
+                text += char;
             }
+        }
 
+        if (text) {
+            const firstCharId = line.firstCharId + index - text.length;
             dom_spans.push(
-                <span data-char-id={charId} key={index}>
-                    {char}
+                <span data-first-char-id={firstCharId} key={firstCharId}>
+                    {text}
+                </span>
+            );
+        }
+
+        if (spanText) {
+            let className = "";
+            if (currentNoteId === noteId) className = "underline-selected";
+            else if (loginUser.id !== notesUser.id) className = "underline-others";
+            else className = "underline";
+
+            const firstCharId = line.firstCharId + index - spanText.length;
+            dom_spans.push(
+                <span data-note-id={noteId} className={className} data-first-char-id={firstCharId} key={firstCharId}>
+                    {spanText}
                 </span>
             );
         }
@@ -56,12 +99,10 @@ export default function Line(props: ILineProps) {
         return dom_spans;
     };
 
-    // console.log("line", new Date().getSeconds());
-
     return (
-        <div className="line" style={props.style} data-para-id={line.paraId}>
-            {/* {renderSpans()} */}
-            {line.text}
+        <div className="line" style={props.style} data-para-id={line.paraId} ata-first-char-id={line.firstCharId}>
+            {renderSpans()}
+            {/* {line.text} */}
         </div>
     );
 }

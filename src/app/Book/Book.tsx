@@ -76,8 +76,12 @@ export default function Book() {
             return;
         }
 
-        const charId1 = parseInt(_selection.anchorNode.parentElement.dataset.charId);
-        const charId2 = parseInt(_selection.focusNode.parentElement.dataset.charId);
+        const range = _selection.getRangeAt(0);
+        const startParent = range.startContainer.parentElement;
+        const endParent = range.endContainer.parentElement;
+        const charId1 = parseInt(startParent.dataset.firstCharId) + range.startOffset;
+        const charId2 = parseInt(endParent.dataset.firstCharId) + range.endOffset - 1;
+
         if (!charId1 || !charId2) return;
 
         dispatch(
