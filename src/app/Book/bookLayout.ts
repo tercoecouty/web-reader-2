@@ -61,11 +61,12 @@ export default class Books {
             let isFirstLine = true;
             let lineWidth = this.chineseCharWidth * 2; // two indent
             let lineText = "";
-            for (const char of paraText.trim()) {
+            for (let char of paraText.trim()) {
+                if (char === " ") char = "_"; // 先把空格转换成下划线查看排版效果，现在还不能处理断行处的空格
                 const charWidth = this.getCharWidth(char);
                 if (lineWidth + charWidth > this.totalWidth) {
                     let spacing = (this.totalWidth - lineWidth) / lineText.length;
-                    spacing = Math.floor(spacing * 10) / 10;
+                    spacing = Math.floor(spacing * 1000) / 1000;
                     lines.push({
                         text: lineText,
                         spacing,
