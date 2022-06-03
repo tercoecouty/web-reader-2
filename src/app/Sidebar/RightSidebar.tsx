@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import SidebarItem from "./SidebarItem";
@@ -46,6 +46,43 @@ export default function RightSidebar() {
         dispatch(deleteNote(currentNoteId));
         dispatch(setCurrentNoteId(null));
     };
+
+    useEffect(() => {
+        window.onkeydown = (e: KeyboardEvent) => {
+            switch (e.code) {
+                case "ArrowUp":
+                case "ArrowLeft":
+                    if (pageNumber === 1) return;
+                    dispatch(prevPage);
+                    break;
+                case "ArrowDown":
+                case "ArrowRight":
+                case "Space":
+                    if (!canNextPage) return;
+                    dispatch(nextPage);
+                    break;
+                case "Enter":
+                    if (!selection || notesUser.id !== loginUser.id) return;
+                    handleAddNote();
+                    document.getSelection().removeAllRanges();
+                    break;
+                case "Delete":
+                    if (!currentNoteId || notesUser.id !== loginUser.id) return;
+                    handleDeleteNote();
+                    break;
+            }
+        };
+        window.onwheel = (e: WheelEvent) => {
+            console.log(e);
+            if (e.deltaY < 0) {
+                if (pageNumber === 1) return;
+                dispatch(prevPage);
+            } else {
+                if (!canNextPage) return;
+                dispatch(nextPage);
+            }
+        };
+    });
 
     return (
         <div style={{ width: "48px", borderLeft: "1px solid black" }}>
