@@ -89,7 +89,6 @@ export default function RightSidebar() {
             }
         };
         window.onwheel = (e: WheelEvent) => {
-            console.log(e);
             if (e.deltaY < 0) {
                 if (pageNumber === 1) return;
                 dispatch(prevPage);
