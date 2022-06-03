@@ -69,7 +69,7 @@ function Page(props: IPageProps) {
             </div>
             <div className="page-body">
                 <div id="page-content" className="page-content" onClick={handleClick}>
-                    <span id="char-measurement" className="char-measurement"></span>
+                    {!props.isSecondPage && <span id="char-measurement" className="char-measurement"></span>}
                     {loading ? pageLoading : pageNumber > pages.length ? null : getPageContent()}
                 </div>
             </div>
