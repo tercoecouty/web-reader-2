@@ -62,9 +62,12 @@ export default class Books {
             let lineWidth = this.chineseCharWidth * 2; // two indent
             let lineText = "";
             for (let char of paraText.trim()) {
-                if (char === " ") char = "_"; // 先把空格转换成下划线查看排版效果，现在还不能处理断行处的空格
                 const charWidth = this.getCharWidth(char);
                 if (lineWidth + charWidth > this.totalWidth) {
+                    if (lineText.slice(-1) === " ") {
+                        lineText = lineText.slice(0, -1);
+                        lineWidth -= this.getCharWidth(" ");
+                    }
                     let spacing = (this.totalWidth - lineWidth) / lineText.length;
                     spacing = Math.floor(spacing * 1000) / 1000;
                     lines.push({
