@@ -63,7 +63,7 @@ interface ILine {
     spacing: number;
     isFirstLine: boolean;
     firstCharId: number;
-    paraId: number;
+    spacingType: "letter" | "word";
 }
 
 interface IPage {

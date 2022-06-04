@@ -21,15 +21,19 @@ function Page(props: IPageProps) {
     const pageNumber = props.isSecondPage ? _pageNumber + 1 : _pageNumber;
 
     const getPageContent = () => {
-        // console.log("getPageContent");
         const lines = pages[pageNumber - 1].lines;
         const dom_lines = [];
         for (let index_line = 0; index_line < lines.length; index_line++) {
             const line = lines[index_line];
             let style: any = {
-                letterSpacing: line.spacing + "px",
                 padding: `${5 + pages[0].spacing / 2}px 0`,
             };
+
+            if (line.spacingType === "letter") {
+                style.letterSpacing = line.spacing + "px";
+            } else {
+                style.wordSpacing = line.spacing + "px";
+            }
 
             if (line.isFirstLine) {
                 style.marginLeft = "2em";

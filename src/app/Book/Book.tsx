@@ -28,7 +28,9 @@ export default function Book() {
         const totalHeight = domPageContent.getBoundingClientRect().height;
         const domMeasure = document.getElementById("char-measurement");
         const book = new BookLayout(bookText, totalWidth, totalHeight, domMeasure);
+        console.time("pageBreaking");
         const pages = book.pageBreaking();
+        console.timeEnd("pageBreaking");
         dispatch(setPages(pages));
         dispatch(setPageLoading(false));
     };

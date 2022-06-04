@@ -53,54 +53,123 @@ export default class Books {
         return pages;
     }
 
-    private lineBreaking() {
+    public lineBreaking() {
         const lines: ILine[] = [];
         let charId = 1;
         let paraId = 1;
+        let result;
         for (const paraText of this.bookText.split("\n")) {
-            let isFirstLine = true;
-            let lineWidth = this.chineseCharWidth * 2; // two indent
-            let lineText = "";
-            for (let char of paraText.trim()) {
-                const charWidth = this.getCharWidth(char);
-                if (lineWidth + charWidth > this.totalWidth) {
-                    if (lineText.slice(-1) === " ") {
-                        lineText = lineText.slice(0, -1);
-                        lineWidth -= this.getCharWidth(" ");
-                    }
-                    let spacing = (this.totalWidth - lineWidth) / lineText.length;
-                    spacing = Math.floor(spacing * 1000) / 1000;
-                    lines.push({
-                        text: lineText,
-                        spacing,
-                        isFirstLine,
-                        firstCharId: charId - lineText.length,
-                        paraId,
-                    });
-                    lineText = char;
-                    lineWidth = charWidth;
-                    isFirstLine = false;
-                    charId++;
-                    continue;
-                }
-
-                lineWidth += charWidth;
-                lineText += char;
-                charId++;
+            if (/^[\u0021-\u007e]+/.test(paraText)) {
+                // console.time(`englishLineBreaking ${paraText.length}`);
+                result = this.englishLineBreaking(paraText, charId);
+                // console.timeEnd(`englishLineBreaking ${paraText.length}`);
+            } else {
+                // console.time(`chineseLineBreaking ${paraText.length}`);
+                result = this.chineseLineBreaking(paraText, charId);
+                // console.timeEnd(`chineseLineBreaking ${paraText.length}`);
             }
-
-            lines.push({
-                text: lineText,
-                spacing: 0,
-                isFirstLine,
-                firstCharId: charId - lineText.length,
-                paraId,
-            });
-
+            lines.push(...result.lines);
+            charId = result.charId;
             paraId++;
         }
 
         return lines;
+    }
+
+    private chineseLineBreaking(paraText: string, charId: number) {
+        const lines: ILine[] = [];
+        let isFirstLine = true;
+        let lineWidth = this.chineseCharWidth * 2;
+        let lineText = "";
+        for (let char of paraText.trim()) {
+            const charWidth = this.getCharWidth(char);
+            if (lineWidth + charWidth > this.totalWidth) {
+                let spacing = (this.totalWidth - lineWidth) / lineText.length;
+                spacing = Math.floor(spacing * 1000) / 1000;
+                lines.push({
+                    text: lineText,
+                    spacing,
+                    isFirstLine,
+                    firstCharId: charId - lineText.length,
+                    spacingType: "letter",
+                });
+
+                lineWidth = charWidth;
+                lineText = char;
+                isFirstLine = false;
+                charId++;
+                continue;
+            }
+
+            lineWidth += charWidth;
+            lineText += char;
+            charId++;
+        }
+
+        lines.push({
+            text: lineText,
+            spacing: 0,
+            isFirstLine,
+            firstCharId: charId - lineText.length,
+            spacingType: "letter",
+        });
+
+        return {
+            lines,
+            charId,
+        };
+    }
+
+    private englishLineBreaking(paraText: string, charId: number) {
+        const lines: ILine[] = [];
+        const spaceWidth = this.getCharWidth(" ");
+        let isFirstLine = true;
+        let lineWidth = this.chineseCharWidth * 2;
+        let lineText = "";
+        let wordCount = 0;
+        for (let word of paraText.split(" ")) {
+            const wordWidth = [...word].reduce((width, char) => width + this.getCharWidth(char), 0);
+            if (lineWidth + wordWidth > this.totalWidth) {
+                lineText = lineText.trimEnd();
+                lineWidth -= spaceWidth;
+                let spacing = (this.totalWidth - lineWidth) / wordCount;
+                spacing *= 1.05; // 手动调整英文字间距以得到更好的显示效果
+                spacing = Math.floor(spacing * 1000) / 1000;
+                lines.push({
+                    text: lineText,
+                    spacing,
+                    isFirstLine,
+                    firstCharId: charId - lineText.length,
+                    spacingType: "word",
+                });
+
+                lineWidth = wordWidth + spaceWidth;
+                lineText = word + " ";
+                isFirstLine = false;
+                wordCount = 1;
+                charId++;
+                continue;
+            }
+
+            lineWidth += wordWidth + spaceWidth;
+            lineText += word + " ";
+            wordCount++;
+            charId++;
+        }
+
+        lineText = lineText.trimEnd();
+        lines.push({
+            text: lineText,
+            spacing: 0,
+            isFirstLine,
+            firstCharId: charId - lineText.length,
+            spacingType: "word",
+        });
+
+        return {
+            lines,
+            charId,
+        };
     }
 
     private getCharWidth(char: string) {
