@@ -5,7 +5,6 @@ export default class Books {
     private domMeasure: HTMLElement = null;
 
     private charWidthMap: Map<string, number> = new Map();
-    private chineseCharRegExp = /[\u4e00-\u9fa5]/;
     private chineseCharWidth = 0;
     private charHeight = 0;
 
@@ -98,7 +97,7 @@ export default class Books {
 
             if (lineWidth + charWidth > this.totalWidth) {
                 let spacing = (this.totalWidth - lineWidth) / lineText.length;
-                spacing = Math.floor(spacing * 1000) / 1000;
+                spacing = Math.floor(spacing * 100) / 100;
                 lines.push({
                     text: lineText,
                     spacing,
@@ -147,7 +146,7 @@ export default class Books {
                 lineWidth -= spaceWidth;
                 let spacing = (this.totalWidth - lineWidth) / wordCount;
                 spacing *= 1.05; // 手动调整英文字间距以得到更好的显示效果
-                spacing = Math.floor(spacing * 1000) / 1000;
+                spacing = Math.floor(spacing * 100) / 100;
                 lines.push({
                     text: lineText,
                     spacing,
@@ -186,7 +185,7 @@ export default class Books {
     }
 
     private getCharWidth(char: string) {
-        if (this.chineseCharRegExp.test(char)) {
+        if (/[\u4e00-\u9fa5]/.test(char)) {
             return this.chineseCharWidth;
         }
 
