@@ -115,7 +115,7 @@ export default class Books {
 
             lineWidth += charWidth;
             lineText += char;
-            charId++;
+            charId += char.length;
         }
 
         lines.push({
