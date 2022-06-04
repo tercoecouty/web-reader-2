@@ -56,6 +56,13 @@ class Api {
         return this.currentUser;
     }
 
+    async setCurrentUser(userId: number) {
+        const _user = this.users.get().find((user) => user.id === userId);
+        if (_user) {
+            this.currentUser = _user;
+        }
+    }
+
     async getBookmarks(userId: number) {
         return this.bookmarks
             .get()
