@@ -81,8 +81,21 @@ export default class Books {
         let isFirstLine = true;
         let lineWidth = this.chineseCharWidth * 2;
         let lineText = "";
-        for (let char of paraText.trim()) {
-            const charWidth = this.getCharWidth(char);
+
+        paraText = paraText.trim();
+        for (let i = 0; i < paraText.length; i++) {
+            let char = paraText[i];
+            let charWidth = this.getCharWidth(char);
+            // 顿号、逗号、句号、冒号、分号、叹号、问号、结束引号、结束括号、结束双书名号不能出现在一行的开头。
+            // 开始引号、开始括号、开始双书名号不能出现在一行的结尾。
+            if (i + 1 < paraText.length) {
+                if (/[、，。：；！？）》”]/.test(paraText[i + 1]) || /[“（《]/.test(paraText[i])) {
+                    char += paraText[i + 1];
+                    charWidth += this.getCharWidth(paraText[i + 1]);
+                    i += 1;
+                }
+            }
+
             if (lineWidth + charWidth > this.totalWidth) {
                 let spacing = (this.totalWidth - lineWidth) / lineText.length;
                 spacing = Math.floor(spacing * 1000) / 1000;
@@ -97,7 +110,7 @@ export default class Books {
                 lineWidth = charWidth;
                 lineText = char;
                 isFirstLine = false;
-                charId++;
+                charId += char.length;
                 continue;
             }
 
