@@ -54,6 +54,7 @@ export default function Book() {
             await api.setCurrentUser(userId);
             const user = await api.getUserInfo();
             dispatch(appActions.setLoginUser(user));
+            dispatch(appActions.setNotesUser(user));
         };
     }, []);
 
