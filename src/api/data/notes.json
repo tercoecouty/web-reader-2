@@ -1,1 +1,24 @@
-[]
+[
+    {
+        "id": 1,
+        "userId": 1,
+        "userName": "董经义",
+        "userAvatarUrl": "",
+        "dateTime": 1654343525755,
+        "firstCharId": 370,
+        "lastCharId": 444,
+        "text": "大概是物以稀为贵罢。北京的白菜运往浙江，便用红头绳系住菜根，倒挂在水果店头，尊为“胶菜”；福建野生着的芦荟，一到北京就请进温室，且美其名曰“龙舌兰”。",
+        "content": ""
+    },
+    {
+        "id": 2,
+        "userId": 2,
+        "userName": "石采珊",
+        "userAvatarUrl": "",
+        "dateTime": 1654343671803,
+        "firstCharId": 250,
+        "lastCharId": 262,
+        "text": "到别的地方去看看，如何呢？",
+        "content": ""
+    }
+]
