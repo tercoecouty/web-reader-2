@@ -100,9 +100,8 @@ export default function Line(props: ILineProps) {
     };
 
     return (
-        <div className="line" style={props.style} data-para-id={line.paraId} ata-first-char-id={line.firstCharId}>
+        <div className="line" style={props.style}>
             {renderSpans()}
-            {/* {line.text} */}
         </div>
     );
 }
