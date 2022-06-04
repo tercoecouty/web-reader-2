@@ -59,7 +59,7 @@ export default class Books {
         let paraId = 1;
         let result;
         for (const paraText of this.bookText.split("\n")) {
-            if (/^[\u0021-\u007e]+/.test(paraText)) {
+            if (/^[\u0021-\u007e]+$/.test(paraText)) {
                 // console.time(`englishLineBreaking ${paraText.length}`);
                 result = this.englishLineBreaking(paraText, charId);
                 // console.timeEnd(`englishLineBreaking ${paraText.length}`);
