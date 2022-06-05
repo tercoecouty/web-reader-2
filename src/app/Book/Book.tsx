@@ -49,14 +49,16 @@ export default function Book() {
             setBookText(bookText);
             setTimeout(() => loadPage(bookText), 100);
         }, 0);
+    }, []);
 
+    useEffect(() => {
         (window as any).setCurrentUser = async (userId: number) => {
             await api.setCurrentUser(userId);
             const user = await api.getUserInfo();
             dispatch(appActions.setLoginUser(user));
             dispatch(appActions.setNotesUser(user));
         };
-    }, []);
+    });
 
     useEffect(() => {
         if (!notesUser) return;
