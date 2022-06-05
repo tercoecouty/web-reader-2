@@ -36,6 +36,7 @@ export default function Line(props: ILineProps) {
                 }
             }
 
+            // TODO 两个连续的划线句子会出错
             if (isInNote) {
                 if (text) {
                     const firstCharId = line.firstCharId + index - text.length;
