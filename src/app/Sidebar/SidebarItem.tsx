@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import "./SidebarItem.less";
 import Icon from "../../component/Icon";
 
@@ -8,8 +9,8 @@ interface ISidebarItemProps {
     onClick?: () => void;
 }
 
-export default function SidebarItem(props: ISidebarItemProps) {
-    const { svg, disabled, title, onClick } = props;
+const SidebarItem = forwardRef<any, ISidebarItemProps>((props, ref) => {
+    const { svg, disabled, onClick } = props;
 
     const handleClick = () => {
         if (disabled) return;
@@ -22,8 +23,10 @@ export default function SidebarItem(props: ISidebarItemProps) {
     }
 
     return (
-        <div className={classNames.join(" ")} onClick={handleClick} title={title}>
+        <div className={classNames.join(" ")} onClick={handleClick} ref={ref}>
             <Icon svg={svg} />
         </div>
     );
-}
+});
+
+export default SidebarItem;
