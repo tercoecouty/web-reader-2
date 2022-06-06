@@ -1,22 +1,16 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import "./Icon.less";
 
 interface IIconProps {
     svg: string;
 }
 
-export default class Icon extends React.Component<IIconProps> {
-    private ref;
-    constructor(props: any) {
-        super(props);
-        this.ref = React.createRef();
-    }
+export default function Icon(props: IIconProps) {
+    const ref = useRef(null);
 
-    componentDidMount() {
-        (this.ref.current as any).innerHTML = this.props.svg;
-    }
+    useEffect(() => {
+        ref.current.innerHTML = props.svg;
+    });
 
-    render() {
-        return <span ref={this.ref as any} className="icon"></span>;
-    }
+    return <span ref={ref} className="icon"></span>;
 }
