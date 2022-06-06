@@ -13,6 +13,7 @@ interface ITooltipProps {
 }
 
 export default function Tooltip(props: ITooltipProps) {
+    const { children } = props;
     const placement = props.placement || "top";
     const title = props.title || "";
     const defaultVisible = props.defaultVisible || false;
@@ -42,7 +43,7 @@ export default function Tooltip(props: ITooltipProps) {
             top = tooltipRect.height / 2 - half;
             setArrowStyle({ left, top });
         } else if (placement === "right") {
-            left = targetRect.x + tooltipRect.width + offset;
+            left = targetRect.x + targetRect.width + offset;
             top = targetRect.y + (targetRect.height - tooltipRect.height) / 2;
             setTooltipStyle({ left, top });
             left = -half;
@@ -57,7 +58,7 @@ export default function Tooltip(props: ITooltipProps) {
             setArrowStyle({ left, top });
         } else if (placement === "bottom") {
             left = targetRect.x + (targetRect.width - tooltipRect.width) / 2;
-            top = targetRect.y + tooltipRect.height;
+            top = targetRect.y + targetRect.height;
             setTooltipStyle({ left, top });
             left = tooltipRect.width / 2 - half;
             top = -half;
@@ -65,12 +66,8 @@ export default function Tooltip(props: ITooltipProps) {
         }
     };
 
-    useEffect(() => {
-        updatePosition();
-    }, [visible]);
-
     const showTooltip = () => {
-        if (!title) return;
+        if (!title || visible) return;
 
         clearTimeout(timeoutId);
         const id = setTimeout(() => setVisible(true), delay);
@@ -78,19 +75,29 @@ export default function Tooltip(props: ITooltipProps) {
     };
 
     const hideTooltip = () => {
+        if (!visible) return;
+
         clearTimeout(timeoutId);
         const id = setTimeout(() => setVisible(false), delay);
         setTimeOutId(id);
     };
 
+    useEffect(() => {
+        updatePosition();
+    }, [visible]);
+
+    useEffect(() => {
+        targetRef.current.onmouseenter = showTooltip;
+        targetRef.current.onmouseleave = hideTooltip;
+    });
+
     const child = createElement(
-        props.children.type,
+        children.type,
         {
-            onMouseEnter: showTooltip,
-            onMouseLeave: hideTooltip,
             ref: targetRef,
+            ...children.props,
         },
-        props.children.props?.children
+        children.props?.children
     );
 
     return (
