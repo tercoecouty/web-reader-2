@@ -97,7 +97,7 @@ export default function RightSidebar() {
                 dispatch(nextPage);
             }
         };
-    }, []);
+    });
 
     return (
         <div style={{ width: "48px", borderLeft: "1px solid black" }}>
