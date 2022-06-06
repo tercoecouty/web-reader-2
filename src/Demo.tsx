@@ -1,8 +1,5 @@
-// import { useEffect, useState } from "react";
-
-import "./normalize.css";
 import "./Demo.less";
-import Tooltip from "./Tooltip";
+import Tooltip from "./component/Tooltip";
 
 export default function Demo() {
     return (

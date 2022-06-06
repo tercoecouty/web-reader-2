@@ -25,7 +25,6 @@ export default function Tooltip(props: ITooltipProps) {
     const [arrowStyle, setArrowStyle] = useState<React.CSSProperties>({});
     const targetRef = useRef(null);
     const tooltipRef = useRef(null);
-    const domTooltip = useState<HTMLElement>(null);
 
     const updatePosition = () => {
         const domTarget = targetRef.current as HTMLElement;
@@ -38,31 +37,31 @@ export default function Tooltip(props: ITooltipProps) {
         if (placement === "left") {
             left = targetRect.x - tooltipRect.width - offset;
             top = targetRect.y + (targetRect.height - tooltipRect.height) / 2;
-            setTooltipStyle({ transform: `translate(${left}px, ${top}px)` });
+            setTooltipStyle({ left, top });
             left = tooltipRect.width - half;
             top = tooltipRect.height / 2 - half;
-            setArrowStyle({ transform: `translate(${left}px, ${top}px) rotate(45deg)` });
+            setArrowStyle({ left, top });
         } else if (placement === "right") {
             left = targetRect.x + tooltipRect.width + offset;
             top = targetRect.y + (targetRect.height - tooltipRect.height) / 2;
-            setTooltipStyle({ transform: `translate(${left}px, ${top}px)` });
+            setTooltipStyle({ left, top });
             left = -half;
             top = tooltipRect.height / 2 - half;
-            setArrowStyle({ transform: `translate(${left}px, ${top}px) rotate(45deg)` });
+            setArrowStyle({ left, top });
         } else if (placement === "top") {
             left = targetRect.x + (targetRect.width - tooltipRect.width) / 2;
             top = targetRect.y - tooltipRect.height - offset;
-            setTooltipStyle({ transform: `translate(${left}px, ${top}px)` });
+            setTooltipStyle({ left, top });
             left = tooltipRect.width / 2 - half;
             top = tooltipRect.height - half;
-            setArrowStyle({ transform: `translate(${left}px, ${top}px) rotate(45deg)` });
+            setArrowStyle({ left, top });
         } else if (placement === "bottom") {
             left = targetRect.x + (targetRect.width - tooltipRect.width) / 2;
             top = targetRect.y + tooltipRect.height;
-            setTooltipStyle({ transform: `translate(${left}px, ${top}px)` });
+            setTooltipStyle({ left, top });
             left = tooltipRect.width / 2 - half;
             top = -half;
-            setArrowStyle({ transform: `translate(${left}px, ${top}px) rotate(45deg)` });
+            setArrowStyle({ left, top });
         }
     };
 
