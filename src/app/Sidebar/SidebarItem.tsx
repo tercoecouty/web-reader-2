@@ -1,16 +1,18 @@
-import { forwardRef } from "react";
 import "./SidebarItem.less";
 import Icon from "../../component/Icon";
+import Tooltip from "../../component/Tooltip";
 
 interface ISidebarItemProps {
     disabled?: boolean;
     svg: string;
-    title?: string;
+    title: string;
+    placement?: "left" | "right" | "top" | "bottom";
     onClick?: () => void;
 }
 
-const SidebarItem = forwardRef<any, ISidebarItemProps>((props, ref) => {
-    const { svg, disabled, onClick } = props;
+export default function SidebarItem(props: ISidebarItemProps) {
+    const { svg, disabled, onClick, title } = props;
+    const placement = props.placement || "right";
 
     const handleClick = () => {
         if (disabled) return;
@@ -23,10 +25,10 @@ const SidebarItem = forwardRef<any, ISidebarItemProps>((props, ref) => {
     }
 
     return (
-        <div className={classNames.join(" ")} onClick={handleClick} ref={ref}>
-            <Icon svg={svg} />
-        </div>
+        <Tooltip title={title} placement={placement}>
+            <div className={classNames.join(" ")} onClick={handleClick}>
+                <Icon svg={svg} />
+            </div>
+        </Tooltip>
     );
-});
-
-export default SidebarItem;
+}

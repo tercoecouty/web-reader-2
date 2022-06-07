@@ -104,28 +104,38 @@ export default function RightSidebar() {
             <SidebarItem
                 svg={ArrowLeftSvg}
                 title="上一页"
+                placement="left"
                 onClick={() => dispatch(prevPage)}
                 disabled={pageNumber === 1}
             />
             <SidebarItem
                 svg={ArrowRightSvg}
                 title="下一页"
+                placement="left"
                 onClick={() => dispatch(nextPage)}
                 disabled={!canNextPage}
             />
             <SidebarItem
                 svg={UnderlineSvg}
                 title="划线"
+                placement="left"
                 onClick={handleAddNote}
                 disabled={!selection || notesUser.id !== loginUser.id}
             />
             <SidebarItem
                 svg={DeleteSvg}
                 title="删除笔记"
+                placement="left"
                 onClick={handleDeleteNote}
                 disabled={!currentNoteId || notesUser.id !== loginUser.id}
             />
-            <SidebarItem svg={EditSvg} title="编辑笔记" onClick={() => setEditNote(true)} disabled={!currentNoteId} />
+            <SidebarItem
+                svg={EditSvg}
+                title="编辑笔记"
+                placement="left"
+                onClick={() => setEditNote(true)}
+                disabled={!currentNoteId}
+            />
             <Drawer visible={editNote} title="编辑笔记" position="right" onClose={() => setEditNote(false)}>
                 <Note />
             </Drawer>
