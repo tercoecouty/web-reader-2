@@ -19,10 +19,8 @@ export default function Bookmark(props: IPageHeadProps) {
     const pageNumber = props.pageNumber;
 
     const hasBookmark = bookmarks.includes(pageNumber);
-    console.log(hasBookmark);
 
     if (hasBookmark) {
-        console.log(BookmarkFilledSvg);
         return (
             <div className="bookmark" onClick={() => dispatch(deleteBookmark(pageNumber))}>
                 <Icon svg={BookmarkFilledSvg} />
