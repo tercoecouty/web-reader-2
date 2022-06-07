@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
+import classNames from "classnames";
 import "./Classes.less";
 
 import { selectClasses, selectCurrentClassId, classActions } from "../slice/classSlice";
-import { selectLoginUser, selectNotesUser, appActions } from "../slice/appSlice";
+import { selectNotesUser, appActions } from "../slice/appSlice";
 
 export default function Classes() {
     const dispatch = useDispatch();
     const currentClassId = useSelector(selectCurrentClassId);
     const classes = useSelector(selectClasses);
-    const loginUser = useSelector(selectLoginUser);
     const notesUser = useSelector(selectNotesUser);
 
     const renderOptions = () => {
@@ -19,20 +19,19 @@ export default function Classes() {
         ));
     };
 
+    const clickUser = (user: IUser) => {
+        dispatch(appActions.setNotesUser(user));
+        dispatch(appActions.setShowClasses(false));
+    };
+
     const renderStudentList = () => {
         const classItem = classes.find((item) => item.id === currentClassId);
         if (!classItem) return null;
 
         return classItem.students.map((user) => {
-            let className = ["student-list-row"];
-            if (user.id === notesUser.id) className.push("selected");
-
+            const className = classNames("student-list-row", { selected: user.id === notesUser.id });
             return (
-                <div
-                    key={user.id}
-                    className={className.join(" ")}
-                    onClick={() => dispatch(appActions.setNotesUser(user))}
-                >
+                <div key={user.id} className={className} onClick={() => clickUser(user)}>
                     <div>{user.studentId}</div>
                     <div>{user.name}</div>
                 </div>
