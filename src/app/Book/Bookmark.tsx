@@ -28,7 +28,6 @@ export default function Bookmark(props: IPageHeadProps) {
         );
     }
 
-    console.log(BookmarkSvg);
     return (
         <div className="bookmark" onClick={() => dispatch(addBookmark(pageNumber))}>
             <Icon svg={BookmarkSvg} />
