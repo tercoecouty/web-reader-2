@@ -42,6 +42,7 @@ const noteSlice = createSlice({
 });
 
 export default noteSlice.reducer;
+export const noteActions = noteSlice.actions;
 export const selectNotes = (state: RootState) => state.note.notes;
 export const selectNotesByLine = (state, line: ILine) => {
     const notes = state.note.notes as INote[];

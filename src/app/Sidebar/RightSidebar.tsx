@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import SidebarItem from "./SidebarItem";
@@ -18,11 +18,13 @@ import {
     nextPage,
     prevPage,
 } from "../../slice/bookSlice";
-import { addNote, deleteNote, selectNotes } from "../../slice/noteSlice";
-import { selectLoginUser, selectNotesUser } from "../../slice/appSlice";
+import { deleteNote, selectNotes, noteActions } from "../../slice/noteSlice";
+import { selectLoginUser, selectNotesUser, selectShowNoteInfo, appActions } from "../../slice/appSlice";
 
 import Drawer from "../../component/Drawer";
 import Note from "../Note";
+
+import api from "../../api/Api";
 
 export default function RightSidebar() {
     const dispatch = useDispatch();
@@ -33,10 +35,9 @@ export default function RightSidebar() {
     const loginUser = useSelector(selectLoginUser);
     const notesUser = useSelector(selectNotesUser);
     const notes = useSelector(selectNotes);
-    const { setSelection, setCurrentNoteId } = bookActions;
-    const [showNoteInfo, setShowNoteInfo] = useState(false);
+    const showNoteInfo = useSelector(selectShowNoteInfo);
 
-    const handleAddNote = () => {
+    const handleAddNote = async () => {
         const isNoteCross = notes.some((note) => {
             if (note.lastCharId < selection.firstCharId || note.firstCharId > selection.lastCharId) return false;
             return true;
@@ -47,15 +48,18 @@ export default function RightSidebar() {
             return;
         }
 
-        dispatch(addNote(selection));
-        dispatch(setSelection(null));
+        const _note = await api.addNote(selection.firstCharId, selection.lastCharId, selection.text);
+        dispatch(noteActions.addNote(_note));
+        dispatch(bookActions.setSelection(null));
+        dispatch(bookActions.setCurrentNoteId(_note.id));
+        dispatch(appActions.setShowNoteInfo(true));
     };
 
     const handleDeleteNote = () => {
         if (!window.confirm("您确定要删除笔记吗？")) return;
 
         dispatch(deleteNote(currentNoteId));
-        dispatch(setCurrentNoteId(null));
+        dispatch(bookActions.setCurrentNoteId(null));
     };
 
     useEffect(() => {
@@ -76,7 +80,7 @@ export default function RightSidebar() {
                     break;
                 case "Enter":
                     if (currentNoteId) {
-                        setShowNoteInfo(true);
+                        dispatch(appActions.setShowNoteInfo(true));
                         break;
                     }
 
@@ -137,10 +141,15 @@ export default function RightSidebar() {
                 svg={EditSvg}
                 title="编辑笔记"
                 placement="left"
-                onClick={() => setShowNoteInfo(true)}
+                onClick={() => dispatch(appActions.setShowNoteInfo(true))}
                 disabled={!currentNoteId}
             />
-            <Drawer visible={showNoteInfo} title="编辑笔记" position="right" onClose={() => setShowNoteInfo(false)}>
+            <Drawer
+                visible={showNoteInfo}
+                title="编辑笔记"
+                position="right"
+                onClose={() => dispatch(appActions.setShowNoteInfo(false))}
+            >
                 <Note />
             </Drawer>
         </div>
