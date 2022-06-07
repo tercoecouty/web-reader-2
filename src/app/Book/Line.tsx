@@ -82,12 +82,10 @@ export default function Line(props: ILineProps) {
         const dom_spans = [];
         for (const span of spans) {
             const { noteId, firstCharId, text } = span;
+            const selected = noteId && currentNoteId === noteId;
+            const others = !selected && loginUser.id !== notesUser.id;
             if (noteId) {
-                const className = classNames("underline", {
-                    selected: noteId && currentNoteId === noteId,
-                    others: loginUser.id !== notesUser.id,
-                });
-
+                const className = classNames("underline", { selected, others });
                 dom_spans.push(
                     <span
                         data-note-id={noteId}
