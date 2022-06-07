@@ -13,19 +13,19 @@ import Classes from "../Classes";
 import Notes from "../Notes";
 import Bookmarks from "../Bookmarks";
 
-import { selectShowClasses, appActions } from "../../slice/appSlice";
+import { selectShowClasses, selectShowBookmarks, appActions } from "../../slice/appSlice";
 
 export default function LeftSidebar() {
     const dispatch = useDispatch();
     const showClasses = useSelector(selectShowClasses);
+    const showBookmarks = useSelector(selectShowBookmarks);
     const [showNotes, setShowNotes] = useState(false);
-    const [showBookmarks, setShowBookmarks] = useState(false);
 
     return (
         <div style={{ width: "48px", borderRight: "1px solid black" }}>
             <SidebarItem svg={TeamSvg} title="班级列表" onClick={() => dispatch(appActions.setShowClasses(true))} />
             <SidebarItem svg={BarsSvg} title="笔记" onClick={() => setShowNotes(true)} />
-            <SidebarItem svg={BookSvg} title="书签" onClick={() => setShowBookmarks(true)} />
+            <SidebarItem svg={BookSvg} title="书签" onClick={() => dispatch(appActions.setShowBookmarks(true))} />
             <SidebarItem svg={SearchSvg} title="搜索" disabled />
             <SidebarItem svg={SettingSvg} title="设置" disabled />
             <Drawer
@@ -39,7 +39,12 @@ export default function LeftSidebar() {
             <Drawer visible={showNotes} title="笔记" position="left" onClose={() => setShowNotes(false)}>
                 <Notes />
             </Drawer>
-            <Drawer visible={showBookmarks} title="书签" position="left" onClose={() => setShowBookmarks(false)}>
+            <Drawer
+                visible={showBookmarks}
+                title="书签"
+                position="left"
+                onClose={() => dispatch(appActions.setShowBookmarks(false))}
+            >
                 <Bookmarks />
             </Drawer>
         </div>
