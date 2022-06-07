@@ -67,6 +67,7 @@ export default function Tooltip(props: ITooltipProps) {
     };
 
     const showTooltip = () => {
+        clearTimeout(timeoutId);
         const id = setTimeout(() => setVisible(true), delay);
         setTimeOutId(id);
     };
@@ -78,16 +79,13 @@ export default function Tooltip(props: ITooltipProps) {
 
     useEffect(() => {
         updatePosition();
-    }, [visible]);
-
-    useEffect(() => {
-        targetRef.current.onmouseenter = showTooltip;
-        targetRef.current.onmouseleave = hideTooltip;
-    });
+    }, []);
 
     const child = createElement(
         children.type,
         {
+            onMouseEnter: showTooltip,
+            onMouseLeave: hideTooltip,
             ref: targetRef,
             ...children.props,
         },
