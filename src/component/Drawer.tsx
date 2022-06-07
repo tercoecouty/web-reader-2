@@ -24,13 +24,12 @@ export default function Drawer(props: IDrawerProps) {
     useEffect(() => {
         if (visible) {
             setShow(true);
-            setTimeout(() => setDrawStyle({ backgroundColor: `rgba(0, 0, 0, 0.4)` }), 0);
             setTimeout(() => {
-                if (position === "left") setDrawContainerStyle({ transform: "translate(400px, 0)" });
-                else setDrawContainerStyle({ transform: "translate(-400px, 0)" });
-            }, 0);
+                setDrawStyle({ backgroundColor: `rgba(0, 0, 0, 0.4)` });
+                setDrawContainerStyle({ transform: "translate(0, 0)" });
+            }, 50); // 如果设为0，可能会没有进入动画
         } else {
-            setTimeout(() => setShow(false), 200);
+            setTimeout(() => setShow(false), 400);
             setDrawStyle({});
             setDrawContainerStyle({});
         }

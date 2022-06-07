@@ -17,11 +17,15 @@
     transition: transform 0.2s;
 
     &.left {
-        left: -400px;
+        left: 0;
+        transform: translate(-400px, 0);
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.18);
     }
 
     &.right {
-        right: -400px;
+        right: 0;
+        transform: translate(400px, 0);
+        box-shadow: -4px 0 10px rgba(0, 0, 0, 0.18);
     }
 }
 
