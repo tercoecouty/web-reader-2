@@ -60,6 +60,8 @@ export default function RightSidebar() {
 
     useEffect(() => {
         window.onkeydown = (e: KeyboardEvent) => {
+            if (editNote) return;
+
             switch (e.code) {
                 case "ArrowUp":
                 case "ArrowLeft":
@@ -89,6 +91,8 @@ export default function RightSidebar() {
             }
         };
         window.onwheel = (e: WheelEvent) => {
+            if (editNote) return;
+
             if (e.deltaY < 0) {
                 if (pageNumber === 1) return;
                 dispatch(prevPage);
