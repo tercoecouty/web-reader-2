@@ -1,4 +1,5 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import classNames from "classnames";
 import "./Drawer.less";
 
 interface IDrawerProps {
@@ -10,20 +11,41 @@ interface IDrawerProps {
 }
 
 export default function Drawer(props: IDrawerProps) {
-    if (!props.visible) return null;
+    const { visible, position } = props;
+    const [show, setShow] = useState(false);
+    const [drawerStyle, setDrawStyle] = useState<React.CSSProperties>({});
+    const [drawContainerStyle, setDrawContainerStyle] = useState<React.CSSProperties>({});
 
     const handleClick = (e) => {
         if (e.target.closest(".drawer-container")) return;
         if (props.onClose) props.onClose();
     };
 
-    let style: React.CSSProperties = {};
-    if (props.position === "left") style = { left: 0 };
-    else if (props.position === "right") style = { right: 0 };
+    useEffect(() => {
+        if (visible) {
+            setShow(true);
+            setTimeout(() => setDrawStyle({ backgroundColor: `rgba(0, 0, 0, 0.4)` }), 0);
+            setTimeout(() => {
+                if (position === "left") setDrawContainerStyle({ transform: "translate(400px, 0)" });
+                else setDrawContainerStyle({ transform: "translate(-400px, 0)" });
+            }, 0);
+        } else {
+            setTimeout(() => setShow(false), 200);
+            setDrawStyle({});
+            setDrawContainerStyle({});
+        }
+    }, [visible]);
+
+    if (!show) return null;
+
+    const className = classNames("drawer-container", {
+        left: position === "left",
+        right: position === "right",
+    });
 
     return (
-        <div className="drawer" onClick={handleClick}>
-            <div className="drawer-container" style={style}>
+        <div className="drawer" style={drawerStyle} onClick={handleClick}>
+            <div className={className} style={drawContainerStyle}>
                 <div className="drawer-header">
                     <div>{props.title}</div>
                 </div>

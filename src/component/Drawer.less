@@ -4,7 +4,8 @@
     height: 100vh;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 0.2s;
 }
 
 .drawer-container {
@@ -13,6 +14,15 @@
     height: 100vh;
     background-color: white;
     overflow-y: auto;
+    transition: transform 0.2s;
+
+    &.left {
+        left: -400px;
+    }
+
+    &.right {
+        right: -400px;
+    }
 }
 
 .drawer-header {
