@@ -29,9 +29,9 @@ export default function Drawer(props: IDrawerProps) {
                 setDrawContainerStyle({ transform: "translate(0, 0)" });
             }, 50); // 如果设为0，可能会没有进入动画
         } else {
-            setTimeout(() => setShow(false), 400);
             setDrawStyle({});
             setDrawContainerStyle({});
+            setTimeout(() => setShow(false), 300);
         }
     }, [visible]);
 
