@@ -17,7 +17,7 @@ export default function Tooltip(props: ITooltipProps) {
     const placement = props.placement || "top";
     const title = props.title || "";
     const defaultVisible = props.defaultVisible || false;
-    const delay = props.delay || 1000;
+    const delay = props.delay || 500;
     const offset = props.offset || 8;
 
     const [visible, setVisible] = useState(defaultVisible);
@@ -68,7 +68,10 @@ export default function Tooltip(props: ITooltipProps) {
 
     const showTooltip = () => {
         clearTimeout(timeoutId);
-        const id = setTimeout(() => setVisible(true), delay);
+        const id = setTimeout(() => {
+            updatePosition();
+            setVisible(true);
+        }, delay);
         setTimeOutId(id);
     };
 
@@ -76,10 +79,6 @@ export default function Tooltip(props: ITooltipProps) {
         clearTimeout(timeoutId);
         setVisible(false);
     };
-
-    useEffect(() => {
-        updatePosition();
-    }, []);
 
     const child = createElement(
         children.type,
