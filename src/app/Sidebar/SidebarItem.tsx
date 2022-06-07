@@ -25,7 +25,7 @@ export default function SidebarItem(props: ISidebarItemProps) {
     }
 
     return (
-        <Tooltip title={title} placement={placement}>
+        <Tooltip title={title} placement={placement} offset={-4}>
             <div className={classNames.join(" ")} onClick={handleClick}>
                 <Icon svg={svg} />
             </div>
