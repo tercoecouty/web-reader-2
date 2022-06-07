@@ -34,7 +34,7 @@ export default function RightSidebar() {
     const notesUser = useSelector(selectNotesUser);
     const notes = useSelector(selectNotes);
     const { setSelection, setCurrentNoteId } = bookActions;
-    const [editNote, setEditNote] = useState(false);
+    const [showNoteInfo, setShowNoteInfo] = useState(false);
 
     const handleAddNote = () => {
         const isNoteCross = notes.some((note) => {
@@ -60,7 +60,7 @@ export default function RightSidebar() {
 
     useEffect(() => {
         window.onkeydown = (e: KeyboardEvent) => {
-            if (editNote) return;
+            if (showNoteInfo) return;
 
             switch (e.code) {
                 case "ArrowUp":
@@ -76,7 +76,7 @@ export default function RightSidebar() {
                     break;
                 case "Enter":
                     if (currentNoteId) {
-                        setEditNote(true);
+                        setShowNoteInfo(true);
                         break;
                     }
 
@@ -91,7 +91,7 @@ export default function RightSidebar() {
             }
         };
         window.onwheel = (e: WheelEvent) => {
-            if (editNote) return;
+            if (showNoteInfo) return;
 
             if (e.deltaY < 0) {
                 if (pageNumber === 1) return;
@@ -137,10 +137,10 @@ export default function RightSidebar() {
                 svg={EditSvg}
                 title="编辑笔记"
                 placement="left"
-                onClick={() => setEditNote(true)}
+                onClick={() => setShowNoteInfo(true)}
                 disabled={!currentNoteId}
             />
-            <Drawer visible={editNote} title="编辑笔记" position="right" onClose={() => setEditNote(false)}>
+            <Drawer visible={showNoteInfo} title="编辑笔记" position="right" onClose={() => setShowNoteInfo(false)}>
                 <Note />
             </Drawer>
         </div>
