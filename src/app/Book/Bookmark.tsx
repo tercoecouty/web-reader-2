@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./Bookmark.less";
 
@@ -19,18 +18,17 @@ export default function Bookmark(props: IPageHeadProps) {
 
     const hasBookmark = bookmarks.includes(pageNumber);
 
+    if (hasBookmark) {
+        return (
+            <div className="bookmark" onClick={() => dispatch(deleteBookmark(pageNumber))}>
+                <img src={BookmarkFilledImage} />
+            </div>
+        );
+    }
+
     return (
-        <React.Fragment>
-            {hasBookmark && (
-                <div className="bookmark" onClick={() => dispatch(deleteBookmark(pageNumber))}>
-                    <img src={BookmarkFilledImage} />
-                </div>
-            )}
-            {!hasBookmark && (
-                <div className="bookmark" onClick={() => dispatch(addBookmark(pageNumber))}>
-                    <img src={BookmarkImage} />
-                </div>
-            )}
-        </React.Fragment>
+        <div className="bookmark" onClick={() => dispatch(addBookmark(pageNumber))}>
+            <img src={BookmarkImage} />
+        </div>
     );
 }
