@@ -1,8 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import "./Bookmark.less";
 
-import BookmarkImage from "./img/bookmark.png";
-import BookmarkFilledImage from "./img/bookmark-filled.png";
+import BookmarkSvg from "./svg/bookmark.svg?raw";
+import BookmarkFilledSvg from "./svg/bookmark-filled.svg?raw";
+
+import Icon from "../../component/Icon";
 
 import { addBookmark, deleteBookmark } from "../../slice/bookmarkSlice";
 import { selectBookmarks } from "../../slice/bookmarkSlice";
@@ -17,18 +19,21 @@ export default function Bookmark(props: IPageHeadProps) {
     const pageNumber = props.pageNumber;
 
     const hasBookmark = bookmarks.includes(pageNumber);
+    console.log(hasBookmark);
 
     if (hasBookmark) {
+        console.log(BookmarkFilledSvg);
         return (
             <div className="bookmark" onClick={() => dispatch(deleteBookmark(pageNumber))}>
-                <img src={BookmarkFilledImage} />
+                <Icon svg={BookmarkFilledSvg} />
             </div>
         );
     }
 
+    console.log(BookmarkSvg);
     return (
         <div className="bookmark" onClick={() => dispatch(addBookmark(pageNumber))}>
-            <img src={BookmarkImage} />
+            <Icon svg={BookmarkSvg} />
         </div>
     );
 }
