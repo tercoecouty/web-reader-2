@@ -11,6 +11,12 @@ interface ILineProps {
     style: any;
 }
 
+interface ISpan {
+    text: string;
+    noteId?: number;
+    firstCharId?: number;
+}
+
 export default function Line(props: ILineProps) {
     const line = props.line;
     const currentNoteId = useSelector((state) => selectCurrentNoteIdByLine(state, line));
@@ -19,83 +25,86 @@ export default function Line(props: ILineProps) {
     const notesUser = useSelector(selectNotesUser);
 
     const renderSpans = () => {
-        let dom_spans = [];
+        const spans: ISpan[] = [];
         let text = "";
-        let spanText = "";
         let noteId = null;
+        let lastNoteId = null;
         let index = 0;
+        let isLastNoteChar = undefined;
         for (; index < line.text.length; index++) {
             const char = line.text[index];
             const charId = line.firstCharId + index;
 
-            let isInNote = false;
+            let isNoteChar = false;
             for (const note of notes) {
                 if (charId >= note.firstCharId && charId <= note.lastCharId) {
-                    isInNote = true;
+                    isNoteChar = true;
+                    lastNoteId = noteId;
                     noteId = note.id;
                     break;
                 }
             }
 
-            // TODO 两个连续的划线句子会出错
-            if (isInNote) {
-                if (text) {
-                    const firstCharId = line.firstCharId + index - text.length;
-                    dom_spans.push(
-                        <span data-first-char-id={firstCharId} key={firstCharId}>
-                            {text}
-                        </span>
-                    );
-                    text = "";
+            if (!isLastNoteChar && isNoteChar) {
+                if (isLastNoteChar === undefined) {
+                    // 第一个字符是划线句
+                    text += char;
+                } else {
+                    // 由普通句子进入划线句子
+                    spans.push({ text: text.slice(), noteId: null, firstCharId: charId - text.length });
+                    text = char;
                 }
-                spanText += char;
+            } else if (isLastNoteChar && !isNoteChar) {
+                // 由划线句子进入普通句子
+                spans.push({ text: text.slice(), noteId, firstCharId: charId - text.length });
+                text = char;
+                noteId = null;
+                lastNoteId = null;
+            } else if (isLastNoteChar && isNoteChar) {
+                // 两个字符都是划线句子，但是要检查是否属于同一个笔记
+                if (lastNoteId && lastNoteId !== noteId) {
+                    // 不属于同一个笔记
+                    spans.push({ text: text.slice(), noteId: lastNoteId, firstCharId: charId - text.length });
+                    text = char;
+                } else {
+                    // 属于同一个笔记
+                    text += char;
+                }
             } else {
-                if (spanText) {
-                    const className = classNames("underline", {
-                        selected: noteId && currentNoteId === noteId,
-                        others: loginUser.id !== notesUser.id,
-                    });
-
-                    const firstCharId = line.firstCharId + index - spanText.length;
-                    dom_spans.push(
-                        <span
-                            data-note-id={noteId}
-                            className={className}
-                            data-first-char-id={firstCharId}
-                            key={firstCharId}
-                        >
-                            {spanText}
-                        </span>
-                    );
-
-                    spanText = "";
-                }
-
+                // 两个字符都是普通句子
                 text += char;
             }
+
+            isLastNoteChar = isNoteChar;
         }
+        spans.push({ text: text.slice(), noteId, firstCharId: line.firstCharId + index - text.length });
 
-        if (text) {
-            const firstCharId = line.firstCharId + index - text.length;
-            dom_spans.push(
-                <span data-first-char-id={firstCharId} key={firstCharId}>
-                    {text}
-                </span>
-            );
-        }
+        const dom_spans = [];
+        for (const span of spans) {
+            const { noteId, firstCharId, text } = span;
+            if (noteId) {
+                const className = classNames("underline", {
+                    selected: noteId && currentNoteId === noteId,
+                    others: loginUser.id !== notesUser.id,
+                });
 
-        if (spanText) {
-            const className = classNames("underline", {
-                selected: noteId && currentNoteId === noteId,
-                others: loginUser.id !== notesUser.id,
-            });
-
-            const firstCharId = line.firstCharId + index - spanText.length;
-            dom_spans.push(
-                <span data-note-id={noteId} className={className} data-first-char-id={firstCharId} key={firstCharId}>
-                    {spanText}
-                </span>
-            );
+                dom_spans.push(
+                    <span
+                        data-note-id={noteId}
+                        className={className}
+                        data-first-char-id={firstCharId}
+                        key={firstCharId}
+                    >
+                        {text}
+                    </span>
+                );
+            } else {
+                dom_spans.push(
+                    <span data-first-char-id={firstCharId} key={firstCharId}>
+                        {text}
+                    </span>
+                );
+            }
         }
 
         return dom_spans;
