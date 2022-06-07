@@ -10,7 +10,7 @@ export default function Icon(props: IIconProps) {
 
     useEffect(() => {
         ref.current.innerHTML = props.svg;
-    });
+    }, []);
 
     return <span ref={ref} className="icon"></span>;
 }
