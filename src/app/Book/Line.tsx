@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import classNames from "classnames";
 import "./Line.less";
 
 import { selectNotesByLine } from "../../slice/noteSlice";
@@ -50,10 +51,10 @@ export default function Line(props: ILineProps) {
                 spanText += char;
             } else {
                 if (spanText) {
-                    let className = "";
-                    if (noteId && currentNoteId === noteId) className = "underline-selected";
-                    else if (loginUser.id !== notesUser.id) className = "underline-others";
-                    else className = "underline";
+                    const className = classNames("underline", {
+                        selected: noteId && currentNoteId === noteId,
+                        others: loginUser.id !== notesUser.id,
+                    });
 
                     const firstCharId = line.firstCharId + index - spanText.length;
                     dom_spans.push(
@@ -84,10 +85,10 @@ export default function Line(props: ILineProps) {
         }
 
         if (spanText) {
-            let className = "";
-            if (currentNoteId === noteId) className = "underline-selected";
-            else if (loginUser.id !== notesUser.id) className = "underline-others";
-            else className = "underline";
+            const className = classNames("underline", {
+                selected: noteId && currentNoteId === noteId,
+                others: loginUser.id !== notesUser.id,
+            });
 
             const firstCharId = line.firstCharId + index - spanText.length;
             dom_spans.push(

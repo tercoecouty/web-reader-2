@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import "./SidebarItem.less";
 import Icon from "../../component/Icon";
 import Tooltip from "../../component/Tooltip";
@@ -19,14 +20,9 @@ export default function SidebarItem(props: ISidebarItemProps) {
         if (onClick) onClick();
     };
 
-    let classNames = ["sidebar-item"];
-    if (disabled) {
-        classNames.push("disabled");
-    }
-
     return (
         <Tooltip title={title} placement={placement} offset={-4}>
-            <div className={classNames.join(" ")} onClick={handleClick}>
+            <div className={classNames("sidebar-item", { disabled })} onClick={handleClick}>
                 <Icon svg={svg} />
             </div>
         </Tooltip>
