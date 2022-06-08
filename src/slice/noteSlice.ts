@@ -65,7 +65,7 @@ export const deleteNote = (noteId: number) => async (dispatch: Dispatch) => {
     dispatch(noteSlice.actions.deleteNote(noteId));
 };
 export const updateNote = (noteId: number, content: string) => async (dispatch: Dispatch) => {
-    await api.updateNote(noteId, content);
+    await api.setNoteContent(noteId, content);
     dispatch(noteSlice.actions.updateNote({ noteId, content }));
 };
 export const fetchNotes = (userId: number) => async (dispatch: Dispatch, getState: () => RootState) => {

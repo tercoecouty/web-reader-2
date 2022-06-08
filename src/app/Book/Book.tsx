@@ -17,12 +17,11 @@ export default function Book() {
     const dispatch = useDispatch();
     const selection = useSelector(selectSelection);
     const twoPage = useSelector(selectTwoPage);
-    const { setPages, setPageLoading, setSelection } = bookActions;
     const notesUser = useSelector(selectNotesUser);
     const [bookText, setBookText] = useState("");
-    const [resizeTimer, setResizeTimer] = useState(null);
+    const [resizeTimeoutId, setResizeTimeoutId] = useState(null);
 
-    const loadPage = (bookText) => {
+    const updatePage = (bookText) => {
         const domPageContent = document.getElementById("page-content");
         const totalWidth = domPageContent.getBoundingClientRect().width;
         const totalHeight = domPageContent.getBoundingClientRect().height;
@@ -31,13 +30,13 @@ export default function Book() {
         // console.time("pageBreaking");
         const pages = book.pageBreaking();
         // console.timeEnd("pageBreaking");
-        dispatch(setPages(pages));
-        dispatch(setPageLoading(false));
+        dispatch(bookActions.setPages(pages));
+        dispatch(bookActions.setPageLoading(false));
     };
 
     useEffect(() => {
         setTimeout(async () => {
-            const user = await api.getUserInfo();
+            const user = await api.getCurrentUser();
             const lastRead = await api.getLastRead();
 
             dispatch(appActions.setLoginUser(user));
@@ -47,14 +46,14 @@ export default function Book() {
 
             const bookText = await api.getBookText();
             setBookText(bookText);
-            setTimeout(() => loadPage(bookText), 100);
+            setTimeout(() => updatePage(bookText), 100);
         }, 0);
     }, []);
 
     useEffect(() => {
         (window as any).setCurrentUser = async (userId: number) => {
             await api.setCurrentUser(userId);
-            const user = await api.getUserInfo();
+            const user = await api.getCurrentUser();
             dispatch(appActions.setLoginUser(user));
             dispatch(appActions.setNotesUser(user));
         };
@@ -69,10 +68,10 @@ export default function Book() {
 
     useEffect(() => {
         window.onresize = () => {
-            clearTimeout(resizeTimer);
-            dispatch(setPageLoading(true));
-            const timer = setTimeout(() => loadPage(bookText), 1000);
-            setResizeTimer(timer);
+            clearTimeout(resizeTimeoutId);
+            dispatch(bookActions.setPageLoading(true));
+            const timer = setTimeout(() => updatePage(bookText), 1000); // 有意增加加载时间
+            setResizeTimeoutId(timer);
         };
     });
 
@@ -81,7 +80,7 @@ export default function Book() {
         const text = _selection.toString();
         if (text === "") {
             if (selection) {
-                dispatch(setSelection(null));
+                dispatch(bookActions.setSelection(null));
             }
 
             return;
@@ -94,7 +93,7 @@ export default function Book() {
         const lastCharId = parseInt(endParent.dataset.firstCharId) + range.endOffset - 1;
 
         if (!firstCharId || !lastCharId) return;
-        dispatch(setSelection({ firstCharId, lastCharId, text: text.replace(/\n/g, "") }));
+        dispatch(bookActions.setSelection({ firstCharId, lastCharId, text: text.replace(/\n/g, "") }));
     };
 
     return (

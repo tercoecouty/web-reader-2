@@ -52,7 +52,7 @@ class Api {
         this.currentUser = this.users.get()[0];
     }
 
-    async getUserInfo() {
+    async getCurrentUser() {
         return this.currentUser;
     }
 
@@ -141,7 +141,7 @@ class Api {
         this.likes.set(this.likes.get().filter((item) => item.noteId !== noteId));
     }
 
-    async updateNote(noteId: number, content: string) {
+    async setNoteContent(noteId: number, content: string) {
         this.notes.set(
             this.notes.get().map((item) => {
                 if (item.id === noteId) {
