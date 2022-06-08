@@ -26,6 +26,7 @@ function Page(props: IPageProps) {
         for (let index_line = 0; index_line < lines.length; index_line++) {
             const line = lines[index_line];
             let style: any = {
+                // 因为行高相同，每一页的行的数量都是相同的，所以每一页的spacing都相同
                 padding: `${5 + pages[0].spacing / 2}px 0`,
             };
 

@@ -6,7 +6,7 @@ export default class Books {
 
     private charWidthMap: Map<string, number> = new Map();
     private chineseCharWidth = 0;
-    private charHeight = 0;
+    private lineHeight = 0;
 
     constructor(bookText: string, totalWidth: number, totalHeight: number, domMeasure: HTMLElement) {
         this.bookText = bookText;
@@ -16,9 +16,9 @@ export default class Books {
 
         this.domMeasure.textContent = "正";
         this.chineseCharWidth = this.domMeasure.getBoundingClientRect().width;
-        this.charHeight = this.domMeasure.getBoundingClientRect().height;
+        this.lineHeight = this.domMeasure.getBoundingClientRect().height;
 
-        this.charHeight += 5 * 2; // padding-top and padding bottom
+        this.lineHeight += 5 * 2; // 上下边距
     }
 
     public pageBreaking() {
@@ -28,19 +28,19 @@ export default class Books {
 
         const lines = this.lineBreaking();
         for (const line of lines) {
-            if (pageHeight + this.charHeight > this.totalHeight) {
+            if (pageHeight + this.lineHeight > this.totalHeight) {
                 let spacing = (this.totalHeight - pageHeight) / pageLines.length;
                 spacing = Math.floor(spacing * 100) / 100;
                 pages.push({
                     lines: pageLines,
                     spacing,
                 });
-                pageHeight = this.charHeight;
+                pageHeight = this.lineHeight;
                 pageLines = [line];
                 continue;
             }
 
-            pageHeight += this.charHeight;
+            pageHeight += this.lineHeight;
             pageLines.push(line);
         }
 
