@@ -5,7 +5,17 @@ import "./Page.less";
 import Bookmark from "./Bookmark";
 import Line from "./Line";
 
-import { selectPages, selectPageNumber, selectPageLoading, bookActions } from "../../slice/bookSlice";
+import {
+    selectPages,
+    selectPageNumber,
+    selectPageLoading,
+    bookActions,
+    selectIndent,
+    selectLineSpacing,
+    selectFontSize,
+    selectFontFamily,
+    selectPagePadding,
+} from "../../slice/bookSlice";
 
 interface IPageProps {
     isSecondPage?: boolean;
@@ -16,6 +26,11 @@ function Page(props: IPageProps) {
     const pages = useSelector(selectPages);
     const _pageNumber = useSelector(selectPageNumber);
     const loading = useSelector(selectPageLoading);
+    const indent = useSelector(selectIndent);
+    const lineSpacing = useSelector(selectLineSpacing);
+    const fontSize = useSelector(selectFontSize);
+    const fontFamily = useSelector(selectFontFamily);
+    const pagePadding = useSelector(selectPagePadding);
 
     const { setCurrentNoteId } = bookActions;
     const pageNumber = props.isSecondPage ? _pageNumber + 1 : _pageNumber;
@@ -27,7 +42,7 @@ function Page(props: IPageProps) {
             const line = lines[index_line];
             let style: any = {
                 // 因为行高相同，每一页的行的数量都是相同的，所以每一页的spacing都相同
-                padding: `${5 + pages[0].spacing / 2}px 0`,
+                padding: `${lineSpacing + pages[0].spacing / 2}px 0`,
             };
 
             if (line.spacingType === "letter") {
@@ -36,7 +51,7 @@ function Page(props: IPageProps) {
                 style.wordSpacing = line.spacing + "px";
             }
 
-            if (line.isFirstLine) {
+            if (line.isFirstLine && indent) {
                 style.marginLeft = "2em";
             }
 
@@ -72,8 +87,8 @@ function Page(props: IPageProps) {
             <div className="page-head">
                 {loading || pageNumber > pages.length ? null : <Bookmark pageNumber={pageNumber} />}
             </div>
-            <div className="page-body">
-                <div id="page-content" className="page-content" onClick={handleClick}>
+            <div className="page-body" style={{ padding: pagePadding }}>
+                <div id="page-content" className="page-content" onClick={handleClick} style={{ fontSize, fontFamily }}>
                     {!props.isSecondPage && <span id="char-measurement" className="char-measurement"></span>}
                     {loading ? pageLoading : pageNumber > pages.length ? null : getPageContent()}
                 </div>

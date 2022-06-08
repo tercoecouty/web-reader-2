@@ -10,6 +10,11 @@ interface IBookState {
     currentNoteId: number;
     twoPage: boolean;
     canNextPage: boolean;
+    indent: boolean;
+    lineSpacing: number;
+    fontSize: number;
+    fontFamily: string;
+    pagePadding: string;
 }
 
 const initialState: IBookState = {
@@ -20,6 +25,11 @@ const initialState: IBookState = {
     currentNoteId: null,
     twoPage: true,
     canNextPage: true,
+    indent: true,
+    lineSpacing: 5,
+    fontSize: 16,
+    fontFamily: "Georgia, Arial",
+    pagePadding: "0 24px",
 };
 
 function disableNextPage(pageNumber: number, totalPage: number, twoPage: boolean) {
@@ -79,6 +89,11 @@ export const selectPageLoading = (state: RootState) => state.book.pageLoading;
 export const selectCurrentNoteId = (state: RootState) => state.book.currentNoteId;
 export const selectTwoPage = (state: RootState) => state.book.twoPage;
 export const selectCanNextPage = (state: RootState) => state.book.canNextPage;
+export const selectIndent = (state: RootState) => state.book.indent;
+export const selectLineSpacing = (state: RootState) => state.book.lineSpacing;
+export const selectFontSize = (state: RootState) => state.book.fontSize;
+export const selectFontFamily = (state: RootState) => state.book.fontFamily;
+export const selectPagePadding = (state: RootState) => state.book.pagePadding;
 export const selectCurrentNoteIdByLine = (state, line: ILine) => {
     const currentNoteId = state.book.currentNoteId;
     if (currentNoteId === null) return null;

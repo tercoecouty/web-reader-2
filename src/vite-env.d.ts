@@ -77,3 +77,8 @@ interface ISelection {
     lastCharId: number;
     text: string;
 }
+
+interface IBookLayoutOptions {
+    lineSpacing?: number;
+    indent?: boolean;
+}

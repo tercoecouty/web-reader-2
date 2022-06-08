@@ -8,7 +8,15 @@ export default class Books {
     private chineseCharWidth = 0;
     private lineHeight = 0;
 
-    constructor(bookText: string, totalWidth: number, totalHeight: number, domMeasure: HTMLElement) {
+    private indent: number;
+
+    constructor(
+        bookText: string,
+        totalWidth: number,
+        totalHeight: number,
+        domMeasure: HTMLElement,
+        options: IBookLayoutOptions
+    ) {
         this.bookText = bookText;
         this.totalHeight = totalHeight;
         this.totalWidth = totalWidth;
@@ -18,7 +26,8 @@ export default class Books {
         this.chineseCharWidth = this.domMeasure.getBoundingClientRect().width;
         this.lineHeight = this.domMeasure.getBoundingClientRect().height;
 
-        this.lineHeight += 5 * 2; // 上下边距
+        this.lineHeight += options.lineSpacing * 2 || 0; // 上下边距
+        this.indent = options.indent ? 2 : 0;
     }
 
     public pageBreaking() {
@@ -76,7 +85,7 @@ export default class Books {
     private chineseLineBreaking(paraText: string, charId: number) {
         const lines: ILine[] = [];
         let isFirstLine = true;
-        let lineWidth = this.chineseCharWidth * 2;
+        let lineWidth = this.chineseCharWidth * this.indent; // 首行缩进
         let lineText = "";
 
         paraText = paraText.trim();
@@ -134,7 +143,7 @@ export default class Books {
         const lines: ILine[] = [];
         const spaceWidth = this.getCharWidth(" ");
         let isFirstLine = true;
-        let lineWidth = this.chineseCharWidth * 2;
+        let lineWidth = this.chineseCharWidth * this.indent; // 首行缩进
         let lineText = "";
         let wordCount = 0;
         for (let word of paraText.split(" ")) {

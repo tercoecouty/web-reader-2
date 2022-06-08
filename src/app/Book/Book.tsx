@@ -7,7 +7,7 @@ import Page from "./Page";
 import api from "../../api/Api";
 import BookLayout from "./bookLayout";
 
-import { bookActions, selectSelection, selectTwoPage } from "../../slice/bookSlice";
+import { bookActions, selectSelection, selectTwoPage, selectIndent, selectLineSpacing } from "../../slice/bookSlice";
 import { fetchBookmarks } from "../../slice/bookmarkSlice";
 import { fetchNotes } from "../../slice/noteSlice";
 import { fetchClasses } from "../../slice/classSlice";
@@ -18,6 +18,8 @@ export default function Book() {
     const selection = useSelector(selectSelection);
     const twoPage = useSelector(selectTwoPage);
     const notesUser = useSelector(selectNotesUser);
+    const indent = useSelector(selectIndent);
+    const lineSpacing = useSelector(selectLineSpacing);
     const [bookText, setBookText] = useState("");
     const [resizeTimeoutId, setResizeTimeoutId] = useState(null);
 
@@ -26,7 +28,10 @@ export default function Book() {
         const totalWidth = domPageContent.getBoundingClientRect().width;
         const totalHeight = domPageContent.getBoundingClientRect().height;
         const domMeasure = document.getElementById("char-measurement");
-        const book = new BookLayout(bookText, totalWidth, totalHeight, domMeasure);
+        const book = new BookLayout(bookText, totalWidth, totalHeight, domMeasure, {
+            lineSpacing,
+            indent,
+        });
         // console.time("pageBreaking");
         const pages = book.pageBreaking();
         // console.timeEnd("pageBreaking");
