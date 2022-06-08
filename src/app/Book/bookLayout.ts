@@ -186,12 +186,13 @@ export default class Books {
             return this.chineseCharWidth;
         }
 
-        const charWidth = this.charWidthMap.get(char);
-        if (charWidth) {
-            return charWidth;
+        let charWidth = this.charWidthMap.get(char);
+        if (!charWidth) {
+            charWidth = this.measureCharWidth(char);
+            this.charWidthMap.set(char, charWidth);
         }
 
-        return this.measureCharWidth(char);
+        return charWidth;
     }
 
     private measureCharWidth(char: string) {
