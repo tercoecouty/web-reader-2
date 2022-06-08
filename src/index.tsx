@@ -12,17 +12,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </Provider>
 );
 
-// import "./normalize.less";
 // import "./index.less";
 // function Demo() {
 //     return (
-//         <div>
-//             <h1>hello world</h1>
-//             <span className="bookmark-icon">
-//                 <span></span>
-//                 <span></span>
-//             </span>
-//         </div>
+//         <h1>hello world</h1>
 //     );
 // }
 
