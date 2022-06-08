@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment, createElement, useRef } from "react";
+import React, { useState, useRef } from "react";
 import classNames from "classnames";
 
 import "./Tooltip.less";
@@ -80,7 +80,7 @@ export default function Tooltip(props: ITooltipProps) {
         setVisible(false);
     };
 
-    const child = createElement(
+    const child = React.createElement(
         children.type,
         {
             onMouseEnter: showTooltip,
@@ -92,12 +92,12 @@ export default function Tooltip(props: ITooltipProps) {
     );
 
     return (
-        <Fragment>
+        <React.Fragment>
             {child}
             <div className={classNames("tooltip", { visible })} style={tooltipStyle} ref={tooltipRef}>
                 {title}
                 <div className="tooltip-arrow" style={arrowStyle}></div>
             </div>
-        </Fragment>
+        </React.Fragment>
     );
 }
