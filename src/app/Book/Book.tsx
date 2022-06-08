@@ -90,18 +90,11 @@ export default function Book() {
         const range = _selection.getRangeAt(0);
         const startParent = range.startContainer.parentElement;
         const endParent = range.endContainer.parentElement;
-        const charId1 = parseInt(startParent.dataset.firstCharId) + range.startOffset;
-        const charId2 = parseInt(endParent.dataset.firstCharId) + range.endOffset - 1;
+        const firstCharId = parseInt(startParent.dataset.firstCharId) + range.startOffset;
+        const lastCharId = parseInt(endParent.dataset.firstCharId) + range.endOffset - 1;
 
-        if (!charId1 || !charId2) return;
-
-        dispatch(
-            setSelection({
-                firstCharId: charId1 > charId2 ? charId2 : charId1,
-                lastCharId: charId1 > charId2 ? charId1 : charId2,
-                text: text.replace(/\n/g, ""),
-            })
-        );
+        if (!firstCharId || !lastCharId) return;
+        dispatch(setSelection({ firstCharId, lastCharId, text: text.replace(/\n/g, "") }));
     };
 
     return (
