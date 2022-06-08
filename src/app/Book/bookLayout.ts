@@ -159,14 +159,14 @@ export default class Books {
                 lineText = word + " ";
                 isFirstLine = false;
                 wordCount = 1;
-                charId++;
+                charId += word.length;
                 continue;
             }
 
             lineWidth += wordWidth + spaceWidth;
             lineText += word + " ";
             wordCount++;
-            charId++;
+            charId += word.length + 1;
         }
 
         lineText = lineText.trimEnd();
