@@ -55,7 +55,6 @@ export default class Books {
     public lineBreaking() {
         const lines: ILine[] = [];
         let charId = 1;
-        let paraId = 1;
         let result;
         for (const paraText of this.bookText.split("\n")) {
             if (/[\u4e00-\u9fa5]/.test(paraText)) {
@@ -69,7 +68,6 @@ export default class Books {
             }
             lines.push(...result.lines);
             charId = result.charId;
-            paraId++;
         }
 
         return lines;
@@ -96,7 +94,7 @@ export default class Books {
             }
 
             if (lineWidth + charWidth > this.totalWidth) {
-                let spacing = (this.totalWidth - lineWidth) / lineText.length;
+                let spacing = (this.totalWidth - lineWidth) / (lineText.length - 1);
                 spacing = Math.floor(spacing * 100) / 100;
                 lines.push({
                     text: lineText,
@@ -144,8 +142,7 @@ export default class Books {
             if (lineWidth + wordWidth > this.totalWidth) {
                 lineText = lineText.trimEnd();
                 lineWidth -= spaceWidth;
-                let spacing = (this.totalWidth - lineWidth) / wordCount;
-                spacing *= 1.05; // 手动调整英文字间距以得到更好的显示效果
+                let spacing = (this.totalWidth - lineWidth) / (wordCount - 1);
                 spacing = Math.floor(spacing * 100) / 100;
                 lines.push({
                     text: lineText,
@@ -159,7 +156,7 @@ export default class Books {
                 lineText = word + " ";
                 isFirstLine = false;
                 wordCount = 1;
-                charId += word.length;
+                charId += word.length; // 这里不要加一
                 continue;
             }
 

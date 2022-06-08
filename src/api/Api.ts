@@ -1,4 +1,5 @@
-import bookText from "./bookText.txt?raw";
+import chineseText from "./chinese-text.txt?raw";
+import englishText from "./english-text.txt?raw";
 import usersData from "./data/users.json";
 import bookmarksData from "./data/bookmarks.json";
 import notesData from "./data/notes.json";
@@ -84,7 +85,8 @@ class Api {
     }
 
     async getBookText() {
-        return bookText;
+        return chineseText;
+        // return englishText;
     }
 
     async getLastRead() {
