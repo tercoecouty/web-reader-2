@@ -12,7 +12,6 @@ interface IDrawerProps {
 
 export default function Drawer(props: IDrawerProps) {
     const { visible, position } = props;
-    const [show, setShow] = useState(false);
     const [drawerStyle, setDrawStyle] = useState<React.CSSProperties>({});
     const [drawContainerStyle, setDrawContainerStyle] = useState<React.CSSProperties>({});
 
@@ -23,19 +22,16 @@ export default function Drawer(props: IDrawerProps) {
 
     useEffect(() => {
         if (visible) {
-            setShow(true);
             setTimeout(() => {
-                setDrawStyle({ backgroundColor: `rgba(0, 0, 0, 0.4)` });
+                setDrawStyle({ backgroundColor: `rgba(0, 0, 0, 0.4)`, visibility: "visible" });
                 setDrawContainerStyle({ transform: "translate(0, 0)" });
             }, 50); // 如果设为0，可能会没有进入动画
         } else {
-            setDrawStyle({});
+            setDrawStyle({ visibility: "visible" });
             setDrawContainerStyle({});
-            setTimeout(() => setShow(false), 300);
+            setTimeout(() => setDrawStyle({}), 300);
         }
     }, [visible]);
-
-    if (!show) return null;
 
     const className = classNames("drawer-container", {
         left: position === "left",
