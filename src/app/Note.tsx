@@ -20,7 +20,6 @@ export default function Note() {
     const loginUser = useSelector(selectLoginUser);
 
     const note = notes.find((item) => item.id === currentNoteId);
-    if (!note) return null;
 
     const [edit, setEdit] = useState(false);
     const [editType, setEditType] = useState<EditType>("editNote");
@@ -106,6 +105,9 @@ export default function Note() {
             );
         });
     };
+
+    // 不能放在最前面，否则会导致hooks调用顺序改变导致react报错
+    if (!note) return null;
 
     if (edit) {
         return (
