@@ -46,7 +46,7 @@ export default function Book() {
 
             const bookText = await api.getBookText();
             setBookText(bookText);
-            setTimeout(() => updatePage(bookText), 100);
+            setTimeout(() => updatePage(bookText), 100); // 有意增加一些加载时间
         }, 0);
     }, []);
 
