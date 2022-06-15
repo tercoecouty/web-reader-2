@@ -75,6 +75,7 @@ export default function Book() {
         window.onresize = () => {
             clearTimeout(resizeTimeoutId);
             dispatch(bookActions.setPageLoading(true));
+            dispatch(bookActions.setPageNumber(1));
             const timer = setTimeout(() => updatePage(bookText), 1000); // 有意增加加载时间
             setResizeTimeoutId(timer);
         };

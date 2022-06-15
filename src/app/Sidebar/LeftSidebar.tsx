@@ -70,9 +70,9 @@ export default function LeftSidebar() {
             </Drawer>
             <div
                 className="view-others-prompt"
-                style={{ visibility: notesUser.id === loginUser.id ? "hidden" : "visible" }}
+                style={{ visibility: notesUser?.id === loginUser?.id ? "hidden" : "visible" }}
             >
-                正在查看 <span>{notesUser.name}</span> 的笔记，点击{" "}
+                正在查看 <span>{notesUser?.name}</span> 的笔记，点击{" "}
                 <button onClick={() => dispatch(appActions.setNotesUser(loginUser))}>退出</button>
             </div>
         </div>

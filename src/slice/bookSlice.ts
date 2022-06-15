@@ -49,17 +49,31 @@ const bookSlice = createSlice({
     initialState,
     reducers: {
         setPageNumber: (state, actions: PayloadAction<number>) => {
+            const totalPage = state.pages.length;
+            const lastPageNumber = state.pageNumber;
             let pageNumber = actions.payload;
+
+            if (totalPage === 0) return;
+
+            if (pageNumber < 1) pageNumber = 1;
+            else if (pageNumber > totalPage) pageNumber = totalPage;
+
+            if (pageNumber === lastPageNumber) return;
             if (state.twoPage) {
-                if (state.pageNumber % 2 === 1 && pageNumber === state.pageNumber + 1) return;
-                if (state.pageNumber % 2 === 0 && pageNumber === state.pageNumber - 1) return;
-                if (pageNumber % 2 == 0) pageNumber -= 1;
+                if (lastPageNumber % 2 === 1 && pageNumber === lastPageNumber + 1) return;
+                if (lastPageNumber % 2 === 0 && pageNumber === lastPageNumber - 1) return;
+                if (pageNumber % 2 === 0) pageNumber -= 1;
+            }
+
+            if (state.twoPage && totalPage % 2 === 0) {
+                state.canNextPage = pageNumber !== totalPage - 1;
+            } else {
+                state.canNextPage = pageNumber !== totalPage;
             }
 
             state.pageNumber = pageNumber;
             state.currentNoteId = null;
             state.selection = null;
-            state.canNextPage = !disableNextPage(state.pageNumber, state.pages.length, state.twoPage);
         },
         setPages: (state, actions: PayloadAction<IPage[]>) => {
             state.pages = actions.payload;
@@ -115,22 +129,14 @@ export const selectCurrentNoteIdByLine = (state, line: ILine) => {
     return null;
 };
 export const nextPage = async (dispatch: Dispatch, getState: () => RootState) => {
-    if (!getState().book.canNextPage) return;
-
-    let newPageNumber;
-    if (getState().book.twoPage) newPageNumber = getState().book.pageNumber + 2;
-    else newPageNumber = getState().book.pageNumber + 1;
-
-    dispatch(bookSlice.actions.setPageNumber(newPageNumber));
-    api.setLastRead(newPageNumber);
+    const lastPageNumber = getState().book.pageNumber;
+    let pageNumber = getState().book.twoPage ? lastPageNumber + 2 : lastPageNumber + 1;
+    dispatch(bookSlice.actions.setPageNumber(pageNumber));
+    api.setLastRead(pageNumber);
 };
 export const prevPage = async (dispatch: Dispatch, getState: () => RootState) => {
-    if (getState().book.pageNumber === 1) return;
-
-    let newPageNumber;
-    if (getState().book.twoPage) newPageNumber = getState().book.pageNumber - 2;
-    else newPageNumber = getState().book.pageNumber - 1;
-
-    dispatch(bookSlice.actions.setPageNumber(newPageNumber));
-    api.setLastRead(newPageNumber);
+    const lastPageNumber = getState().book.pageNumber;
+    let pageNumber = getState().book.twoPage ? lastPageNumber - 2 : lastPageNumber - 1;
+    dispatch(bookSlice.actions.setPageNumber(pageNumber));
+    api.setLastRead(pageNumber);
 };
