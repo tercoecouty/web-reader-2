@@ -1,0 +1,27 @@
+@import "../../less/_color.less";
+
+.left-sidebar {
+    width: 48px;
+    border-right: 1px solid black;
+}
+
+.view-others-prompt {
+    display: inline-block;
+    position: fixed;
+    top: 2px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: 12px;
+    padding: 8px;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.18);
+    visibility: hidden;
+
+    > button {
+        padding: 0;
+        background: none;
+        border: none;
+        color: @blue-5;
+        cursor: pointer;
+    }
+}

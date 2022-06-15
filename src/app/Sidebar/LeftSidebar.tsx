@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import classNames from "classnames";
+import "./LeftSidebar.less";
+
 import SidebarItem from "./SidebarItem";
 
 import TeamSvg from "./svg/team.svg?raw";
@@ -30,19 +33,19 @@ export default function LeftSidebar() {
     const [showNotes, setShowNotes] = useState(false);
 
     return (
-        <div style={{ width: "48px", borderRight: "1px solid black" }}>
+        <div className="left-sidebar">
             <SidebarItem svg={TeamSvg} title="班级列表" onClick={() => dispatch(appActions.setShowClasses(true))} />
             <SidebarItem
                 svg={BarsSvg}
                 title="笔记"
                 onClick={() => setShowNotes(true)}
-                disabled={notesUser.id !== loginUser.id}
+                disabled={notesUser?.id !== loginUser?.id}
             />
             <SidebarItem
                 svg={BookSvg}
                 title="书签"
                 onClick={() => dispatch(appActions.setShowBookmarks(true))}
-                disabled={notesUser.id !== loginUser.id}
+                disabled={notesUser?.id !== loginUser?.id}
             />
             <SidebarItem svg={SearchSvg} title="搜索" disabled />
             <SidebarItem svg={SettingSvg} title="设置" disabled />
@@ -65,6 +68,13 @@ export default function LeftSidebar() {
             >
                 <Bookmarks />
             </Drawer>
+            <div
+                className="view-others-prompt"
+                style={{ visibility: notesUser.id === loginUser.id ? "hidden" : "visible" }}
+            >
+                正在查看 <span>{notesUser.name}</span> 的笔记，点击{" "}
+                <button onClick={() => dispatch(appActions.setNotesUser(loginUser))}>退出</button>
+            </div>
         </div>
     );
 }

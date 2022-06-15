@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import "./RightSidebar.less";
 
 import SidebarItem from "./SidebarItem";
 
@@ -115,7 +116,7 @@ export default function RightSidebar() {
     }, [currentNoteId]);
 
     return (
-        <div style={{ width: "48px", borderLeft: "1px solid black" }}>
+        <div className="right-sidebar">
             <SidebarItem
                 svg={ArrowLeftSvg}
                 title="上一页"
@@ -145,8 +146,8 @@ export default function RightSidebar() {
                 disabled={!currentNoteId || notesUser.id !== loginUser.id}
             />
             <SidebarItem
-                svg={notesUser.id === loginUser.id ? EditSvg : EyeSvg}
-                title={notesUser.id === loginUser.id ? "编辑笔记" : "查看笔记"}
+                svg={notesUser?.id === loginUser?.id ? EditSvg : EyeSvg}
+                title={notesUser?.id === loginUser?.id ? "编辑笔记" : "查看笔记"}
                 placement="left"
                 onClick={() => dispatch(appActions.setShowNoteInfo(true))}
                 disabled={!currentNoteId}
