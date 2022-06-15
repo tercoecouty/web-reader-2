@@ -8,6 +8,7 @@ import ArrowLeftSvg from "./svg/arrow-left.svg?raw";
 import UnderlineSvg from "./svg/underline.svg?raw";
 import EditSvg from "./svg/edit.svg?raw";
 import DeleteSvg from "./svg/delete.svg?raw";
+import EyeSvg from "./svg/eye.svg?raw";
 
 import {
     selectSelection,
@@ -107,6 +108,12 @@ export default function RightSidebar() {
         };
     });
 
+    useEffect(() => {
+        if (currentNoteId && notesUser.id !== loginUser.id) {
+            dispatch(appActions.setShowNoteInfo(true));
+        }
+    }, [currentNoteId]);
+
     return (
         <div style={{ width: "48px", borderLeft: "1px solid black" }}>
             <SidebarItem
@@ -138,8 +145,8 @@ export default function RightSidebar() {
                 disabled={!currentNoteId || notesUser.id !== loginUser.id}
             />
             <SidebarItem
-                svg={EditSvg}
-                title="编辑笔记"
+                svg={notesUser.id === loginUser.id ? EditSvg : EyeSvg}
+                title={notesUser.id === loginUser.id ? "编辑笔记" : "查看笔记"}
                 placement="left"
                 onClick={() => dispatch(appActions.setShowNoteInfo(true))}
                 disabled={!currentNoteId}
