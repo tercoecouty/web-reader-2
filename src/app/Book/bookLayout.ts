@@ -35,6 +35,8 @@ export default class Books {
         let pageHeight = 0;
         let pageLines: ILine[] = [];
 
+        if (this.bookText.length === 0) return pages;
+
         const lines = this.lineBreaking();
         for (const line of lines) {
             if (pageHeight + this.lineHeight > this.totalHeight) {
