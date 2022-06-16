@@ -44,7 +44,7 @@ export default function Drawer(props: IDrawerProps) {
                 <div className="drawer-header">
                     <div>{props.title}</div>
                 </div>
-                <div style={{ padding: "12px" }}>{props.children}</div>
+                <div>{props.children}</div>
             </div>
         </div>
     );

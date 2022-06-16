@@ -41,13 +41,16 @@ export default function Classes() {
 
     return (
         <div className="classes">
-            <select
-                className="classes-select"
-                value={currentClassId}
-                onChange={(e) => dispatch(classActions.setCurrentClassId(parseInt(e.target.value)))}
-            >
-                {renderOptions()}
-            </select>
+            <div className="classes-select-container">
+                <select
+                    className="classes-select"
+                    value={currentClassId}
+                    onChange={(e) => dispatch(classActions.setCurrentClassId(parseInt(e.target.value)))}
+                >
+                    {renderOptions()}
+                </select>
+            </div>
+
             <div className="student-list">
                 <div className="student-list-header">
                     <div>学号</div>
