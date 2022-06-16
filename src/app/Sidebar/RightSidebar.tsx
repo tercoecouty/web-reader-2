@@ -144,12 +144,12 @@ export default function RightSidebar() {
 
     return (
         <div className="right-sidebar">
-            <SidebarItem
+            {/* <SidebarItem
                 svg={fullscreen ? FullscreenExitSvg : FullscreenSvg}
                 title={fullscreen ? "退出全屏" : "全屏"}
                 onClick={fullscreen ? handleExitFullscreen : handleFullscreen}
                 placement="left"
-            />
+            /> */}
             <SidebarItem
                 svg={ArrowLeftSvg}
                 title="上一页"
