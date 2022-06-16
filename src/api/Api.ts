@@ -46,6 +46,7 @@ class Api {
 
     private lastRead: Storage<ILastRead> = new Storage("lastRead", lastReadData as ILastRead[]);
     private currentUser: IUser = null;
+    private currentBookId: number = null;
 
     constructor() {
         this.currentUser = this.users.get()[0];
@@ -62,23 +63,51 @@ class Api {
         }
     }
 
+    async getBookText(bookId: number) {
+        let bookText = "";
+        if (bookId === 1) {
+            const res = await fetch("text-demo.txt");
+            bookText = await res.text();
+        } else if (bookId === 2) {
+            const res = await fetch("text-zh.txt");
+            bookText = await res.text();
+        } else if (bookId === 3) {
+            const res = await fetch("text-en.txt");
+            bookText = await res.text();
+        }
+
+        this.currentBookId = bookId;
+        return bookText;
+    }
+
     async getBookmarks(userId: number) {
         return this.bookmarks
             .get()
-            .filter((item) => item.userId === userId)
+            .filter(
+                (item) =>
+                    item.bookId === this.currentBookId && item.bookId === this.currentBookId && item.userId === userId
+            )
             .map((item) => item.pageNumber);
     }
 
     async addBookmark(pageNumber: number) {
         this.bookmarks.add({
-            pageNumber,
+            bookId: this.currentBookId,
             userId: this.currentUser.id,
+            pageNumber,
         });
     }
 
     async deleteBookmark(pageNumber: number) {
         this.bookmarks.set(
-            this.bookmarks.get().filter((item) => item.userId != this.currentUser.id && item.pageNumber !== pageNumber)
+            this.bookmarks
+                .get()
+                .filter(
+                    (item) =>
+                        item.bookId === this.currentBookId &&
+                        item.userId != this.currentUser.id &&
+                        item.pageNumber !== pageNumber
+                )
         );
     }
 
@@ -91,6 +120,7 @@ class Api {
     async setLastRead(pageNumber: number) {
         if (this.lastRead.get().length === 0) {
             this.lastRead.add({
+                bookId: this.currentBookId,
                 userId: this.currentUser.id,
                 pageNumber,
             });
@@ -99,6 +129,7 @@ class Api {
             this.lastRead.get().map((item) => {
                 if (item.userId === this.currentUser.id) {
                     return {
+                        bookId: this.currentBookId,
                         userId: this.currentUser.id,
                         pageNumber,
                     };
@@ -110,13 +141,14 @@ class Api {
     }
 
     async getNotes(userId: number) {
-        return this.notes.get().filter((item) => item.userId == userId);
+        return this.notes.get().filter((item) => item.bookId === this.currentBookId && item.userId == userId);
     }
 
     async addNote(firstCharId: number, lastCharId: number, text: string) {
         const _notes = this.notes.get();
         const note: INote = {
             id: _notes.length === 0 ? 1 : _notes[_notes.length - 1].id + 1,
+            bookId: this.currentBookId,
             userId: this.currentUser.id,
             userName: this.currentUser.name,
             userAvatarUrl: this.currentUser.avatarUrl,

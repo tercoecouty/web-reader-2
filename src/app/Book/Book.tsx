@@ -23,18 +23,19 @@ export default function Book() {
     const [bookText, setBookText] = useState("");
     const [resizeTimeoutId, setResizeTimeoutId] = useState(null);
 
-    const updatePage = (bookText) => {
+    const updatePage = (_bookText: string) => {
         const domPageContent = document.getElementById("page-content");
         const totalWidth = domPageContent.getBoundingClientRect().width;
         const totalHeight = domPageContent.getBoundingClientRect().height;
         const domMeasure = document.getElementById("char-measurement");
-        const book = new BookLayout(bookText, totalWidth, totalHeight, domMeasure, {
+        const book = new BookLayout(_bookText, totalWidth, totalHeight, domMeasure, {
             lineSpacing,
             indent,
         });
-        // console.time("pageBreaking");
+        console.log(_bookText.length);
+        console.time("pageBreaking");
         const pages = book.pageBreaking();
-        // console.timeEnd("pageBreaking");
+        console.timeEnd("pageBreaking");
         dispatch(bookActions.setPages(pages));
         dispatch(bookActions.setPageLoading(false));
     };
@@ -49,8 +50,7 @@ export default function Book() {
             dispatch(bookActions.setPageNumber(lastRead));
             dispatch(fetchClasses);
 
-            const res = await fetch("text-demo.txt");
-            const _bookText = await res.text();
+            const _bookText = await api.getBookText(2);
             setBookText(_bookText);
             setTimeout(() => updatePage(_bookText), 100); // 有意增加一些加载时间
         }, 0);

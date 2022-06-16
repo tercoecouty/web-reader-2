@@ -3,6 +3,7 @@
 // api/index.ts
 interface INote {
     id: number;
+    bookId: number;
     userId: number;
     userName: string;
     userAvatarUrl: string;
@@ -21,13 +22,15 @@ interface IUser {
 }
 
 interface ILastRead {
-    pageNumber: number;
+    bookId: number;
     userId: number;
+    pageNumber: number;
 }
 
 interface IBookmarks {
-    pageNumber: number;
+    bookId: number;
     userId: number;
+    pageNumber: number;
 }
 
 interface IComment {

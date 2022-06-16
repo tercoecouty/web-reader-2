@@ -1,4 +1,4 @@
 [
-    { "pageNumber": 2, "userId": 1 },
-    { "pageNumber": 3, "userId": 1 }
+    { "bookId": 1, "userId": 1, "pageNumber": 2 },
+    { "bookId": 1, "userId": 1, "pageNumber": 3 }
 ]

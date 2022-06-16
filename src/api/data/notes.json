@@ -1,6 +1,7 @@
 [
     {
         "id": 1,
+        "bookId": 1,
         "userId": 1,
         "userName": "董经义",
         "userAvatarUrl": "",
@@ -12,6 +13,7 @@
     },
     {
         "id": 2,
+        "bookId": 1,
         "userId": 2,
         "userName": "石采珊",
         "userAvatarUrl": "",
