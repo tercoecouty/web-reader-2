@@ -39,7 +39,11 @@ export default function Notes() {
             );
         }
 
-        return domNotes;
+        if (domNotes.length) {
+            return domNotes;
+        } else {
+            return <div className="empty-list">没有笔记</div>;
+        }
     };
 
     return <div className="notes">{renderNotes()}</div>;

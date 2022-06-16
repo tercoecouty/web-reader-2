@@ -16,14 +16,20 @@ export default function Bookmarks() {
     };
 
     const renderBookmarks = () => {
-        return [...bookmarks]
-            .sort()
-            .filter((pageNumber) => pageNumber <= pages.length)
-            .map((pageNumber) => (
+        const domBookmarks = [];
+        for (const pageNumber of bookmarks.sort()) {
+            domBookmarks.push(
                 <div key={pageNumber} className="bookmarks-item" onClick={() => handleClick(pageNumber)}>
                     第 {pageNumber} 页
                 </div>
-            ));
+            );
+        }
+
+        if (domBookmarks.length) {
+            return domBookmarks;
+        } else {
+            return <div className="empty-list">没有书签</div>;
+        }
     };
 
     return <div className="bookmarks">{renderBookmarks()}</div>;
