@@ -62,8 +62,8 @@ export default function RightSidebar() {
         const _note = await api.addNote(selection.firstCharId, selection.lastCharId, selection.text);
         dispatch(noteActions.addNote(_note));
         dispatch(bookActions.setSelection(null));
-        dispatch(bookActions.setCurrentNoteId(_note.id));
-        dispatch(appActions.setShowNoteInfo(true));
+        // dispatch(bookActions.setCurrentNoteId(_note.id));
+        // dispatch(appActions.setShowNoteInfo(true));
     };
 
     const handleDeleteNote = () => {
