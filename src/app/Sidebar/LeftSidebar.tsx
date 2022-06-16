@@ -14,11 +14,13 @@ import Drawer from "../../component/Drawer";
 import Classes from "../Classes";
 import Notes from "../Notes";
 import Bookmarks from "../Bookmarks";
+import Search from "../Search";
 
 import {
     selectShowClasses,
     selectShowBookmarks,
     selectShowNotes,
+    selectShowSearch,
     selectLoginUser,
     selectNotesUser,
     appActions,
@@ -29,6 +31,7 @@ export default function LeftSidebar() {
     const showClasses = useSelector(selectShowClasses);
     const showBookmarks = useSelector(selectShowBookmarks);
     const showNotes = useSelector(selectShowNotes);
+    const showSearch = useSelector(selectShowSearch);
     const loginUser = useSelector(selectLoginUser);
     const notesUser = useSelector(selectNotesUser);
 
@@ -47,7 +50,12 @@ export default function LeftSidebar() {
                 onClick={() => dispatch(appActions.setShowBookmarks(true))}
                 disabled={notesUser?.id !== loginUser?.id}
             />
-            <SidebarItem svg={SearchSvg} title="搜索" disabled />
+            <SidebarItem
+                svg={SearchSvg}
+                title="搜索"
+                onClick={() => dispatch(appActions.setShowSearch(true))}
+                disabled={notesUser?.id !== loginUser?.id}
+            />
             <SidebarItem svg={SettingSvg} title="设置" disabled />
             <Drawer
                 visible={showClasses}
@@ -72,6 +80,14 @@ export default function LeftSidebar() {
                 onClose={() => dispatch(appActions.setShowBookmarks(false))}
             >
                 <Bookmarks />
+            </Drawer>
+            <Drawer
+                visible={showSearch}
+                title="搜索"
+                position="left"
+                onClose={() => dispatch(appActions.setShowSearch(false))}
+            >
+                <Search />
             </Drawer>
             <div
                 className="view-others-prompt"

@@ -7,6 +7,7 @@ interface IAppState {
     showClasses: boolean;
     showBookmarks: boolean;
     showNotes: boolean;
+    showSearch: boolean;
     showNoteInfo: boolean;
     fullscreen: boolean;
 }
@@ -17,6 +18,7 @@ const initialState: IAppState = {
     showClasses: false,
     showBookmarks: false,
     showNotes: false,
+    showSearch: false,
     showNoteInfo: false,
     fullscreen: false,
 };
@@ -40,10 +42,12 @@ const appSlice = createSlice({
         setShowNotes: (state, actions: PayloadAction<boolean>) => {
             state.showNotes = actions.payload;
         },
+        setShowSearch: (state, actions: PayloadAction<boolean>) => {
+            state.showSearch = actions.payload;
+        },
         setShowNoteInfo: (state, actions: PayloadAction<boolean>) => {
             state.showNoteInfo = actions.payload;
         },
-
         setFullscreen: (state, actions: PayloadAction<boolean>) => {
             state.fullscreen = actions.payload;
         },
@@ -57,5 +61,6 @@ export const selectLoginUser = (state: RootState) => state.app.loginUser;
 export const selectShowClasses = (state: RootState) => state.app.showClasses;
 export const selectShowBookmarks = (state: RootState) => state.app.showBookmarks;
 export const selectShowNotes = (state: RootState) => state.app.showNotes;
+export const selectShowSearch = (state: RootState) => state.app.showSearch;
 export const selectShowNoteInfo = (state: RootState) => state.app.showNoteInfo;
 export const selectFullscreen = (state: RootState) => state.app.fullscreen;
