@@ -49,9 +49,10 @@ export default function Book() {
             dispatch(bookActions.setPageNumber(lastRead));
             dispatch(fetchClasses);
 
-            const bookText = await api.getBookText();
-            setBookText(bookText);
-            setTimeout(() => updatePage(bookText), 100); // 有意增加一些加载时间
+            const res = await fetch("text-demo.txt");
+            const _bookText = await res.text();
+            setBookText(_bookText);
+            setTimeout(() => updatePage(_bookText), 100); // 有意增加一些加载时间
         }, 0);
     }, []);
 
