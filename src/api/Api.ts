@@ -151,7 +151,6 @@ class Api {
             bookId: this.currentBookId,
             userId: this.currentUser.id,
             userName: this.currentUser.name,
-            userAvatarUrl: this.currentUser.avatarUrl,
             dateTime: Date.now(),
             firstCharId,
             lastCharId,
@@ -194,7 +193,6 @@ class Api {
             noteId,
             fromUserId: this.currentUser.id,
             fromUserName: this.currentUser.name,
-            fromUserAvatarUrl: this.currentUser.avatarUrl,
             toUserId,
             toUserName,
             dateTime: Date.now(),
@@ -234,7 +232,6 @@ class Api {
             noteId,
             userId: this.currentUser.id,
             userName: this.currentUser.name,
-            userAvatarUrl: this.currentUser.avatarUrl,
             dateTime: Date.now(),
         };
         this.likes.add(like);

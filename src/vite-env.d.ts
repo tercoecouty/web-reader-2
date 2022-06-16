@@ -6,7 +6,6 @@ interface INote {
     bookId: number;
     userId: number;
     userName: string;
-    userAvatarUrl: string;
     dateTime: number;
     firstCharId: number;
     lastCharId: number;
@@ -17,7 +16,6 @@ interface INote {
 interface IUser {
     id: number;
     name: string;
-    avatarUrl: string;
     studentId: string;
 }
 
@@ -38,7 +36,6 @@ interface IComment {
     noteId: number;
     fromUserId: number;
     fromUserName: string;
-    fromUserAvatarUrl: string;
     toUserId: number;
     toUserName: string;
     dateTime: number;
@@ -50,7 +47,6 @@ interface ILike {
     noteId: number;
     userId: number;
     userName: string;
-    userAvatarUrl: string;
     dateTime: number;
 }
 
