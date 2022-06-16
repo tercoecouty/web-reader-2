@@ -2,13 +2,12 @@ import { useSelector, useDispatch } from "react-redux";
 import "./Bookmarks.less";
 
 import { selectBookmarks } from "../slice/bookmarkSlice";
-import { bookActions, selectPages } from "../slice/bookSlice";
+import { bookActions } from "../slice/bookSlice";
 import { appActions } from "../slice/appSlice";
 
 export default function Bookmarks() {
     const dispatch = useDispatch();
     const bookmarks = useSelector(selectBookmarks);
-    const pages = useSelector(selectPages);
 
     const handleClick = (pageNumber: number) => {
         dispatch(bookActions.setPageNumber(pageNumber));
@@ -17,7 +16,7 @@ export default function Bookmarks() {
 
     const renderBookmarks = () => {
         const domBookmarks = [];
-        for (const pageNumber of bookmarks.sort()) {
+        for (const pageNumber of [...bookmarks].sort()) {
             domBookmarks.push(
                 <div key={pageNumber} className="bookmarks-item" onClick={() => handleClick(pageNumber)}>
                     第 {pageNumber} 页
