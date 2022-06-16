@@ -24,25 +24,13 @@ const initialState: IBookState = {
     selection: null,
     currentNoteId: null,
     twoPage: true,
-    canNextPage: true,
+    canNextPage: false,
     indent: true,
     lineSpacing: 5,
     fontSize: 16,
     fontFamily: "Georgia, Arial",
     pagePadding: "0 24px",
 };
-
-function disableNextPage(pageNumber: number, totalPage: number, twoPage: boolean) {
-    if (twoPage) {
-        if (totalPage % 2 === 0) {
-            return pageNumber === totalPage - 1;
-        } else {
-            return pageNumber === totalPage;
-        }
-    } else {
-        return pageNumber === totalPage;
-    }
-}
 
 const bookSlice = createSlice({
     name: "book",
