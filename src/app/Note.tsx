@@ -19,8 +19,6 @@ export default function Note() {
     const currentNoteId = useSelector(selectCurrentNoteId);
     const loginUser = useSelector(selectLoginUser);
 
-    const note = notes.find((item) => item.id === currentNoteId);
-
     const [edit, setEdit] = useState(false);
     const [editType, setEditType] = useState<EditType>("editNote");
     const [editValue, setEditValue] = useState("");
@@ -28,6 +26,7 @@ export default function Note() {
     const [toUserId, setToUserId] = useState<number>(null);
     const [toUserName, setToUserName] = useState<string>(null);
 
+    const note = notes.find((item) => item.id === currentNoteId);
     const comments = useSelector(selectComments).filter((item) => item.noteId === currentNoteId);
     const likes = useSelector(selectLikes).filter((item) => item.noteId === currentNoteId);
 
