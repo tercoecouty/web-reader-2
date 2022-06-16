@@ -32,10 +32,10 @@ export default function Book() {
             lineSpacing,
             indent,
         });
-        console.log(_bookText.length);
-        console.time("pageBreaking");
+        // console.log(_bookText.length);
+        // console.time("pageBreaking");
         const pages = book.pageBreaking();
-        console.timeEnd("pageBreaking");
+        // console.timeEnd("pageBreaking");
         dispatch(bookActions.setPages(pages));
         dispatch(bookActions.setPageLoading(false));
     };
@@ -50,7 +50,7 @@ export default function Book() {
             dispatch(bookActions.setPageNumber(lastRead));
             dispatch(fetchClasses);
 
-            const _bookText = await api.getBookText(2);
+            const _bookText = await api.getBookText(1);
             setBookText(_bookText);
             setTimeout(() => updatePage(_bookText), 100); // 有意增加一些加载时间
         }, 0);

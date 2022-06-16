@@ -69,13 +69,9 @@ export default class Books {
         let result;
         for (const paraText of this.bookText.split("\n")) {
             if (/[\u4e00-\u9fa5]/.test(paraText)) {
-                // console.time(`chineseLineBreaking ${paraText.length}`);
                 result = this.chineseLineBreaking(paraText, charId);
-                // console.timeEnd(`chineseLineBreaking ${paraText.length}`);
             } else {
-                // console.time(`englishLineBreaking ${paraText.length}`);
                 result = this.englishLineBreaking(paraText, charId);
-                // console.timeEnd(`englishLineBreaking ${paraText.length}`);
             }
             lines.push(...result.lines);
             charId = result.charId;
