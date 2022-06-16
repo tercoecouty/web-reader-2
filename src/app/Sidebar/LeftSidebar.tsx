@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import classNames from "classnames";
 import "./LeftSidebar.less";
 
 import SidebarItem from "./SidebarItem";
@@ -19,6 +18,7 @@ import Bookmarks from "../Bookmarks";
 import {
     selectShowClasses,
     selectShowBookmarks,
+    selectShowNotes,
     selectLoginUser,
     selectNotesUser,
     appActions,
@@ -28,9 +28,9 @@ export default function LeftSidebar() {
     const dispatch = useDispatch();
     const showClasses = useSelector(selectShowClasses);
     const showBookmarks = useSelector(selectShowBookmarks);
+    const showNotes = useSelector(selectShowNotes);
     const loginUser = useSelector(selectLoginUser);
     const notesUser = useSelector(selectNotesUser);
-    const [showNotes, setShowNotes] = useState(false);
 
     return (
         <div className="left-sidebar">
@@ -38,7 +38,7 @@ export default function LeftSidebar() {
             <SidebarItem
                 svg={BarsSvg}
                 title="笔记"
-                onClick={() => setShowNotes(true)}
+                onClick={() => dispatch(appActions.setShowNotes(true))}
                 disabled={notesUser?.id !== loginUser?.id}
             />
             <SidebarItem
@@ -57,7 +57,12 @@ export default function LeftSidebar() {
             >
                 <Classes />
             </Drawer>
-            <Drawer visible={showNotes} title="笔记" position="left" onClose={() => setShowNotes(false)}>
+            <Drawer
+                visible={showNotes}
+                title="笔记"
+                position="left"
+                onClose={() => dispatch(appActions.setShowNotes(false))}
+            >
                 <Notes />
             </Drawer>
             <Drawer

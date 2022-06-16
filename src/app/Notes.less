@@ -1,1 +1,24 @@
+@import "../less/_color.less";
 
+.notes-item {
+    font-size: 14px;
+    display: flex;
+    padding: 16px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: @gray-4;
+    }
+
+    > .notes-item-text {
+        width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    > .notes-item-page {
+        width: 20%;
+        text-align: center;
+    }
+}
