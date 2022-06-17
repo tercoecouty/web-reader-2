@@ -32,7 +32,7 @@ export default function Classes() {
             const className = classNames("student-list-row", { selected: user.id === notesUser.id });
             return (
                 <div key={user.id} className={className} onClick={() => clickUser(user)}>
-                    <div>{user.studentId}</div>
+                    <div>{user.account}</div>
                     <div>{user.name}</div>
                 </div>
             );

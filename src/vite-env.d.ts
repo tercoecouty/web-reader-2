@@ -16,7 +16,8 @@ interface INote {
 interface IUser {
     id: number;
     name: string;
-    studentId: string;
+    account: string;
+    role: "student" | "teacher";
 }
 
 interface ILastRead {
