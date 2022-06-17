@@ -1,4 +1,4 @@
-import { useState } from "react";
+import classNames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
 import "./LeftSidebar.less";
 
@@ -89,10 +89,7 @@ export default function LeftSidebar() {
             >
                 <Search />
             </Drawer>
-            <div
-                className="view-others-prompt"
-                style={{ visibility: notesUser?.id === loginUser?.id ? "hidden" : "visible" }}
-            >
+            <div className={classNames("view-others-prompt", { show: notesUser?.id !== loginUser?.id })}>
                 正在查看 <span>{notesUser?.name}</span> 的笔记，点击{" "}
                 <button onClick={() => dispatch(appActions.setNotesUser(loginUser))}>退出</button>
             </div>
