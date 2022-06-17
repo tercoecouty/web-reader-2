@@ -50,6 +50,7 @@ class Api {
 
     constructor() {
         this.currentUser = this.users.get()[0];
+        this.currentBookId = 1;
     }
 
     async getCurrentUser() {
