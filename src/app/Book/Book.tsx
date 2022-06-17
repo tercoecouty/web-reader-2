@@ -63,7 +63,16 @@ export default function Book() {
             dispatch(appActions.setLoginUser(user));
             dispatch(appActions.setNotesUser(user));
         };
-    });
+        (window as any).setBook = async (bookId: number) => {
+            const _bookText = await api.getBookText(bookId);
+            setBookText(_bookText);
+            dispatch(bookActions.setPageLoading(true));
+            dispatch(bookActions.setPageNumber(1));
+            dispatch(fetchNotes(notesUser.id));
+            dispatch(fetchBookmarks(notesUser.id));
+            setTimeout(() => updatePage(_bookText), 100);
+        };
+    }, []);
 
     useEffect(() => {
         if (!notesUser) return;
