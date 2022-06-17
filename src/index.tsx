@@ -1,6 +1,5 @@
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import "./normalize.less";
 import "./index.less";
 
 import App from "./app/App";
