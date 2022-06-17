@@ -1,20 +1,18 @@
-@import "../../less/_color.less";
-
 .line {
     overflow: hidden;
 }
 
 .underline {
-    border-bottom: 2px solid @blue-5;
+    border-bottom: 2px solid var(--blue-5);
     margin-bottom: -2px;
     cursor: pointer;
     transition: border-color 0.2s;
 
     &.selected {
-        border-color: @orange-6;
+        border-color: var(--orange-6);
     }
 
     &.others {
-        border-color: @gray-7;
+        border-color: var(--gray-7);
     }
 }
