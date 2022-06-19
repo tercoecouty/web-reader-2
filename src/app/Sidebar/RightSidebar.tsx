@@ -33,6 +33,7 @@ import {
 
 import Drawer from "../../component/Drawer";
 import Note from "../Note";
+import NoteV2 from "../NoteV2";
 
 import api from "../../api/Api";
 
@@ -182,7 +183,7 @@ export default function RightSidebar() {
             />
             <Drawer
                 visible={showNoteInfo}
-                title="编辑笔记"
+                title="笔记信息"
                 position="right"
                 onClose={() => dispatch(appActions.setShowNoteInfo(false))}
             >
