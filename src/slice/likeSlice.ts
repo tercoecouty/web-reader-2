@@ -28,6 +28,7 @@ const likeSlice = createSlice({
 });
 
 export default likeSlice.reducer;
+export const likeActions = likeSlice.actions;
 export const selectLikes = (state: RootState) => state.like.likes;
 export const like = (noteId: number) => async (dispatch: Dispatch) => {
     const _like = await api.addLike(noteId);

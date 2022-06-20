@@ -41,6 +41,7 @@ const commentSlice = createSlice({
 });
 
 export default commentSlice.reducer;
+export const commentActions = commentSlice.actions;
 export const selectComments = (state: RootState) => state.comment.comments;
 export const addComment = (noteId: number, toUserId: number, toUserName: string, content: string) => {
     return async (dispatch: Dispatch) => {
