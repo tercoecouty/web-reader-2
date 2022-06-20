@@ -10,8 +10,8 @@ import UnderlineSvg from "./svg/underline.svg?raw";
 import EditSvg from "./svg/edit.svg?raw";
 import DeleteSvg from "./svg/delete.svg?raw";
 import EyeSvg from "./svg/eye.svg?raw";
-import FullscreenSvg from "./svg/fullscreen.svg?raw";
-import FullscreenExitSvg from "./svg/fullscreen-exit.svg?raw";
+// import FullscreenSvg from "./svg/fullscreen.svg?raw";
+// import FullscreenExitSvg from "./svg/fullscreen-exit.svg?raw";
 
 import {
     selectSelection,

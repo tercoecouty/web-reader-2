@@ -133,7 +133,7 @@ export default function NoteV2() {
                     <div className="list">{renderLikes()}</div>
                 </div>
             </div>
-            <NoteEdit show={showEdit} />
+            <NoteEdit show={showEdit} onClose={() => setShowEdit(false)} onSubmit={() => {}} />
         </React.Fragment>
     );
 }
