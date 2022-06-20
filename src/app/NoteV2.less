@@ -1,0 +1,32 @@
+.note-user {
+    padding: 16px;
+
+    > .note-user-time {
+        font-size: 14px;
+        color: var(--disabled-color);
+        margin-left: 8px;
+    }
+}
+
+.note-text {
+    font-size: 14px;
+    font-family: Georgia, Arial, sans-serif;
+    text-align: justify;
+    padding: 16px;
+    background-color: #efebe0;
+}
+
+.note-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    font-size: 22px;
+
+    > div > span.icon {
+        cursor: pointer;
+
+        + span.icon {
+            margin-left: 8px;
+        }
+    }
+}

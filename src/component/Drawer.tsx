@@ -8,10 +8,12 @@ interface IDrawerProps {
     onClose?: () => void;
     title: string;
     position: "right" | "left";
+    header?: boolean;
 }
 
 export default function Drawer(props: IDrawerProps) {
     const { visible, position } = props;
+    const showHeader = props.header ? true : false;
     const [drawerStyle, setDrawStyle] = useState<React.CSSProperties>({});
     const [drawContainerStyle, setDrawContainerStyle] = useState<React.CSSProperties>({});
 
@@ -41,9 +43,11 @@ export default function Drawer(props: IDrawerProps) {
     return (
         <div className="drawer" style={drawerStyle} onClick={handleClick}>
             <div className={className} style={drawContainerStyle}>
-                <div className="drawer-header">
-                    <div>{props.title}</div>
-                </div>
+                {showHeader && (
+                    <div className="drawer-header">
+                        <div>{props.title}</div>
+                    </div>
+                )}
                 <div>{props.children}</div>
             </div>
         </div>
