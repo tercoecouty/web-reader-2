@@ -32,7 +32,7 @@ import {
 } from "../../slice/appSlice";
 
 import Drawer from "../../component/Drawer";
-import Note from "../Note/index";
+import Note from "../Note/Note";
 // import NoteV2 from "../NoteV2";
 
 import api from "../../api/Api";

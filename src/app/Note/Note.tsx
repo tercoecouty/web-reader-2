@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
-import "./index.less";
+import "./Note.less";
 
 import { selectCurrentNoteId } from "../../slice/bookSlice";
 import { selectNotes, updateNote } from "../../slice/noteSlice";
