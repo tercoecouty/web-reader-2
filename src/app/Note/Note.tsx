@@ -4,7 +4,7 @@ import classNames from "classnames";
 import "./Note.less";
 
 import { selectCurrentNoteId } from "../../slice/bookSlice";
-import { selectNotes, updateNote } from "../../slice/noteSlice";
+import { selectNotes, updateNote, noteActions } from "../../slice/noteSlice";
 import { selectLoginUser } from "../../slice/appSlice";
 import { selectComments, commentActions } from "../../slice/commentSlice";
 import { selectLikes, likeActions } from "../../slice/likeSlice";
@@ -20,6 +20,8 @@ import LikeFilledSvg from "../../svg/like-filled.svg?raw";
 import EditSvg from "../../svg/edit.svg?raw";
 import DeleteSvg from "../../svg/delete.svg?raw";
 
+type EditType = "editNote" | "addComment" | "replyComment";
+
 export default function NoteV2() {
     const dispatch = useDispatch();
     const currentNoteId = useSelector(selectCurrentNoteId);
@@ -30,6 +32,7 @@ export default function NoteV2() {
     const [likesLoading, setLikesLoading] = useState(true);
     const [list, setList] = useState<"comments" | "likes">("comments");
     const [showEdit, setShowEdit] = useState(false);
+    const [editType, setEditType] = useState<EditType>("editNote");
 
     const note = notes.find((item) => item.id === currentNoteId);
     const comments = useSelector(selectComments).filter((item) => item.noteId === currentNoteId);
@@ -44,6 +47,18 @@ export default function NoteV2() {
     const unlike = async (likeId: number) => {
         await api.deleteLike(likeId);
         dispatch(likeActions.deleteLike(likeId));
+    };
+
+    const editNote = () => {
+        setEditType("editNote");
+        dispatch(noteActions.setEditNoteInitialText(note.content));
+        setShowEdit(true);
+    };
+
+    const handleSubmit = (text: string, files: File[]) => {
+        console.log(text);
+        console.log(files);
+        setShowEdit(false);
     };
 
     useEffect(() => {
@@ -116,7 +131,7 @@ export default function NoteV2() {
                         )}
                     </div>
                     <div>
-                        <Icon onClick={() => setShowEdit(true)} svg={EditSvg} />
+                        <Icon onClick={editNote} svg={EditSvg} />
                         <Icon svg={DeleteSvg} />
                     </div>
                 </div>
@@ -133,7 +148,7 @@ export default function NoteV2() {
                     <div className="list">{renderLikes()}</div>
                 </div>
             </div>
-            <NoteEdit show={showEdit} onClose={() => setShowEdit(false)} onSubmit={() => {}} />
+            <NoteEdit show={showEdit} onClose={() => setShowEdit(false)} onSubmit={handleSubmit} />
         </React.Fragment>
     );
 }

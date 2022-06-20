@@ -5,10 +5,12 @@ import api from "../api/Api";
 
 interface INoteState {
     notes: INote[];
+    editNoteInitialText: string;
 }
 
 const initialState: INoteState = {
     notes: [],
+    editNoteInitialText: "",
 };
 
 const noteSlice = createSlice({
@@ -38,12 +40,16 @@ const noteSlice = createSlice({
                 }
             });
         },
+        setEditNoteInitialText: (state, actions: PayloadAction<string>) => {
+            state.editNoteInitialText = actions.payload;
+        },
     },
 });
 
 export default noteSlice.reducer;
 export const noteActions = noteSlice.actions;
 export const selectNotes = (state: RootState) => state.note.notes;
+export const selectEditNoteInitialText = (state: RootState) => state.note.editNoteInitialText;
 export const selectNotesByLine = (state, line: ILine) => {
     const notes = state.note.notes as INote[];
     const firstCharId = line.firstCharId;
