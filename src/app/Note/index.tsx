@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
-import "./NoteV2.less";
+import "./index.less";
 
-import { selectCurrentNoteId } from "../slice/bookSlice";
-import { selectNotes, updateNote } from "../slice/noteSlice";
-import { selectLoginUser } from "../slice/appSlice";
-import { selectComments, commentActions } from "../slice/commentSlice";
-import { selectLikes, likeActions } from "../slice/likeSlice";
-import api from "../api/Api";
+import { selectCurrentNoteId } from "../../slice/bookSlice";
+import { selectNotes, updateNote } from "../../slice/noteSlice";
+import { selectLoginUser } from "../../slice/appSlice";
+import { selectComments, commentActions } from "../../slice/commentSlice";
+import { selectLikes, likeActions } from "../../slice/likeSlice";
+import api from "../../api/Api";
 
-import Icon from "../component/Icon";
-import CommentSvg from "../svg/comment.svg?raw";
-import LikeSvg from "../svg/like.svg?raw";
-import LikeFilledSvg from "../svg/like-filled.svg?raw";
-import EditSvg from "../svg/edit.svg?raw";
-import DeleteSvg from "../svg/delete.svg?raw";
-import ArrowLeftSvg from "../svg/arrow-left.svg?raw";
+import NoteUser from "./NoteUser";
+import NoteEdit from "./NoteEdit";
+
+import Icon from "../../component/Icon";
+import CommentSvg from "../../svg/comment.svg?raw";
+import LikeSvg from "../../svg/like.svg?raw";
+import LikeFilledSvg from "../../svg/like-filled.svg?raw";
+import EditSvg from "../../svg/edit.svg?raw";
+import DeleteSvg from "../../svg/delete.svg?raw";
 
 export default function NoteV2() {
     const dispatch = useDispatch();
@@ -131,56 +133,7 @@ export default function NoteV2() {
                     <div className="list">{renderLikes()}</div>
                 </div>
             </div>
-            <div className={classNames("note-edit", { show: showEdit })}>
-                <div className="note-edit-header">
-                    <Icon svg={ArrowLeftSvg} />
-                </div>
-                <textarea></textarea>
-                <div className="note-edit-images">images</div>
-            </div>
+            <NoteEdit show={showEdit} />
         </React.Fragment>
-    );
-}
-
-interface IUserInfoProps {
-    name: string;
-    dateTime: number;
-}
-
-function NoteUser(props: IUserInfoProps) {
-    const relativeTime = (timestamp: number) => {
-        const seconds = Math.floor((Date.now() - timestamp) / 1000);
-
-        const MINUTE = 60;
-        const HOUR = MINUTE * 60;
-        const DAY = HOUR * 24;
-        const WEEK = DAY * 7;
-        const MONTH = DAY * 30;
-        const YEAR = DAY * 365;
-
-        if (seconds < 5) {
-            return `刚刚`;
-        } else if (5 < seconds && seconds < MINUTE) {
-            return `${seconds}秒前`;
-        } else if (MINUTE < seconds && seconds < HOUR) {
-            return `${Math.floor(seconds / MINUTE)}分钟前`;
-        } else if (HOUR < seconds && seconds < DAY) {
-            return `${Math.floor(seconds / HOUR)}小时前`;
-        } else if (DAY < seconds && seconds < WEEK) {
-            return `${Math.floor(seconds / DAY)}天前`;
-        } else if (WEEK < seconds && seconds < MONTH) {
-            return `${Math.floor(seconds / WEEK)}周前`;
-        } else if (MONTH < seconds && seconds < YEAR) {
-            return `${Math.floor(seconds / MONTH)}月前`;
-        } else {
-            return `${Math.floor(seconds / YEAR)}年前`;
-        }
-    };
-
-    return (
-        <div className="note-user">
-            <span className="note-user-name">{props.name}</span>
-            <span className="note-user-time">{relativeTime(props.dateTime)}</span>
-        </div>
     );
 }

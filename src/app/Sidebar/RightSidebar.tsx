@@ -32,8 +32,8 @@ import {
 } from "../../slice/appSlice";
 
 import Drawer from "../../component/Drawer";
-// import Note from "../Note";
-import NoteV2 from "../NoteV2";
+import Note from "../Note/index";
+// import NoteV2 from "../NoteV2";
 
 import api from "../../api/Api";
 
@@ -188,7 +188,7 @@ export default function RightSidebar() {
                 onClose={() => dispatch(appActions.setShowNoteInfo(false))}
                 header={false}
             >
-                <NoteV2 />
+                <Note />
             </Drawer>
         </div>
     );
