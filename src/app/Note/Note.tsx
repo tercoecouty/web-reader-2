@@ -33,6 +33,7 @@ export default function NoteV2() {
     const [list, setList] = useState<"comments" | "likes">("comments");
     const [showEdit, setShowEdit] = useState(false);
     const [editType, setEditType] = useState<EditType>("editNote");
+    const [editHeaderText, setEditHeaderText] = useState("");
 
     const note = notes.find((item) => item.id === currentNoteId);
     const comments = useSelector(selectComments).filter((item) => item.noteId === currentNoteId);
@@ -51,6 +52,7 @@ export default function NoteV2() {
 
     const editNote = () => {
         setEditType("editNote");
+        setEditHeaderText("修改笔记");
         dispatch(noteActions.setEditNoteInitialText(note.content));
         setShowEdit(true);
     };
@@ -148,7 +150,12 @@ export default function NoteV2() {
                     <div className="list">{renderLikes()}</div>
                 </div>
             </div>
-            <NoteEdit show={showEdit} onClose={() => setShowEdit(false)} onSubmit={handleSubmit} />
+            <NoteEdit
+                show={showEdit}
+                headerText={editHeaderText}
+                onClose={() => setShowEdit(false)}
+                onSubmit={handleSubmit}
+            />
         </React.Fragment>
     );
 }

@@ -19,7 +19,7 @@ interface INoteEditProps {
 
 export default function NoteEdit(props: INoteEditProps) {
     const { show, onClose, onSubmit } = props;
-    const header = props.headerText || "返回";
+    const headerText = props.headerText || "返回";
     const editNoteInitialText = useSelector(selectEditNoteInitialText);
     const [value, setValue] = useState(editNoteInitialText);
     const [fileMap, setFileMap] = useState<Map<string, File>>(new Map());
@@ -95,7 +95,7 @@ export default function NoteEdit(props: INoteEditProps) {
         <div className={classNames("note-edit", { show })}>
             <div className="note-edit-header">
                 <Icon onClick={onClose} svg={ArrowLeftSvg} />
-                <span className="header-text">{header}</span>
+                <span className="header-text">{headerText}</span>
             </div>
             <textarea value={value} onInput={handleChange} placeholder="输入笔记……"></textarea>
             <div className="note-edit-images">
