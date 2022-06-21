@@ -15,28 +15,18 @@ export default function Drawer(props: IDrawerProps) {
     const { visible, position } = props;
     const showHeader = props.header === false ? false : true;
     const [drawerStyle, setDrawStyle] = useState<React.CSSProperties>({});
+    const [drawerBackgroundStyle, setDrawerBackgroundStyle] = useState<React.CSSProperties>({});
     const [drawContainerStyle, setDrawContainerStyle] = useState<React.CSSProperties>({});
-    const [downTarget, setDownTarget] = useState(null);
-
-    const handleMouseDown = (e) => {
-        if (e.target.closest(".drawer-container")) setDownTarget(2);
-        else setDownTarget(1);
-    };
-
-    const handleMouseUp = (e) => {
-        if (e.target.closest(".drawer-container")) return;
-        if (downTarget === 2) return;
-        props?.onClose();
-    };
 
     useEffect(() => {
         if (visible) {
             setTimeout(() => {
-                setDrawStyle({ backgroundColor: `rgba(0, 0, 0, 0.4)`, visibility: "visible" });
+                setDrawStyle({ visibility: "visible" });
+                setDrawerBackgroundStyle({ backgroundColor: `rgba(0, 0, 0, 0.4)` });
                 setDrawContainerStyle({ transform: "translate(0, 0)" });
             }, 50); // 如果设为0，可能会没有进入动画
         } else {
-            setDrawStyle({ visibility: "visible" });
+            setDrawerBackgroundStyle({});
             setDrawContainerStyle({});
             setTimeout(() => setDrawStyle({}), 300);
         }
@@ -48,7 +38,8 @@ export default function Drawer(props: IDrawerProps) {
     });
 
     return (
-        <div className="drawer" style={drawerStyle} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
+        <div className="drawer" style={drawerStyle}>
+            <div className="drawer-background" style={drawerBackgroundStyle} onClick={() => props.onClose?.()}></div>
             <div className={className} style={drawContainerStyle}>
                 {showHeader && (
                     <div className="drawer-header">
