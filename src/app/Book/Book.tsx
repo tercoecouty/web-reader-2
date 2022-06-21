@@ -23,7 +23,7 @@ export default function Book() {
     const [bookText, setBookText] = useState("");
     const [resizeTimeoutId, setResizeTimeoutId] = useState(null);
 
-    const updatePage = (_bookText: string) => {
+    const updatePage = (_bookText: string, charId?: number) => {
         const domPageContent = document.getElementById("page-content");
         const totalWidth = domPageContent.getBoundingClientRect().width;
         const totalHeight = domPageContent.getBoundingClientRect().height;
@@ -36,8 +36,28 @@ export default function Book() {
         // console.time("pageBreaking");
         const pages = book.pageBreaking();
         // console.timeEnd("pageBreaking");
+
         dispatch(bookActions.setPages(pages));
         dispatch(bookActions.setPageLoading(false));
+
+        // 窗口尺寸改变后尽量调整到当前阅读的地方
+        if (charId) {
+            let pageNumber = 1;
+            let breaking = false;
+            for (let i = 0; i < pages.length; i++) {
+                const page = pages[i];
+                for (const line of page.lines) {
+                    if (line.firstCharId >= charId) {
+                        pageNumber = i + 1;
+                        breaking = true;
+                        break;
+                    }
+                }
+                if (breaking) break;
+            }
+            console.log(pageNumber);
+            dispatch(bookActions.setPageNumber(pageNumber));
+        }
     };
 
     useEffect(() => {
@@ -88,8 +108,8 @@ export default function Book() {
         window.onresize = () => {
             clearTimeout(resizeTimeoutId);
             dispatch(bookActions.setPageLoading(true));
-            dispatch(bookActions.setPageNumber(1));
-            const timer = setTimeout(() => updatePage(bookText), 1000); // 有意增加加载时间
+            const charId = (document.querySelector(".line>span") as HTMLElement).dataset.firstCharId;
+            const timer = setTimeout(() => updatePage(bookText, parseInt(charId)), 1000); // 有意增加加载时间
             setResizeTimeoutId(timer);
         };
     });
