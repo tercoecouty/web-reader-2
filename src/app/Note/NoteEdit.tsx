@@ -123,6 +123,7 @@ export default function NoteEdit(props: INoteEditProps) {
                 {renderImages()}
             </div>
             <div className="note-edit-submit">
+                <span className="letter-count">{value.length} / 200</span>
                 <Icon svg={SendSvg} onClick={handleSubmit} className={classNames({ disabled: !hasChange })} />
             </div>
         </div>

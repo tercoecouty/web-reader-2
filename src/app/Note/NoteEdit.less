@@ -120,19 +120,27 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    font-size: 24px;
     padding: 16px;
     display: flex;
     justify-content: right;
     background-color: #ffffff;
 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
     > span.icon {
         display: inline-flex;
         cursor: pointer;
+        font-size: 24px;
 
         &.disabled {
             cursor: auto;
             color: var(--disabled-color);
         }
+    }
+
+    > span.letter-count {
+        font-size: 14px;
     }
 }
