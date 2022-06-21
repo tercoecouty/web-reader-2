@@ -67,6 +67,15 @@ export default function NoteV2() {
         setShowEdit(true);
     };
 
+    const replyComment = (fromUserId: number, fromUserName: string) => {
+        setToUserId(fromUserId);
+        setToUserName(fromUserName);
+        setEditType("addComment");
+        setEditInitialText("");
+        setEditHeaderText("回复" + fromUserName);
+        setShowEdit(true);
+    };
+
     const handleSubmit = async (text: string, files: File[]) => {
         if (editType === "editNote") {
             await api.setNoteContent(currentNoteId, text);
@@ -80,6 +89,11 @@ export default function NoteV2() {
     const deleteNoteContent = async () => {
         await api.setNoteContent(currentNoteId, "");
         dispatch(noteActions.updateNote({ noteId: currentNoteId, content: "" }));
+    };
+
+    const deleteComment = async (commentId: number) => {
+        await api.deleteComment(commentId);
+        dispatch(commentActions.deleteComment(commentId));
     };
 
     useEffect(() => {
@@ -105,13 +119,17 @@ export default function NoteV2() {
         return comments.map((item) => {
             return (
                 <div className="list-item" key={item.id}>
-                    <div>
-                        <NoteUser
-                            name={`${item.fromUserName}${item.toUserId ? " 回复 " + item.toUserName : ""}`}
-                            dateTime={item.dateTime}
-                        />
+                    <NoteUser
+                        name={`${item.fromUserName}${item.toUserId ? " 回复 " + item.toUserName : ""}`}
+                        dateTime={item.dateTime}
+                    />
+                    <div className="comment-content-container">
+                        <div className="comment-content">{item.content}</div>
+                        <div className="comment-buttons">
+                            <Icon svg={CommentSvg} onClick={() => replyComment(item.fromUserId, item.fromUserName)} />
+                            <Icon svg={DeleteSvg} onClick={() => deleteComment(item.id)} />
+                        </div>
                     </div>
-                    <div className="comment-content">{item.content}</div>
                 </div>
             );
         });
@@ -145,16 +163,16 @@ export default function NoteV2() {
                 <div className="note-content">{note.content}</div>
                 <div className="note-buttons">
                     <div>
-                        <Icon onClick={addComment} svg={CommentSvg} />
+                        <Icon svg={CommentSvg} onClick={addComment} />
                         {liked ? (
-                            <Icon onClick={() => unlike(liked.id)} svg={LikeFilledSvg} />
+                            <Icon svg={LikeFilledSvg} onClick={() => unlike(liked.id)} />
                         ) : (
-                            <Icon onClick={() => like(currentNoteId)} svg={LikeSvg} />
+                            <Icon svg={LikeSvg} onClick={() => like(currentNoteId)} />
                         )}
                     </div>
                     <div>
-                        <Icon onClick={editNote} svg={EditSvg} />
-                        <Icon onClick={deleteNoteContent} svg={DeleteSvg} />
+                        <Icon svg={EditSvg} onClick={editNote} />
+                        <Icon svg={DeleteSvg} onClick={deleteNoteContent} />
                     </div>
                 </div>
                 <div className="list-header">

@@ -19,8 +19,8 @@
     > div > span.icon {
         cursor: pointer;
 
-        + span.icon {
-            margin-left: 8px;
+        &:first-child {
+            margin-right: 8px;
         }
 
         &.danger {
@@ -66,9 +66,20 @@
     &.likes {
         transform: translate(-50%, 0);
     }
+}
 
-    .comment-content {
-        padding: 0 16px;
+.comment-content-container {
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+
+    > .comment-buttons > span.icon {
+        font-size: 22px;
+        cursor: pointer;
+
+        &:first-child {
+            margin-right: 8px;
+        }
     }
 }
 
