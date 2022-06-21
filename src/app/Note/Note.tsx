@@ -114,12 +114,11 @@ export default function Note() {
         return comments.map((comment) => {
             return (
                 <div className="list-item" key={comment.id}>
-                    <NoteUser
-                        name={`${comment.fromUserName}${comment.toUserId ? " 回复 " + comment.toUserName : ""}`}
-                        dateTime={comment.dateTime}
-                    />
-                    <div className="comment-content-container">
-                        <div className="comment-content">{comment.content}</div>
+                    <div className="comment-header">
+                        <NoteUser
+                            name={`${comment.fromUserName}${comment.toUserId ? " 回复 " + comment.toUserName : ""}`}
+                            dateTime={comment.dateTime}
+                        />
                         <div className="comment-buttons">
                             <Icon
                                 svg={CommentSvg}
@@ -128,7 +127,8 @@ export default function Note() {
                             <Icon svg={DeleteSvg} onClick={() => dispatch(deleteComment(comment.id))} />
                         </div>
                     </div>
-                    <NoteImages urls={comment.imageUrls} />
+                    {comment.content && <div className="comment-content">{comment.content}</div>}
+                    {comment.imageUrls.length !== 0 && <NoteImages urls={comment.imageUrls} />}
                 </div>
             );
         });

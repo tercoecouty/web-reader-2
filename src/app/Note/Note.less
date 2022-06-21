@@ -98,10 +98,11 @@
     }
 }
 
-.comment-content-container {
-    padding: 0 16px;
+.comment-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin: 16px;
 
     > .comment-buttons > span.icon {
         font-size: 22px;
@@ -111,6 +112,15 @@
             margin-right: 8px;
         }
     }
+
+    > .note-user {
+        padding: 0;
+    }
+}
+
+.comment-content {
+    margin: 16px;
+    font-size: 14px;
 }
 
 .empty-list {
