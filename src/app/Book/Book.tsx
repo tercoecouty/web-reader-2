@@ -43,19 +43,12 @@ export default function Book() {
         // 窗口尺寸改变后尽量调整到当前阅读的地方
         if (charId) {
             let pageNumber = 1;
-            let breaking = false;
             for (let i = 0; i < pages.length; i++) {
-                const page = pages[i];
-                for (const line of page.lines) {
-                    if (line.firstCharId >= charId) {
-                        pageNumber = i + 1;
-                        breaking = true;
-                        break;
-                    }
+                if (pages[i].lines[0].firstCharId >= charId) {
+                    pageNumber = i + 1;
+                    break;
                 }
-                if (breaking) break;
             }
-            console.log(pageNumber);
             dispatch(bookActions.setPageNumber(pageNumber));
         }
     };
