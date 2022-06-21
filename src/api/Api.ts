@@ -191,8 +191,9 @@ class Api {
         return this.comments.get().filter((item) => item.noteId === noteId);
     }
 
-    async addComment(noteId: number, toUserId: number, toUserName: string, content: string) {
+    async addComment(noteId: number, toUserId: number, toUserName: string, content: string, files: File[]) {
         const _comments = this.comments.get();
+        const imageUrls = files.map((file) => URL.createObjectURL(file));
         const comment: IComment = {
             id: _comments.length === 0 ? 1 : _comments[_comments.length - 1].id + 1,
             noteId,
@@ -202,6 +203,7 @@ class Api {
             toUserName,
             dateTime: Date.now(),
             content,
+            imageUrls,
         };
         this.comments.add(comment);
         return comment;

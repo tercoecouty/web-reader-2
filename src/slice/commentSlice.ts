@@ -43,9 +43,9 @@ const commentSlice = createSlice({
 export default commentSlice.reducer;
 export const commentActions = commentSlice.actions;
 export const selectComments = (state: RootState) => state.comment.comments;
-export const addComment = (noteId: number, toUserId: number, toUserName: string, content: string) => {
+export const addComment = (noteId: number, toUserId: number, toUserName: string, content: string, files: File[]) => {
     return async (dispatch: Dispatch) => {
-        const _comment = await api.addComment(noteId, toUserId, toUserName, content);
+        const _comment = await api.addComment(noteId, toUserId, toUserName, content, files);
         dispatch(commentSlice.actions.addComment(_comment));
     };
 };

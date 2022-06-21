@@ -42,6 +42,7 @@ interface IComment {
     toUserName: string;
     dateTime: number;
     content: string;
+    imageUrls: string[];
 }
 
 interface ILike {

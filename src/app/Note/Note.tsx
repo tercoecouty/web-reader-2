@@ -38,6 +38,7 @@ export default function Note() {
     const [editInitialText, setEditInitialText] = useState("");
     const [toUserId, setToUserId] = useState<number>(null);
     const [toUserName, setToUserName] = useState<string>(null);
+    const [editImagesUrls, setEditImageUrls] = useState<string[]>([]);
 
     const note = notes.find((item) => item.id === currentNoteId);
     const comments = useSelector(selectComments).filter((item) => item.noteId === currentNoteId);
@@ -48,6 +49,7 @@ export default function Note() {
         setEditType("editNote");
         setEditHeaderText("修改笔记");
         setEditInitialText(note.content);
+        setEditImageUrls(note.imageUrls);
         setShowEdit(true);
     };
 
@@ -57,6 +59,7 @@ export default function Note() {
         setToUserId(null);
         setToUserName(null);
         setEditInitialText("");
+        setEditImageUrls([]);
         setShowEdit(true);
     };
 
@@ -65,6 +68,7 @@ export default function Note() {
         setToUserName(fromUserName);
         setEditType("addComment");
         setEditInitialText("");
+        setEditImageUrls([]);
         setEditHeaderText("回复" + fromUserName);
         setShowEdit(true);
     };
@@ -73,7 +77,7 @@ export default function Note() {
         if (editType === "editNote") {
             dispatch(updateNote(currentNoteId, text, files));
         } else if (editType === "addComment") {
-            dispatch(addComment(currentNoteId, toUserId, toUserName, text));
+            dispatch(addComment(currentNoteId, toUserId, toUserName, text, files));
         }
     };
 
@@ -107,23 +111,24 @@ export default function Note() {
             return <div className="empty-list">没有评论</div>;
         }
 
-        return comments.map((item) => {
+        return comments.map((comment) => {
             return (
-                <div className="list-item" key={item.id}>
+                <div className="list-item" key={comment.id}>
                     <NoteUser
-                        name={`${item.fromUserName}${item.toUserId ? " 回复 " + item.toUserName : ""}`}
-                        dateTime={item.dateTime}
+                        name={`${comment.fromUserName}${comment.toUserId ? " 回复 " + comment.toUserName : ""}`}
+                        dateTime={comment.dateTime}
                     />
                     <div className="comment-content-container">
-                        <div className="comment-content">{item.content}</div>
+                        <div className="comment-content">{comment.content}</div>
                         <div className="comment-buttons">
                             <Icon
                                 svg={CommentSvg}
-                                onClick={() => handleReplyComment(item.fromUserId, item.fromUserName)}
+                                onClick={() => handleReplyComment(comment.fromUserId, comment.fromUserName)}
                             />
-                            <Icon svg={DeleteSvg} onClick={() => dispatch(deleteComment(item.id))} />
+                            <Icon svg={DeleteSvg} onClick={() => dispatch(deleteComment(comment.id))} />
                         </div>
                     </div>
+                    <NoteImages urls={comment.imageUrls} />
                 </div>
             );
         });
@@ -195,7 +200,7 @@ export default function Note() {
                 <NoteEdit
                     initialText={editInitialText}
                     headerText={editHeaderText}
-                    imagesUrls={note.imageUrls}
+                    imagesUrls={editImagesUrls}
                     onClose={() => setShowEdit(false)}
                     onSubmit={handleSubmit}
                 />
