@@ -5,7 +5,7 @@ import "./Note.less";
 
 import { selectCurrentNoteId } from "../../slice/bookSlice";
 import { selectNotes, updateNote } from "../../slice/noteSlice";
-import { selectLoginUser, selectNotesUser } from "../../slice/appSlice";
+import { selectLoginUser, selectNotesUser, selectShowNoteInfo } from "../../slice/appSlice";
 import { selectComments, commentActions, addComment, deleteComment } from "../../slice/commentSlice";
 import { selectLikes, likeActions, like, unlike } from "../../slice/likeSlice";
 import api from "../../api/Api";
@@ -26,6 +26,7 @@ export default function Note() {
     const notes = useSelector(selectNotes);
     const loginUser = useSelector(selectLoginUser);
     const notesUser = useSelector(selectNotesUser);
+    const showNoteInfo = useSelector(selectShowNoteInfo);
 
     const [commentsLoading, setCommentsLoading] = useState(true);
     const [likesLoading, setLikesLoading] = useState(true);
@@ -85,6 +86,10 @@ export default function Note() {
             dispatch(commentActions.setComments(_comments));
         }, 0);
     }, []);
+
+    useEffect(() => {
+        if (!showNoteInfo) setShowEdit(false);
+    }, [showNoteInfo]);
 
     const renderComments = () => {
         if (commentsLoading) {
