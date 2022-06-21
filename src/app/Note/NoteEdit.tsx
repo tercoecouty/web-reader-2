@@ -59,9 +59,15 @@ export default function NoteEdit(props: INoteEditProps) {
         setHasChange(true);
     };
 
-    const submit = () => {
+    const submit = async () => {
         if (!hasChange) return;
-        const files = [...fileMap.values()].filter((item) => item !== null);
+        const files: File[] = [];
+        for (const url of fileMap.keys()) {
+            const res = await fetch(url);
+            const blob = await res.blob();
+            const file = new File([blob], "");
+            files.push(file);
+        }
         onSubmit(value, files);
         setShow(false);
         setTimeout(() => onClose(), 300);
