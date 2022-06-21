@@ -2,8 +2,7 @@ import classNames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
 import "./LeftSidebar.less";
 
-import SidebarItem from "./SidebarItem";
-
+import Icon from "../../component/Icon";
 import TeamSvg from "./svg/team.svg?raw";
 import BarsSvg from "./svg/bars.svg?raw";
 import SearchSvg from "./svg/search.svg?raw";
@@ -37,26 +36,23 @@ export default function LeftSidebar() {
 
     return (
         <div className="left-sidebar">
-            <SidebarItem svg={TeamSvg} title="班级列表" onClick={() => dispatch(appActions.setShowClasses(true))} />
-            <SidebarItem
+            <Icon svg={TeamSvg} onClick={() => dispatch(appActions.setShowClasses(true))} />
+            <Icon
                 svg={BarsSvg}
-                title="笔记"
                 onClick={() => dispatch(appActions.setShowNotes(true))}
-                disabled={notesUser?.id !== loginUser?.id}
+                className={classNames({ disabled: notesUser?.id !== loginUser?.id })}
             />
-            <SidebarItem
+            <Icon
                 svg={BookSvg}
-                title="书签"
                 onClick={() => dispatch(appActions.setShowBookmarks(true))}
-                disabled={notesUser?.id !== loginUser?.id}
+                className={classNames({ disabled: notesUser?.id !== loginUser?.id })}
             />
-            <SidebarItem
+            <Icon
                 svg={SearchSvg}
-                title="搜索"
                 onClick={() => dispatch(appActions.setShowSearch(true))}
-                disabled={notesUser?.id !== loginUser?.id}
+                className={classNames({ disabled: notesUser?.id !== loginUser?.id })}
             />
-            <SidebarItem svg={SettingSvg} title="设置" disabled />
+            <Icon svg={SettingSvg} className="disabled" />
             <Drawer
                 visible={showClasses}
                 title="班级列表"

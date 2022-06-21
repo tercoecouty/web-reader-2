@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import classNames from "classnames";
 import "./RightSidebar.less";
 
-import SidebarItem from "./SidebarItem";
-
+import Icon from "../../component/Icon";
 import ArrowRightSvg from "./svg/arrow-right.svg?raw";
 import ArrowLeftSvg from "./svg/arrow-left.svg?raw";
 import UnderlineSvg from "./svg/underline.svg?raw";
@@ -33,8 +33,6 @@ import {
 
 import Drawer from "../../component/Drawer";
 import Note from "../Note/Note";
-
-import api from "../../api/Api";
 
 export default function RightSidebar() {
     const dispatch = useDispatch();
@@ -143,41 +141,34 @@ export default function RightSidebar() {
 
     return (
         <div className="right-sidebar">
-            {/* <SidebarItem
+            {/* <Icon
                 svg={fullscreen ? FullscreenExitSvg : FullscreenSvg}
-                title={fullscreen ? "退出全屏" : "全屏"}
                 onClick={fullscreen ? handleExitFullscreen : handleFullscreen}
-                placement="left"
             /> */}
-            <SidebarItem
+            <Icon
                 svg={ArrowLeftSvg}
-                title="上一页"
                 onClick={() => dispatch(prevPage)}
-                disabled={pageNumber === 1}
+                className={classNames({ disabled: pageNumber === 1 })}
             />
-            <SidebarItem
+            <Icon
                 svg={ArrowRightSvg}
-                title="下一页"
                 onClick={() => dispatch(nextPage)}
-                disabled={!canNextPage}
+                className={classNames({ disabled: !canNextPage })}
             />
-            <SidebarItem
+            <Icon
                 svg={UnderlineSvg}
-                title="划线"
                 onClick={handleAddNote}
-                disabled={!selection || notesUser.id !== loginUser.id}
+                className={classNames({ disabled: !selection || notesUser.id !== loginUser.id })}
             />
-            <SidebarItem
+            <Icon
                 svg={DeleteSvg}
-                title="删除笔记"
                 onClick={handleDeleteNote}
-                disabled={!currentNoteId || notesUser.id !== loginUser.id}
+                className={classNames({ disabled: !currentNoteId || notesUser.id !== loginUser.id })}
             />
-            <SidebarItem
+            <Icon
                 svg={notesUser?.id === loginUser?.id ? EditSvg : EyeSvg}
-                title={notesUser?.id === loginUser?.id ? "编辑笔记" : "查看笔记"}
                 onClick={() => dispatch(appActions.setShowNoteInfo(true))}
-                disabled={!currentNoteId}
+                className={classNames({ disabled: !currentNoteId })}
             />
             <Drawer
                 visible={showNoteInfo}

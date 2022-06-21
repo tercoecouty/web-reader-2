@@ -1,6 +1,20 @@
 .left-sidebar {
     width: 48px;
     border-right: 1px solid black;
+
+    > span.icon {
+        font-size: 24px;
+        display: block;
+        padding: 12px 0;
+        text-align: center;
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &.disabled {
+            color: var(--disabled-color);
+            cursor: auto;
+        }
+    }
 }
 
 .view-others-prompt {
