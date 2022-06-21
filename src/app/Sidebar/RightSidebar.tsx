@@ -22,7 +22,7 @@ import {
     nextPage,
     prevPage,
 } from "../../slice/bookSlice";
-import { deleteNote, selectNotes, noteActions } from "../../slice/noteSlice";
+import { deleteNote, addNote, selectNotes } from "../../slice/noteSlice";
 import {
     selectLoginUser,
     selectNotesUser,
@@ -59,8 +59,7 @@ export default function RightSidebar() {
             return;
         }
 
-        const _note = await api.addNote(selection.firstCharId, selection.lastCharId, selection.text);
-        dispatch(noteActions.addNote(_note));
+        dispatch(addNote(selection));
         dispatch(bookActions.setSelection(null));
         // dispatch(bookActions.setCurrentNoteId(_note.id));
         // dispatch(appActions.setShowNoteInfo(true));

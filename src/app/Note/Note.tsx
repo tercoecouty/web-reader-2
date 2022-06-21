@@ -4,10 +4,10 @@ import classNames from "classnames";
 import "./Note.less";
 
 import { selectCurrentNoteId } from "../../slice/bookSlice";
-import { selectNotes, updateNote, noteActions } from "../../slice/noteSlice";
+import { selectNotes, updateNote } from "../../slice/noteSlice";
 import { selectLoginUser } from "../../slice/appSlice";
-import { selectComments, commentActions } from "../../slice/commentSlice";
-import { selectLikes, likeActions } from "../../slice/likeSlice";
+import { selectComments, commentActions, addComment, deleteComment } from "../../slice/commentSlice";
+import { selectLikes, likeActions, like, unlike } from "../../slice/likeSlice";
 import api from "../../api/Api";
 
 import NoteUser from "./NoteUser";
@@ -41,16 +41,6 @@ export default function NoteV2() {
     const likes = useSelector(selectLikes).filter((item) => item.noteId === currentNoteId);
     const liked = likes.find((item) => item.userId === loginUser.id);
 
-    const like = async (noteId: number) => {
-        const _like = await api.addLike(noteId);
-        dispatch(likeActions.addLike(_like));
-    };
-
-    const unlike = async (likeId: number) => {
-        await api.deleteLike(likeId);
-        dispatch(likeActions.deleteLike(likeId));
-    };
-
     const editNote = () => {
         setEditType("editNote");
         setEditHeaderText("修改笔记");
@@ -58,7 +48,7 @@ export default function NoteV2() {
         setShowEdit(true);
     };
 
-    const addComment = () => {
+    const handleAddComment = () => {
         setEditType("addComment");
         setEditHeaderText("添加评论");
         setToUserId(null);
@@ -67,7 +57,7 @@ export default function NoteV2() {
         setShowEdit(true);
     };
 
-    const replyComment = (fromUserId: number, fromUserName: string) => {
+    const handleReplyComment = (fromUserId: number, fromUserName: string) => {
         setToUserId(fromUserId);
         setToUserName(fromUserName);
         setEditType("addComment");
@@ -78,22 +68,9 @@ export default function NoteV2() {
 
     const handleSubmit = async (text: string, files: File[]) => {
         if (editType === "editNote") {
-            await api.setNoteContent(currentNoteId, text);
-            dispatch(noteActions.updateNote({ noteId: currentNoteId, content: text }));
-        } else if (editType === "addComment") {
-            const _comment = await api.addComment(currentNoteId, toUserId, toUserName, text);
-            dispatch(commentActions.addComment(_comment));
+            dispatch(updateNote(currentNoteId, text));
+            dispatch(addComment(currentNoteId, toUserId, toUserName, text));
         }
-    };
-
-    const deleteNoteContent = async () => {
-        await api.setNoteContent(currentNoteId, "");
-        dispatch(noteActions.updateNote({ noteId: currentNoteId, content: "" }));
-    };
-
-    const deleteComment = async (commentId: number) => {
-        await api.deleteComment(commentId);
-        dispatch(commentActions.deleteComment(commentId));
     };
 
     useEffect(() => {
@@ -126,8 +103,11 @@ export default function NoteV2() {
                     <div className="comment-content-container">
                         <div className="comment-content">{item.content}</div>
                         <div className="comment-buttons">
-                            <Icon svg={CommentSvg} onClick={() => replyComment(item.fromUserId, item.fromUserName)} />
-                            <Icon svg={DeleteSvg} onClick={() => deleteComment(item.id)} />
+                            <Icon
+                                svg={CommentSvg}
+                                onClick={() => handleReplyComment(item.fromUserId, item.fromUserName)}
+                            />
+                            <Icon svg={DeleteSvg} onClick={() => dispatch(deleteComment(item.id))} />
                         </div>
                     </div>
                 </div>
@@ -163,16 +143,16 @@ export default function NoteV2() {
                 <div className="note-content">{note.content}</div>
                 <div className="note-buttons">
                     <div>
-                        <Icon svg={CommentSvg} onClick={addComment} />
+                        <Icon svg={CommentSvg} onClick={handleAddComment} />
                         {liked ? (
-                            <Icon svg={LikeFilledSvg} onClick={() => unlike(liked.id)} />
+                            <Icon svg={LikeFilledSvg} onClick={() => dispatch(unlike(liked.id))} />
                         ) : (
-                            <Icon svg={LikeSvg} onClick={() => like(currentNoteId)} />
+                            <Icon svg={LikeSvg} onClick={() => dispatch(like(currentNoteId))} />
                         )}
                     </div>
                     <div>
                         <Icon svg={EditSvg} onClick={editNote} />
-                        <Icon svg={DeleteSvg} onClick={deleteNoteContent} />
+                        <Icon svg={DeleteSvg} onClick={() => dispatch(updateNote(currentNoteId, ""))} />
                     </div>
                 </div>
                 <div className="list-header">
