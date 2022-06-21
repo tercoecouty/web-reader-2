@@ -114,6 +114,21 @@
             }
         }
     }
+
+    > .image-preview {
+        width: 96px;
+        height: 96px;
+        // 父元素有transform会导致fixed失效，使用react portals
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
 }
 
 .note-edit-submit {

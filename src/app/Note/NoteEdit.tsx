@@ -54,7 +54,7 @@ export default function NoteEdit(props: INoteEditProps) {
         setHasChange(true);
     };
 
-    const handleDeleteImage = (url: string) => {
+    const deleteImage = (url: string) => {
         URL.revokeObjectURL(url);
         fileMap.delete(url);
 
@@ -62,7 +62,11 @@ export default function NoteEdit(props: INoteEditProps) {
         setFileMap(new Map(fileMap));
     };
 
-    const handleSubmit = () => {
+    const preview = (url: string) => {
+        console.log(url);
+    };
+
+    const submit = () => {
         if (!hasChange) return;
         onSubmit(value, [...fileMap.values()]);
         setShow(false);
@@ -75,7 +79,7 @@ export default function NoteEdit(props: INoteEditProps) {
             domImages.push(
                 <div className="image-item" key={url}>
                     <img src={url} />
-                    <div className="image-item-delete" onClick={() => handleDeleteImage(url)}>
+                    <div className="image-item-delete" onClick={() => preview(url)}>
                         <Icon svg={DeleteSvg} />
                     </div>
                 </div>
@@ -121,10 +125,13 @@ export default function NoteEdit(props: INoteEditProps) {
                     onInput={handleFileChange}
                 />
                 {renderImages()}
+                {/* <div className="image-preview">
+                    <img src="01.jpg" />
+                </div> */}
             </div>
             <div className="note-edit-submit">
                 <span className="letter-count">{value.length} / 200</span>
-                <Icon svg={SendSvg} onClick={handleSubmit} className={classNames({ disabled: !hasChange })} />
+                <Icon svg={SendSvg} onClick={submit} className={classNames({ disabled: !hasChange })} />
             </div>
         </div>
     );
