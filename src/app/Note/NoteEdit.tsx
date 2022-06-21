@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import classNames from "classnames";
 import "./NoteEdit.less";
-
-import { selectEditNoteInitialText } from "../../slice/noteSlice";
 
 import Icon from "../../component/Icon";
 import ArrowLeftSvg from "../../svg/arrow-left.svg?raw";
@@ -11,27 +8,33 @@ import SendSvg from "../../svg/send.svg?raw";
 import DeleteSvg from "../../svg/delete.svg?raw";
 
 interface INoteEditProps {
-    show?: boolean;
+    initialText?: string;
     headerText?: string;
     onClose: () => void;
     onSubmit: (text: string, files: File[]) => void;
 }
 
 export default function NoteEdit(props: INoteEditProps) {
-    const { show, onClose, onSubmit } = props;
+    const { initialText, onClose, onSubmit } = props;
     const headerText = props.headerText || "返回";
-    const editNoteInitialText = useSelector(selectEditNoteInitialText);
-    const [value, setValue] = useState(editNoteInitialText);
+    const [show, setShow] = useState(false);
+    const [value, setValue] = useState(initialText || "");
     const [fileMap, setFileMap] = useState<Map<string, File>>(new Map());
     const [hasChange, setHasChange] = useState(false);
 
     useEffect(() => {
-        for (const url of fileMap.keys()) URL.revokeObjectURL(url);
-        (document.getElementById("image-file-input") as any).value = "";
-        setValue(editNoteInitialText);
-        setFileMap(new Map());
-        setHasChange(false);
-    }, [show]);
+        setShow(true);
+        setTimeout(() => document.getElementById("note-edit-textarea").focus(), 300);
+
+        return () => {
+            for (const url of fileMap.keys()) URL.revokeObjectURL(url);
+        };
+    }, []);
+
+    const handleClose = () => {
+        setShow(false);
+        setTimeout(() => onClose(), 300);
+    };
 
     const handleChange = (e) => {
         if (e.target.value.length > 200) return;
@@ -58,6 +61,8 @@ export default function NoteEdit(props: INoteEditProps) {
     const handleSubmit = () => {
         if (!hasChange) return;
         onSubmit(value, [...fileMap.values()]);
+        setShow(false);
+        setTimeout(() => onClose(), 300);
     };
 
     const renderImages = () => {
@@ -94,10 +99,15 @@ export default function NoteEdit(props: INoteEditProps) {
     return (
         <div className={classNames("note-edit", { show })}>
             <div className="note-edit-header">
-                <Icon onClick={onClose} svg={ArrowLeftSvg} />
+                <Icon onClick={handleClose} svg={ArrowLeftSvg} />
                 <span className="header-text">{headerText}</span>
             </div>
-            <textarea value={value} onInput={handleChange} placeholder="输入笔记……"></textarea>
+            <textarea
+                id="note-edit-textarea"
+                value={value}
+                onInput={handleChange}
+                placeholder="在这里输入……"
+            ></textarea>
             <div className="note-edit-images">
                 <input
                     className="image-file-input"

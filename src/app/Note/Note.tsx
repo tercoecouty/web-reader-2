@@ -20,8 +20,6 @@ import LikeFilledSvg from "../../svg/like-filled.svg?raw";
 import EditSvg from "../../svg/edit.svg?raw";
 import DeleteSvg from "../../svg/delete.svg?raw";
 
-type EditType = "editNote" | "addComment" | "replyComment";
-
 export default function NoteV2() {
     const dispatch = useDispatch();
     const currentNoteId = useSelector(selectCurrentNoteId);
@@ -32,8 +30,11 @@ export default function NoteV2() {
     const [likesLoading, setLikesLoading] = useState(true);
     const [list, setList] = useState<"comments" | "likes">("comments");
     const [showEdit, setShowEdit] = useState(false);
-    const [editType, setEditType] = useState<EditType>("editNote");
+    const [editType, setEditType] = useState<"editNote" | "addComment">("editNote");
     const [editHeaderText, setEditHeaderText] = useState("");
+    const [editInitialText, setEditInitialText] = useState("");
+    const [toUserId, setToUserId] = useState<number>(null);
+    const [toUserName, setToUserName] = useState<string>(null);
 
     const note = notes.find((item) => item.id === currentNoteId);
     const comments = useSelector(selectComments).filter((item) => item.noteId === currentNoteId);
@@ -53,14 +54,32 @@ export default function NoteV2() {
     const editNote = () => {
         setEditType("editNote");
         setEditHeaderText("修改笔记");
-        dispatch(noteActions.setEditNoteInitialText(note.content));
+        setEditInitialText(note.content);
         setShowEdit(true);
     };
 
-    const handleSubmit = (text: string, files: File[]) => {
-        console.log(text);
-        console.log(files);
-        setShowEdit(false);
+    const addComment = () => {
+        setEditType("addComment");
+        setEditHeaderText("添加评论");
+        setToUserId(null);
+        setToUserName(null);
+        setEditInitialText("");
+        setShowEdit(true);
+    };
+
+    const handleSubmit = async (text: string, files: File[]) => {
+        if (editType === "editNote") {
+            await api.setNoteContent(currentNoteId, text);
+            dispatch(noteActions.updateNote({ noteId: currentNoteId, content: text }));
+        } else if (editType === "addComment") {
+            const _comment = await api.addComment(currentNoteId, toUserId, toUserName, text);
+            dispatch(commentActions.addComment(_comment));
+        }
+    };
+
+    const deleteNoteContent = async () => {
+        await api.setNoteContent(currentNoteId, "");
+        dispatch(noteActions.updateNote({ noteId: currentNoteId, content: "" }));
     };
 
     useEffect(() => {
@@ -89,10 +108,10 @@ export default function NoteV2() {
                     <div>
                         <NoteUser
                             name={`${item.fromUserName}${item.toUserId ? " 回复 " + item.toUserName : ""}`}
-                            dateTime={note.dateTime}
+                            dateTime={item.dateTime}
                         />
                     </div>
-                    <div>{item.content}</div>
+                    <div className="comment-content">{item.content}</div>
                 </div>
             );
         });
@@ -123,9 +142,10 @@ export default function NoteV2() {
             <div className="note">
                 <NoteUser name={note.userName} dateTime={note.dateTime} />
                 <div className="note-text">{note.text}</div>
+                <div className="note-content">{note.content}</div>
                 <div className="note-buttons">
                     <div>
-                        <Icon svg={CommentSvg} />
+                        <Icon onClick={addComment} svg={CommentSvg} />
                         {liked ? (
                             <Icon onClick={() => unlike(liked.id)} svg={LikeFilledSvg} />
                         ) : (
@@ -134,7 +154,7 @@ export default function NoteV2() {
                     </div>
                     <div>
                         <Icon onClick={editNote} svg={EditSvg} />
-                        <Icon svg={DeleteSvg} />
+                        <Icon onClick={deleteNoteContent} svg={DeleteSvg} />
                     </div>
                 </div>
                 <div className="list-header">
@@ -150,12 +170,14 @@ export default function NoteV2() {
                     <div className="list">{renderLikes()}</div>
                 </div>
             </div>
-            <NoteEdit
-                show={showEdit}
-                headerText={editHeaderText}
-                onClose={() => setShowEdit(false)}
-                onSubmit={handleSubmit}
-            />
+            {showEdit && (
+                <NoteEdit
+                    initialText={editInitialText}
+                    headerText={editHeaderText}
+                    onClose={() => setShowEdit(false)}
+                    onSubmit={handleSubmit}
+                />
+            )}
         </React.Fragment>
     );
 }
