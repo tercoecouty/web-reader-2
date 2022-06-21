@@ -13,7 +13,7 @@ interface IDrawerProps {
 
 export default function Drawer(props: IDrawerProps) {
     const { visible, position } = props;
-    const showHeader = props.header ? true : false;
+    const showHeader = props.header === false ? false : true;
     const [drawerStyle, setDrawStyle] = useState<React.CSSProperties>({});
     const [drawContainerStyle, setDrawContainerStyle] = useState<React.CSSProperties>({});
     const [downTarget, setDownTarget] = useState(null);
