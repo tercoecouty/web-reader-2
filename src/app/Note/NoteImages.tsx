@@ -80,13 +80,15 @@ export default function NoteImages(props: INoteImagesProps) {
 
     return (
         <div className="note-edit-images">
-            <input
-                className="image-file-input"
-                id="image-file-input"
-                type="file"
-                accept=".jpg,.png"
-                onInput={handleFileChange}
-            />
+            {onUpload && (
+                <input
+                    className="image-file-input"
+                    id="image-file-input"
+                    type="file"
+                    accept=".jpg,.png"
+                    onInput={handleFileChange}
+                />
+            )}
             {renderImages()}
             {previewUrl && renderPreview()}
         </div>
