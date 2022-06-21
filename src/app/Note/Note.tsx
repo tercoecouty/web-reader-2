@@ -20,7 +20,7 @@ import LikeFilledSvg from "../../svg/like-filled.svg?raw";
 import EditSvg from "../../svg/edit.svg?raw";
 import DeleteSvg from "../../svg/delete.svg?raw";
 
-export default function NoteV2() {
+export default function Note() {
     const dispatch = useDispatch();
     const currentNoteId = useSelector(selectCurrentNoteId);
     const notes = useSelector(selectNotes);
