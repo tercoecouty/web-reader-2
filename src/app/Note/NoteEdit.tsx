@@ -31,10 +31,6 @@ export default function NoteEdit(props: INoteEditProps) {
             dom.focus();
             dom.setSelectionRange(value.length, value.length);
         }, 300);
-
-        return () => {
-            for (const url of fileMap.keys()) URL.revokeObjectURL(url);
-        };
     }, []);
 
     const handleClose = () => {
