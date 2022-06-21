@@ -5,7 +5,7 @@ import "./Note.less";
 
 import { selectCurrentNoteId } from "../../slice/bookSlice";
 import { selectNotes, updateNote } from "../../slice/noteSlice";
-import { selectLoginUser } from "../../slice/appSlice";
+import { selectLoginUser, selectNotesUser } from "../../slice/appSlice";
 import { selectComments, commentActions, addComment, deleteComment } from "../../slice/commentSlice";
 import { selectLikes, likeActions, like, unlike } from "../../slice/likeSlice";
 import api from "../../api/Api";
@@ -25,6 +25,7 @@ export default function Note() {
     const currentNoteId = useSelector(selectCurrentNoteId);
     const notes = useSelector(selectNotes);
     const loginUser = useSelector(selectLoginUser);
+    const notesUser = useSelector(selectNotesUser);
 
     const [commentsLoading, setCommentsLoading] = useState(true);
     const [likesLoading, setLikesLoading] = useState(true);
@@ -151,10 +152,16 @@ export default function Note() {
                             <Icon svg={LikeSvg} onClick={() => dispatch(like(currentNoteId))} />
                         )}
                     </div>
-                    <div>
-                        <Icon svg={EditSvg} onClick={editNote} />
-                        <Icon svg={DeleteSvg} onClick={() => dispatch(updateNote(currentNoteId, ""))} />
-                    </div>
+                    {notesUser.id === loginUser.id && (
+                        <div>
+                            <Icon svg={EditSvg} onClick={editNote} />
+                            <Icon
+                                svg={DeleteSvg}
+                                className={classNames({ disabled: note.content === "" })}
+                                onClick={() => dispatch(updateNote(currentNoteId, ""))}
+                            />
+                        </div>
+                    )}
                 </div>
                 <div className="list-header">
                     <div className={classNames({ selected: list === "comments" })} onClick={() => setList("comments")}>
