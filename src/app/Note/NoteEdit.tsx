@@ -80,7 +80,7 @@ export default function NoteEdit(props: INoteEditProps) {
                 onInput={handleChange}
                 placeholder="在这里输入……"
             ></textarea>
-            <NoteImages urls={[...fileMap.keys()]} showUpload={true} onDelete={deleteImage} onUpload={handleUpload} />
+            <NoteImages urls={[...fileMap.keys()]} onDelete={deleteImage} onUpload={handleUpload} />
             <div className="note-edit-submit">
                 <span className="letter-count">{value.length} / 200</span>
                 <Icon svg={SendSvg} onClick={submit} className={classNames({ disabled: !hasChange })} />

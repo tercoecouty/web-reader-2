@@ -1,16 +1,19 @@
 .note-edit-images {
-    padding: 16px;
+    --image-size: 96px;
+
+    margin: 16px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, var(--image-size));
     row-gap: 16px;
+    column-gap: 16px;
 
     > .image-file-input {
         display: none;
     }
 
     > .image-upload {
-        width: 96px;
-        height: 96px;
+        width: var(--image-size);
+        height: var(--image-size);
         border: 2px dashed #8c8c8c;
         display: flex;
         justify-content: center;
@@ -44,8 +47,8 @@
     }
 
     > .image-item {
-        width: 96px;
-        height: 96px;
+        width: var(--image-size);
+        height: var(--image-size);
 
         position: relative;
 

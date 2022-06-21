@@ -9,14 +9,12 @@ import EyeSvg from "../../svg/eye.svg?raw";
 
 interface INoteImagesProps {
     urls: string[];
-    showUpload?: boolean;
-    onUpload: (file: File) => void;
-    onDelete: (url: string) => void;
+    onUpload?: (file: File) => void;
+    onDelete?: (url: string) => void;
 }
 
 export default function NoteImages(props: INoteImagesProps) {
     const { urls, onDelete, onUpload } = props;
-    const showUpload = props.showUpload || false;
     const [previewUrl, setPreviewUrl] = useState("");
     const [showPreview, setShowPreview] = useState(false);
 
@@ -43,13 +41,13 @@ export default function NoteImages(props: INoteImagesProps) {
                     <img src={url} />
                     <div className="image-item-hover">
                         <Icon svg={EyeSvg} onClick={() => handleShowPreview(url)} />
-                        <Icon svg={DeleteSvg} onClick={() => onDelete(url)} />
+                        {onDelete && <Icon svg={DeleteSvg} onClick={() => onDelete(url)} />}
                     </div>
                 </div>
             );
         }
 
-        if (showUpload && domImages.length < 9) {
+        if (onUpload && domImages.length < 9) {
             domImages.push(
                 <div
                     className="image-upload"
