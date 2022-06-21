@@ -88,8 +88,9 @@ export default function NoteEdit(props: INoteEditProps) {
             domImages.push(
                 <div className="image-item" key={url}>
                     <img src={url} />
-                    <div className="image-item-delete" onClick={() => handleShowPreview(url)}>
-                        <Icon svg={EyeSvg} />
+                    <div className="image-item-hover">
+                        <Icon svg={EyeSvg} onClick={() => handleShowPreview(url)} />
+                        <Icon svg={DeleteSvg} onClick={() => deleteImage(url)} />
                     </div>
                 </div>
             );
