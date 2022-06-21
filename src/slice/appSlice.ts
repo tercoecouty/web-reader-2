@@ -10,6 +10,7 @@ interface IAppState {
     showSearch: boolean;
     showNoteInfo: boolean;
     fullscreen: boolean;
+    disableShortcut: boolean;
 }
 
 const initialState: IAppState = {
@@ -21,6 +22,7 @@ const initialState: IAppState = {
     showSearch: false,
     showNoteInfo: false,
     fullscreen: false,
+    disableShortcut: false,
 };
 
 const appSlice = createSlice({
@@ -35,18 +37,23 @@ const appSlice = createSlice({
         },
         setShowClasses: (state, actions: PayloadAction<boolean>) => {
             state.showClasses = actions.payload;
+            state.disableShortcut = actions.payload;
         },
         setShowBookmarks: (state, actions: PayloadAction<boolean>) => {
             state.showBookmarks = actions.payload;
+            state.disableShortcut = actions.payload;
         },
         setShowNotes: (state, actions: PayloadAction<boolean>) => {
             state.showNotes = actions.payload;
+            state.disableShortcut = actions.payload;
         },
         setShowSearch: (state, actions: PayloadAction<boolean>) => {
             state.showSearch = actions.payload;
+            state.disableShortcut = actions.payload;
         },
         setShowNoteInfo: (state, actions: PayloadAction<boolean>) => {
             state.showNoteInfo = actions.payload;
+            state.disableShortcut = actions.payload;
         },
         setFullscreen: (state, actions: PayloadAction<boolean>) => {
             state.fullscreen = actions.payload;
@@ -64,3 +71,4 @@ export const selectShowNotes = (state: RootState) => state.app.showNotes;
 export const selectShowSearch = (state: RootState) => state.app.showSearch;
 export const selectShowNoteInfo = (state: RootState) => state.app.showNoteInfo;
 export const selectFullscreen = (state: RootState) => state.app.fullscreen;
+export const selectDisableShortcut = (state: RootState) => state.app.disableShortcut;

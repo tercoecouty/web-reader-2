@@ -23,7 +23,14 @@ import {
     prevPage,
 } from "../slice/bookSlice";
 import { deleteNote, addNote, selectNotes } from "../slice/noteSlice";
-import { selectLoginUser, selectNotesUser, selectShowNoteInfo, appActions, selectFullscreen } from "../slice/appSlice";
+import {
+    selectLoginUser,
+    selectNotesUser,
+    selectShowNoteInfo,
+    appActions,
+    selectFullscreen,
+    selectDisableShortcut,
+} from "../slice/appSlice";
 
 import Drawer from "../component/Drawer";
 import Note from "./Note/Note";
@@ -39,6 +46,7 @@ export default function RightSidebar() {
     const notes = useSelector(selectNotes);
     const showNoteInfo = useSelector(selectShowNoteInfo);
     const fullscreen = useSelector(selectFullscreen);
+    const disableShortcut = useSelector(selectDisableShortcut);
 
     const handleAddNote = async () => {
         const isNoteCross = notes.some((note) => {
@@ -76,7 +84,7 @@ export default function RightSidebar() {
 
     useEffect(() => {
         window.onkeydown = (e: KeyboardEvent) => {
-            if (showNoteInfo) return;
+            if (disableShortcut) return;
 
             switch (e.code) {
                 case "ArrowUp":
@@ -115,7 +123,7 @@ export default function RightSidebar() {
             }
         };
         window.onwheel = (e: WheelEvent) => {
-            if (showNoteInfo) return;
+            if (disableShortcut) return;
 
             if (e.deltaY < 0) {
                 if (pageNumber === 1) return;
