@@ -69,6 +69,7 @@ export default function NoteV2() {
     const handleSubmit = async (text: string, files: File[]) => {
         if (editType === "editNote") {
             dispatch(updateNote(currentNoteId, text));
+        } else if (editType === "addComment") {
             dispatch(addComment(currentNoteId, toUserId, toUserName, text));
         }
     };
@@ -136,7 +137,7 @@ export default function NoteV2() {
     if (!note) return null;
 
     return (
-        <React.Fragment>
+        <div className="overflow-container">
             <div className="note">
                 <NoteUser name={note.userName} dateTime={note.dateTime} />
                 <div className="note-text">{note.text}</div>
@@ -163,9 +164,11 @@ export default function NoteV2() {
                         点赞（{likes.length}）
                     </div>
                 </div>
-                <div className={classNames("list-container", list)}>
-                    <div className="list">{renderComments()}</div>
-                    <div className="list">{renderLikes()}</div>
+                <div className="overflow-container">
+                    <div className={classNames("list-container", list)}>
+                        <div className="list">{renderComments()}</div>
+                        <div className="list">{renderLikes()}</div>
+                    </div>
                 </div>
             </div>
             {showEdit && (
@@ -176,6 +179,6 @@ export default function NoteV2() {
                     onSubmit={handleSubmit}
                 />
             )}
-        </React.Fragment>
+        </div>
     );
 }
