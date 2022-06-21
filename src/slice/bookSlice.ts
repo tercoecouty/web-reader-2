@@ -46,17 +46,17 @@ const bookSlice = createSlice({
             if (pageNumber < 1) pageNumber = 1;
             else if (pageNumber > totalPage) pageNumber = totalPage;
 
+            if (state.twoPage && totalPage % 2 === 0) {
+                state.canNextPage = pageNumber !== totalPage - 1;
+            } else {
+                state.canNextPage = pageNumber !== totalPage;
+            }
+
             if (pageNumber === lastPageNumber) return;
             if (state.twoPage) {
                 if (lastPageNumber % 2 === 1 && pageNumber === lastPageNumber + 1) return;
                 if (lastPageNumber % 2 === 0 && pageNumber === lastPageNumber - 1) return;
                 if (pageNumber % 2 === 0) pageNumber -= 1;
-            }
-
-            if (state.twoPage && totalPage % 2 === 0) {
-                state.canNextPage = pageNumber !== totalPage - 1;
-            } else {
-                state.canNextPage = pageNumber !== totalPage;
             }
 
             state.pageNumber = pageNumber;
