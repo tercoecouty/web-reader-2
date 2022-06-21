@@ -91,6 +91,12 @@ export default function Note() {
         if (!showNoteInfo) setShowEdit(false);
     }, [showNoteInfo]);
 
+    const renderNoteContent = () => {
+        return note.content.split("\n").map((text, index) => {
+            return <div key={index}>{text}</div>;
+        });
+    };
+
     const renderComments = () => {
         if (commentsLoading) {
             return <div className="empty-list">加载中……</div>;
@@ -147,7 +153,7 @@ export default function Note() {
             <div className="note">
                 <NoteUser name={note.userName} dateTime={note.dateTime} />
                 <div className="note-text">{note.text}</div>
-                <div className="note-content">{note.content}</div>
+                <div className="note-content">{renderNoteContent()}</div>
                 <div className="note-buttons">
                     <div>
                         <Icon svg={CommentSvg} onClick={handleAddComment} />
