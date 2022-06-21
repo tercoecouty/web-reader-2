@@ -44,7 +44,11 @@ export default function Book() {
         if (charId) {
             let pageNumber = 1;
             for (let i = 0; i < pages.length; i++) {
-                if (pages[i].lines[0].firstCharId >= charId) {
+                const page = pages[i];
+                const lastLine = page.lines[page.lines.length - 1];
+                const firstCharId = page.lines[0].firstCharId;
+                const lastCharId = lastLine.firstCharId + lastLine.text.length;
+                if (firstCharId <= charId && charId <= lastCharId) {
                     pageNumber = i + 1;
                     break;
                 }
