@@ -24,7 +24,11 @@ export default function NoteEdit(props: INoteEditProps) {
 
     useEffect(() => {
         setShow(true);
-        setTimeout(() => document.getElementById("note-edit-textarea").focus(), 300);
+        setTimeout(() => {
+            const dom = document.getElementById("note-edit-textarea") as HTMLInputElement;
+            dom.focus();
+            dom.setSelectionRange(value.length, value.length);
+        }, 300);
 
         return () => {
             for (const url of fileMap.keys()) URL.revokeObjectURL(url);
