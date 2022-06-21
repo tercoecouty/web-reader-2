@@ -11,16 +11,17 @@ import NoteImages from "./NoteImages";
 interface INoteEditProps {
     initialText?: string;
     headerText?: string;
+    imagesUrls?: string[];
     onClose: () => void;
     onSubmit: (text: string, files: File[]) => void;
 }
 
 export default function NoteEdit(props: INoteEditProps) {
-    const { initialText, onClose, onSubmit } = props;
+    const { initialText, imagesUrls, onClose, onSubmit } = props;
     const headerText = props.headerText || "返回";
     const [show, setShow] = useState(false);
     const [value, setValue] = useState(initialText || "");
-    const [fileMap, setFileMap] = useState<Map<string, File>>(new Map());
+    const [fileMap, setFileMap] = useState<Map<string, File>>(new Map(imagesUrls.map((url) => [url, null])));
     const [hasChange, setHasChange] = useState(false);
 
     useEffect(() => {
@@ -59,11 +60,13 @@ export default function NoteEdit(props: INoteEditProps) {
         fileMap.delete(url);
         (document.getElementById("image-file-input") as any).value = "";
         setFileMap(new Map(fileMap));
+        setHasChange(true);
     };
 
     const submit = () => {
         if (!hasChange) return;
-        onSubmit(value, [...fileMap.values()]);
+        const files = [...fileMap.values()].filter((item) => item !== null);
+        onSubmit(value, files);
         setShow(false);
         setTimeout(() => onClose(), 300);
     };

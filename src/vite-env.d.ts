@@ -11,6 +11,7 @@ interface INote {
     lastCharId: number;
     text: string;
     content: string;
+    imageUrls: string[];
 }
 
 interface IUser {

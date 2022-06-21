@@ -25,13 +25,14 @@ const noteSlice = createSlice({
         setNotes: (state, actions: PayloadAction<INote[]>) => {
             state.notes = actions.payload;
         },
-        updateNote: (state, actions: PayloadAction<{ noteId: number; content: string }>) => {
-            const { noteId: nodeId, content } = actions.payload;
+        updateNote: (state, actions: PayloadAction<{ noteId: number; content: string; imageUrls: string[] }>) => {
+            const { noteId: nodeId, content, imageUrls } = actions.payload;
             state.notes = state.notes.map((item) => {
                 if (item.id === nodeId) {
                     return {
                         ...item,
                         content,
+                        imageUrls,
                     };
                 } else {
                     return item;
@@ -64,9 +65,9 @@ export const deleteNote = (noteId: number) => async (dispatch: Dispatch) => {
     await api.deleteNote(noteId);
     dispatch(noteSlice.actions.deleteNote(noteId));
 };
-export const updateNote = (noteId: number, content: string) => async (dispatch: Dispatch) => {
-    await api.setNoteContent(noteId, content);
-    dispatch(noteSlice.actions.updateNote({ noteId, content }));
+export const updateNote = (noteId: number, content: string, files: File[]) => async (dispatch: Dispatch) => {
+    const imageUrls = await api.updateNote(noteId, content, files);
+    dispatch(noteSlice.actions.updateNote({ noteId, content, imageUrls }));
 };
 export const fetchNotes = (userId: number) => async (dispatch: Dispatch, getState: () => RootState) => {
     const _notes = await api.getNotes(userId);

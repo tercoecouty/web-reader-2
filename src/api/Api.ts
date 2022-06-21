@@ -157,6 +157,7 @@ class Api {
             lastCharId,
             text,
             content: "",
+            imageUrls: [],
         };
         this.notes.add(note);
         return note;
@@ -168,19 +169,22 @@ class Api {
         this.likes.set(this.likes.get().filter((item) => item.noteId !== noteId));
     }
 
-    async setNoteContent(noteId: number, content: string) {
+    async updateNote(noteId: number, content: string, files: File[]) {
+        const imageUrls = files.map((file) => URL.createObjectURL(file));
         this.notes.set(
             this.notes.get().map((item) => {
                 if (item.id === noteId) {
                     return {
                         ...item,
                         content,
+                        imageUrls,
                     };
                 } else {
                     return item;
                 }
             })
         );
+        return imageUrls;
     }
 
     async getComments(noteId: number) {

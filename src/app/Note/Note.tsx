@@ -12,6 +12,7 @@ import api from "../../api/Api";
 
 import NoteUser from "./NoteUser";
 import NoteEdit from "./NoteEdit";
+import NoteImages from "./NoteImages";
 
 import Icon from "../../component/Icon";
 import CommentSvg from "../../svg/comment.svg?raw";
@@ -70,7 +71,7 @@ export default function Note() {
 
     const handleSubmit = async (text: string, files: File[]) => {
         if (editType === "editNote") {
-            dispatch(updateNote(currentNoteId, text));
+            dispatch(updateNote(currentNoteId, text, files));
         } else if (editType === "addComment") {
             dispatch(addComment(currentNoteId, toUserId, toUserName, text));
         }
@@ -153,7 +154,8 @@ export default function Note() {
             <div className="note">
                 <NoteUser name={note.userName} dateTime={note.dateTime} />
                 <div className="note-text">{note.text}</div>
-                <div className="note-content">{renderNoteContent()}</div>
+                {note.content && <div className="note-content">{renderNoteContent()}</div>}
+                {note.imageUrls.length !== 0 && <NoteImages urls={note.imageUrls} />}
                 <div className="note-buttons">
                     <div>
                         <Icon svg={CommentSvg} onClick={handleAddComment} />
@@ -168,8 +170,8 @@ export default function Note() {
                             <Icon svg={EditSvg} onClick={editNote} />
                             <Icon
                                 svg={DeleteSvg}
-                                className={classNames({ disabled: note.content === "" })}
-                                onClick={() => dispatch(updateNote(currentNoteId, ""))}
+                                className={classNames({ disabled: note.content === "" && note.imageUrls.length === 0 })}
+                                onClick={() => dispatch(updateNote(currentNoteId, "", []))}
                             />
                         </div>
                     )}
@@ -193,6 +195,7 @@ export default function Note() {
                 <NoteEdit
                     initialText={editInitialText}
                     headerText={editHeaderText}
+                    imagesUrls={note.imageUrls}
                     onClose={() => setShowEdit(false)}
                     onSubmit={handleSubmit}
                 />
