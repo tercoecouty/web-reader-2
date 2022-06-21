@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import classNames from "classnames";
 import "./NoteEdit.less";
 
@@ -6,6 +7,7 @@ import Icon from "../../component/Icon";
 import ArrowLeftSvg from "../../svg/arrow-left.svg?raw";
 import SendSvg from "../../svg/send.svg?raw";
 import DeleteSvg from "../../svg/delete.svg?raw";
+import EyeSvg from "../../svg/eye.svg?raw";
 
 interface INoteEditProps {
     initialText?: string;
@@ -21,6 +23,8 @@ export default function NoteEdit(props: INoteEditProps) {
     const [value, setValue] = useState(initialText || "");
     const [fileMap, setFileMap] = useState<Map<string, File>>(new Map());
     const [hasChange, setHasChange] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState("");
+    const [showPreview, setShowPreview] = useState(false);
 
     useEffect(() => {
         setShow(true);
@@ -57,13 +61,8 @@ export default function NoteEdit(props: INoteEditProps) {
     const deleteImage = (url: string) => {
         URL.revokeObjectURL(url);
         fileMap.delete(url);
-
         (document.getElementById("image-file-input") as any).value = "";
         setFileMap(new Map(fileMap));
-    };
-
-    const preview = (url: string) => {
-        console.log(url);
     };
 
     const submit = () => {
@@ -73,14 +72,24 @@ export default function NoteEdit(props: INoteEditProps) {
         setTimeout(() => onClose(), 300);
     };
 
+    const handleShowPreview = (url: string) => {
+        setPreviewUrl(url);
+        setTimeout(() => setShowPreview(true), 0);
+    };
+
+    const handleHidePreview = () => {
+        setShowPreview(false);
+        setTimeout(() => setPreviewUrl(""), 300);
+    };
+
     const renderImages = () => {
         const domImages = [];
         for (const url of fileMap.keys()) {
             domImages.push(
                 <div className="image-item" key={url}>
                     <img src={url} />
-                    <div className="image-item-delete" onClick={() => preview(url)}>
-                        <Icon svg={DeleteSvg} />
+                    <div className="image-item-delete" onClick={() => handleShowPreview(url)}>
+                        <Icon svg={EyeSvg} />
                     </div>
                 </div>
             );
@@ -104,6 +113,19 @@ export default function NoteEdit(props: INoteEditProps) {
         return domImages;
     };
 
+    const renderPreview = () => {
+        return createPortal(
+            <div className="image-preview">
+                <div
+                    className={classNames("image-preview-background", { show: showPreview })}
+                    onClick={handleHidePreview}
+                ></div>
+                <img className={classNames({ show: showPreview })} src={previewUrl} />
+            </div>,
+            document.body
+        );
+    };
+
     return (
         <div className={classNames("note-edit", { show })}>
             <div className="note-edit-header">
@@ -125,9 +147,7 @@ export default function NoteEdit(props: INoteEditProps) {
                     onInput={handleFileChange}
                 />
                 {renderImages()}
-                {/* <div className="image-preview">
-                    <img src="01.jpg" />
-                </div> */}
+                {previewUrl && renderPreview()}
             </div>
             <div className="note-edit-submit">
                 <span className="letter-count">{value.length} / 200</span>
