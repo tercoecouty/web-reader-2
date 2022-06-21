@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import "./Bookmark.less";
 
-import BookmarkSvg from "./svg/bookmark.svg?raw";
-import BookmarkFilledSvg from "./svg/bookmark-filled.svg?raw";
+import BookmarkSvg from "../../svg/bookmark.svg?raw";
+import BookmarkFilledSvg from "../../svg/bookmark-filled.svg?raw";
 
 import Icon from "../../component/Icon";
 
