@@ -16,10 +16,17 @@ export default function Drawer(props: IDrawerProps) {
     const showHeader = props.header ? true : false;
     const [drawerStyle, setDrawStyle] = useState<React.CSSProperties>({});
     const [drawContainerStyle, setDrawContainerStyle] = useState<React.CSSProperties>({});
+    const [downTarget, setDownTarget] = useState(null);
 
-    const handleClick = (e) => {
+    const handleMouseDown = (e) => {
+        if (e.target.closest(".drawer-container")) setDownTarget(2);
+        else setDownTarget(1);
+    };
+
+    const handleMouseUp = (e) => {
         if (e.target.closest(".drawer-container")) return;
-        if (props.onClose) props.onClose();
+        if (downTarget === 2) return;
+        props?.onClose();
     };
 
     useEffect(() => {
@@ -41,7 +48,7 @@ export default function Drawer(props: IDrawerProps) {
     });
 
     return (
-        <div className="drawer" style={drawerStyle} onClick={handleClick}>
+        <div className="drawer" style={drawerStyle} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
             <div className={className} style={drawContainerStyle}>
                 {showHeader && (
                     <div className="drawer-header">
