@@ -5,32 +5,26 @@ import "./Drawer.less";
 interface IDrawerProps {
     visible: Boolean;
     children: JSX.Element;
-    onClose?: () => void;
     title: string;
     position: "right" | "left";
     header?: boolean;
+    onClose: () => void;
 }
 
 export default function Drawer(props: IDrawerProps) {
-    const { visible, position } = props;
+    const { visible, position, onClose } = props;
     const showHeader = props.header === false ? false : true;
-    const [drawerStyle, setDrawStyle] = useState<React.CSSProperties>({});
-    const [drawerBackgroundStyle, setDrawerBackgroundStyle] = useState<React.CSSProperties>({});
-    const [drawContainerStyle, setDrawContainerStyle] = useState<React.CSSProperties>({});
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         if (visible) {
-            setTimeout(() => {
-                setDrawStyle({ visibility: "visible" });
-                setDrawerBackgroundStyle({ backgroundColor: `rgba(0, 0, 0, 0.4)` });
-                setDrawContainerStyle({ transform: "translate(0, 0)" });
-            }, 50); // 如果设为0，可能会没有进入动画
-        } else {
-            setDrawerBackgroundStyle({});
-            setDrawContainerStyle({});
-            setTimeout(() => setDrawStyle({}), 300);
+            requestAnimationFrame(() => setShow(true));
         }
     }, [visible]);
+
+    const handleTransEnd = (e) => {
+        if (!show && e.propertyName === "transform") onClose();
+    };
 
     const className = classNames("drawer-container", {
         left: position === "left",
@@ -38,9 +32,9 @@ export default function Drawer(props: IDrawerProps) {
     });
 
     return (
-        <div className="drawer" style={drawerStyle}>
-            <div className="drawer-background" style={drawerBackgroundStyle} onClick={() => props.onClose?.()}></div>
-            <div className={className} style={drawContainerStyle}>
+        <div className={classNames("drawer", { show, visible })} onTransitionEnd={handleTransEnd}>
+            <div className="drawer-background" onClick={() => setShow(false)}></div>
+            <div className={className}>
                 {showHeader && (
                     <div className="drawer-header">
                         <div>{props.title}</div>

@@ -54,3 +54,17 @@
     border-bottom: 1px solid;
     text-align: center;
 }
+
+.drawer.show {
+    > .drawer-background {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    > .drawer-container {
+        transform: translate(0, 0);
+    }
+}
+
+.drawer.visible {
+    visibility: visible;
+}

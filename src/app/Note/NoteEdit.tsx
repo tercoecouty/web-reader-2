@@ -25,17 +25,17 @@ export default function NoteEdit(props: INoteEditProps) {
     const [hasChange, setHasChange] = useState(false);
 
     useEffect(() => {
-        setShow(true);
-        setTimeout(() => {
+        requestAnimationFrame(() => setShow(true));
+    }, []);
+
+    const handleTransEnd = () => {
+        if (show) {
             const dom = document.getElementById("note-edit-textarea") as HTMLInputElement;
             dom.focus();
             dom.setSelectionRange(value.length, value.length);
-        }, 300);
-    }, []);
-
-    const handleClose = () => {
-        setShow(false);
-        setTimeout(() => onClose(), 300);
+        } else {
+            onClose();
+        }
     };
 
     const handleChange = (e) => {
@@ -70,13 +70,12 @@ export default function NoteEdit(props: INoteEditProps) {
         }
         onSubmit(value, files);
         setShow(false);
-        setTimeout(() => onClose(), 300);
     };
 
     return (
-        <div className={classNames("note-edit", { show })}>
+        <div className={classNames("note-edit", { show })} onTransitionEnd={handleTransEnd}>
             <div className="note-edit-header">
-                <Icon onClick={handleClose} svg={ArrowLeftSvg} />
+                <Icon onClick={() => setShow(false)} svg={ArrowLeftSvg} />
                 <span className="header-text">{headerText}</span>
             </div>
             <textarea

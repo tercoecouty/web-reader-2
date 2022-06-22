@@ -14,6 +14,7 @@ import Classes from "../Classes";
 import Notes from "../Notes";
 import Bookmarks from "../Bookmarks";
 import Search from "../Search";
+import Prompt from "./Prompt";
 
 import {
     selectShowClasses,
@@ -85,10 +86,9 @@ export default function LeftSidebar() {
             >
                 <Search />
             </Drawer>
-            <div className={classNames("view-others-prompt", { show: notesUser?.id !== loginUser?.id })}>
-                正在查看 <span>{notesUser?.name}</span> 的笔记，点击{" "}
-                <button onClick={() => dispatch(appActions.setNotesUser(loginUser))}>退出</button>
-            </div>
+            {notesUser?.id !== loginUser?.id && (
+                <Prompt userName={notesUser?.name} onClose={() => dispatch(appActions.setNotesUser(loginUser))} />
+            )}
         </div>
     );
 }

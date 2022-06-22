@@ -16,15 +16,14 @@ export default function ImagePreview(props: IImagePreviewProps) {
         requestAnimationFrame(() => setShow(true));
     }, []);
 
-    const handleHidePreview = () => {
-        setShow(false);
-        setTimeout(() => onClose(), 300);
+    const handleTransEnd = (e) => {
+        if (!show && e.propertyName === "transform") onClose();
     };
 
     return createPortal(
-        <div className="image-preview">
-            <div className={classNames("image-preview-background", { show })} onClick={handleHidePreview}></div>
-            <img className={classNames({ show })} src={previewUrl} />
+        <div className={classNames("image-preview", { show })} onTransitionEnd={handleTransEnd}>
+            <div className="image-preview-background" onClick={() => setShow(false)}></div>
+            <img src={previewUrl} />
         </div>,
         document.body
     );
