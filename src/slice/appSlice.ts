@@ -9,7 +9,6 @@ interface IAppState {
     showNotes: boolean;
     showSearch: boolean;
     showNoteInfo: boolean;
-    fullscreen: boolean;
     disableShortcut: boolean;
 }
 
@@ -21,7 +20,6 @@ const initialState: IAppState = {
     showNotes: false,
     showSearch: false,
     showNoteInfo: false,
-    fullscreen: false,
     disableShortcut: false,
 };
 
@@ -55,9 +53,6 @@ const appSlice = createSlice({
             state.showNoteInfo = actions.payload;
             state.disableShortcut = actions.payload;
         },
-        setFullscreen: (state, actions: PayloadAction<boolean>) => {
-            state.fullscreen = actions.payload;
-        },
     },
 });
 
@@ -70,5 +65,4 @@ export const selectShowBookmarks = (state: RootState) => state.app.showBookmarks
 export const selectShowNotes = (state: RootState) => state.app.showNotes;
 export const selectShowSearch = (state: RootState) => state.app.showSearch;
 export const selectShowNoteInfo = (state: RootState) => state.app.showNoteInfo;
-export const selectFullscreen = (state: RootState) => state.app.fullscreen;
 export const selectDisableShortcut = (state: RootState) => state.app.disableShortcut;

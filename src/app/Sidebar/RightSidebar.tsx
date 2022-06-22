@@ -10,8 +10,6 @@ import UnderlineSvg from "../../svg/underline.svg?raw";
 import EditSvg from "../../svg/edit.svg?raw";
 import DeleteSvg from "../../svg/delete.svg?raw";
 import EyeSvg from "../../svg/eye.svg?raw";
-// import FullscreenSvg from "../svg/fullscreen.svg?raw";
-// import FullscreenExitSvg from "../svg/fullscreen-exit.svg?raw";
 
 import {
     selectSelection,
@@ -28,7 +26,6 @@ import {
     selectNotesUser,
     selectShowNoteInfo,
     appActions,
-    selectFullscreen,
     selectDisableShortcut,
 } from "../../slice/appSlice";
 
@@ -45,7 +42,6 @@ export default function RightSidebar() {
     const notesUser = useSelector(selectNotesUser);
     const notes = useSelector(selectNotes);
     const showNoteInfo = useSelector(selectShowNoteInfo);
-    const fullscreen = useSelector(selectFullscreen);
     const disableShortcut = useSelector(selectDisableShortcut);
 
     const handleAddNote = async () => {
@@ -61,8 +57,6 @@ export default function RightSidebar() {
 
         dispatch(addNote(selection));
         dispatch(bookActions.setSelection(null));
-        // dispatch(bookActions.setCurrentNoteId(_note.id));
-        // dispatch(appActions.setShowNoteInfo(true));
     };
 
     const handleDeleteNote = () => {
@@ -70,16 +64,6 @@ export default function RightSidebar() {
 
         dispatch(deleteNote(currentNoteId));
         dispatch(bookActions.setCurrentNoteId(null));
-    };
-
-    const handleFullscreen = () => {
-        document.getElementById("root").requestFullscreen();
-        dispatch(appActions.setFullscreen(true));
-    };
-
-    const handleExitFullscreen = () => {
-        document.exitFullscreen();
-        dispatch(appActions.setFullscreen(false));
     };
 
     const hideNoteInfo = () => {
@@ -117,14 +101,6 @@ export default function RightSidebar() {
                     if (!currentNoteId || notesUser.id !== loginUser.id) return;
                     handleDeleteNote();
                     break;
-                case "F11":
-                    e.preventDefault();
-                    if (fullscreen) {
-                        handleExitFullscreen();
-                    } else {
-                        handleFullscreen();
-                    }
-                    break;
             }
         };
         window.onwheel = (e: WheelEvent) => {
@@ -148,10 +124,6 @@ export default function RightSidebar() {
 
     return (
         <div className="right-sidebar">
-            {/* <Icon
-                svg={fullscreen ? FullscreenExitSvg : FullscreenSvg}
-                onClick={fullscreen ? handleExitFullscreen : handleFullscreen}
-            /> */}
             <Icon
                 svg={ArrowLeftSvg}
                 onClick={() => dispatch(prevPage)}
