@@ -82,6 +82,11 @@ export default function RightSidebar() {
         dispatch(appActions.setFullscreen(false));
     };
 
+    const hideNoteInfo = () => {
+        dispatch(appActions.setShowNoteInfo(false));
+        dispatch(bookActions.setCurrentNoteId(null));
+    };
+
     useEffect(() => {
         window.onkeydown = (e: KeyboardEvent) => {
             if (disableShortcut) return;
@@ -172,13 +177,7 @@ export default function RightSidebar() {
                 onClick={() => dispatch(appActions.setShowNoteInfo(true))}
                 className={classNames({ disabled: !currentNoteId })}
             />
-            <Drawer
-                visible={showNoteInfo}
-                title="笔记信息"
-                position="right"
-                onClose={() => dispatch(appActions.setShowNoteInfo(false))}
-                header={false}
-            >
+            <Drawer visible={showNoteInfo} title="笔记信息" position="right" onClose={hideNoteInfo} header={false}>
                 <Note />
             </Drawer>
         </div>
