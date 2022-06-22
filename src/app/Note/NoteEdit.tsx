@@ -84,13 +84,15 @@ export default function NoteEdit(props: INoteEditProps) {
                 <Icon onClick={() => setShow(false)} svg={ArrowLeftSvg} />
                 <span className="header-text">{headerText}</span>
             </div>
-            <textarea
-                id="note-edit-textarea"
-                value={value}
-                onInput={handleChange}
-                placeholder="在这里输入……"
-            ></textarea>
-            <NoteImages urls={[...fileMap.keys()]} onDelete={deleteImage} onUpload={handleUpload} />
+            <div className="scroll-container">
+                <textarea
+                    id="note-edit-textarea"
+                    value={value}
+                    onInput={handleChange}
+                    placeholder="在这里输入……"
+                ></textarea>
+                <NoteImages urls={[...fileMap.keys()]} onDelete={deleteImage} onUpload={handleUpload} />
+            </div>
             <div className="note-edit-submit">
                 <span className="letter-count">{value.length} / 200</span>
                 <Icon svg={SendSvg} onClick={submit} className={classNames({ disabled: !hasChange })} />
