@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import "./RightSidebar.less";
 
-import Icon from "../component/Icon";
-import ArrowRightSvg from "../svg/arrow-right.svg?raw";
-import ArrowLeftSvg from "../svg/arrow-left.svg?raw";
-import UnderlineSvg from "../svg/underline.svg?raw";
-import EditSvg from "../svg/edit.svg?raw";
-import DeleteSvg from "../svg/delete.svg?raw";
-import EyeSvg from "../svg/eye.svg?raw";
+import Icon from "../../component/Icon";
+import ArrowRightSvg from "../../svg/arrow-right.svg?raw";
+import ArrowLeftSvg from "../../svg/arrow-left.svg?raw";
+import UnderlineSvg from "../../svg/underline.svg?raw";
+import EditSvg from "../../svg/edit.svg?raw";
+import DeleteSvg from "../../svg/delete.svg?raw";
+import EyeSvg from "../../svg/eye.svg?raw";
 // import FullscreenSvg from "../svg/fullscreen.svg?raw";
 // import FullscreenExitSvg from "../svg/fullscreen-exit.svg?raw";
 
@@ -21,8 +21,8 @@ import {
     selectCanNextPage,
     nextPage,
     prevPage,
-} from "../slice/bookSlice";
-import { deleteNote, addNote, selectNotes } from "../slice/noteSlice";
+} from "../../slice/bookSlice";
+import { deleteNote, addNote, selectNotes } from "../../slice/noteSlice";
 import {
     selectLoginUser,
     selectNotesUser,
@@ -30,10 +30,10 @@ import {
     appActions,
     selectFullscreen,
     selectDisableShortcut,
-} from "../slice/appSlice";
+} from "../../slice/appSlice";
 
-import Drawer from "../component/Drawer";
-import Note from "./Note/Note";
+import Drawer from "../../component/Drawer";
+import Note from "../Note/Note";
 
 export default function RightSidebar() {
     const dispatch = useDispatch();

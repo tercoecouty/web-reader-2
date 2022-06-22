@@ -1,6 +1,6 @@
 import "./App.less";
-import LeftSidebar from "./LeftSidebar";
-import RightSidebar from "./RightSidebar";
+import LeftSidebar from "./Sidebar/LeftSidebar";
+import RightSidebar from "./Sidebar/RightSidebar";
 import Book from "./Book/Book";
 
 export default function App() {

@@ -2,18 +2,18 @@ import classNames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
 import "./LeftSidebar.less";
 
-import Icon from "../component/Icon";
-import TeamSvg from "../svg/team.svg?raw";
-import BarsSvg from "../svg/bars.svg?raw";
-import SearchSvg from "../svg/search.svg?raw";
-import BookSvg from "../svg/book.svg?raw";
-import SettingSvg from "../svg/setting.svg?raw";
+import Icon from "../../component/Icon";
+import TeamSvg from "../../svg/team.svg?raw";
+import BarsSvg from "../../svg/bars.svg?raw";
+import SearchSvg from "../../svg/search.svg?raw";
+import BookSvg from "../../svg/book.svg?raw";
+import SettingSvg from "../../svg/setting.svg?raw";
 
-import Drawer from "../component/Drawer";
-import Classes from "./Classes";
-import Notes from "./Notes";
-import Bookmarks from "./Bookmarks";
-import Search from "./Search";
+import Drawer from "../../component/Drawer";
+import Classes from "../Classes";
+import Notes from "../Notes";
+import Bookmarks from "../Bookmarks";
+import Search from "../Search";
 
 import {
     selectShowClasses,
@@ -23,7 +23,7 @@ import {
     selectLoginUser,
     selectNotesUser,
     appActions,
-} from "../slice/appSlice";
+} from "../../slice/appSlice";
 
 export default function LeftSidebar() {
     const dispatch = useDispatch();
