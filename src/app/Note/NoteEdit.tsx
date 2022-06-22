@@ -42,6 +42,12 @@ export default function NoteEdit(props: INoteEditProps) {
         if (e.target.value.length > 200) return;
         setValue(e.target.value);
         setHasChange(true);
+
+        // 文本框随着输入文字的改变自动伸长或缩短
+        // 参考 https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
+        const dom = document.getElementById("note-edit-textarea");
+        dom.style.height = "auto";
+        dom.style.height = dom.scrollHeight + "px";
     };
 
     const handleUpload = (file: File) => {
