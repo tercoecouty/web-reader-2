@@ -52,7 +52,6 @@ export default function NoteEdit(props: INoteEditProps) {
     };
 
     const deleteImage = (url: string) => {
-        URL.revokeObjectURL(url);
         fileMap.delete(url);
         (document.getElementById("image-file-input") as any).value = "";
         setFileMap(new Map(fileMap));
@@ -66,6 +65,7 @@ export default function NoteEdit(props: INoteEditProps) {
             const res = await fetch(url);
             const blob = await res.blob();
             const file = new File([blob], "");
+            URL.revokeObjectURL(url);
             files.push(file);
         }
         onSubmit(value, files);
