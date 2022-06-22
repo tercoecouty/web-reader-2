@@ -15,15 +15,22 @@ export default function Drawer(props: IDrawerProps) {
     const { visible, position, onClose } = props;
     const showHeader = props.header === false ? false : true;
     const [show, setShow] = useState(false);
+    const [_visible, _setVisible] = useState(false);
 
     useEffect(() => {
         if (visible) {
+            _setVisible(true);
             requestAnimationFrame(() => setShow(true));
+        } else {
+            setShow(false);
         }
     }, [visible]);
 
     const handleTransEnd = (e) => {
-        if (!show && e.propertyName === "transform") onClose();
+        if (!show && e.propertyName === "transform") {
+            onClose();
+            _setVisible(false);
+        }
     };
 
     const className = classNames("drawer-container", {
@@ -32,7 +39,7 @@ export default function Drawer(props: IDrawerProps) {
     });
 
     return (
-        <div className={classNames("drawer", { show, visible })} onTransitionEnd={handleTransEnd}>
+        <div className={classNames("drawer", { show, visible: _visible })} onTransitionEnd={handleTransEnd}>
             <div className="drawer-background" onClick={() => setShow(false)}></div>
             <div className={className}>
                 {showHeader && (
