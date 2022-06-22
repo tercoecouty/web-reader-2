@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { createPortal } from "react-dom";
-import classNames from "classnames";
 import "./NoteImages.less";
 
 import Icon from "../../component/Icon";
 import DeleteSvg from "../../svg/delete.svg?raw";
 import EyeSvg from "../../svg/eye.svg?raw";
+
+import ImagePreview from "./ImagePreview";
 
 interface INoteImagesProps {
     urls: string[];
@@ -25,12 +25,7 @@ export default function NoteImages(props: INoteImagesProps) {
 
     const handleShowPreview = (url: string) => {
         setPreviewUrl(url);
-        setTimeout(() => setShowPreview(true), 0);
-    };
-
-    const handleHidePreview = () => {
-        setShowPreview(false);
-        setTimeout(() => setPreviewUrl(""), 300);
+        setShowPreview(true);
     };
 
     const renderImages = () => {
@@ -65,19 +60,6 @@ export default function NoteImages(props: INoteImagesProps) {
         return domImages;
     };
 
-    const renderPreview = () => {
-        return createPortal(
-            <div className="image-preview">
-                <div
-                    className={classNames("image-preview-background", { show: showPreview })}
-                    onClick={handleHidePreview}
-                ></div>
-                <img className={classNames({ show: showPreview })} src={previewUrl} />
-            </div>,
-            document.body
-        );
-    };
-
     return (
         <div className="note-edit-images">
             {onUpload && (
@@ -90,7 +72,7 @@ export default function NoteImages(props: INoteImagesProps) {
                 />
             )}
             {renderImages()}
-            {previewUrl && renderPreview()}
+            {showPreview && <ImagePreview previewUrl={previewUrl} onClose={() => setShowPreview(false)} />}
         </div>
     );
 }
