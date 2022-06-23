@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import "./RightSidebar.less";
@@ -44,7 +44,9 @@ export default function RightSidebar() {
     const showNoteInfo = useSelector(selectShowNoteInfo);
     const disableShortcut = useSelector(selectDisableShortcut);
 
-    const handleAddNote = async () => {
+    const handleAddNote = useCallback(() => {
+        if (!selection || notesUser.id !== loginUser.id) return;
+
         const isNoteCross = notes.some((note) => {
             if (note.lastCharId < selection.firstCharId || note.firstCharId > selection.lastCharId) return false;
             return true;
@@ -57,35 +59,53 @@ export default function RightSidebar() {
 
         dispatch(addNote(selection));
         dispatch(bookActions.setSelection(null));
-    };
+    }, [selection, notesUser, loginUser, notes]);
 
-    const handleDeleteNote = () => {
+    const handleDeleteNote = useCallback(() => {
+        if (notesUser.id !== loginUser.id) return;
         if (!window.confirm("您确定要删除笔记吗？")) return;
 
         dispatch(deleteNote(currentNoteId));
         dispatch(bookActions.setCurrentNoteId(null));
-    };
+    }, [selection, notesUser, loginUser, currentNoteId]);
 
     const hideNoteInfo = () => {
         dispatch(appActions.setShowNoteInfo(false));
         dispatch(bookActions.setCurrentNoteId(null));
     };
 
-    useEffect(() => {
-        window.onkeydown = (e: KeyboardEvent) => {
+    const handlePrevPage = useCallback(() => {
+        if (pageNumber === 1) return;
+        dispatch(prevPage);
+    }, [pageNumber]);
+
+    const handleNextPage = useCallback(() => {
+        if (!canNextPage) return;
+        dispatch(nextPage);
+    }, [canNextPage]);
+
+    const handleWheelEvent = useCallback(
+        (e: WheelEvent) => {
+            if (disableShortcut) return;
+            if (e.deltaY < 0) handlePrevPage();
+            else handleNextPage();
+        },
+        [disableShortcut, handlePrevPage, handleNextPage]
+    );
+
+    const handleKeyEvent = useCallback(
+        (e: KeyboardEvent) => {
             if (disableShortcut) return;
 
             switch (e.code) {
                 case "ArrowUp":
                 case "ArrowLeft":
-                    if (pageNumber === 1) return;
-                    dispatch(prevPage);
+                    handlePrevPage();
                     break;
                 case "ArrowDown":
                 case "ArrowRight":
                 case "Space":
-                    if (!canNextPage) return;
-                    dispatch(nextPage);
+                    handleNextPage();
                     break;
                 case "Enter":
                     if (currentNoteId) {
@@ -93,28 +113,25 @@ export default function RightSidebar() {
                         break;
                     }
 
-                    if (!selection || notesUser.id !== loginUser.id) return;
                     handleAddNote();
                     document.getSelection().removeAllRanges();
                     break;
                 case "Delete":
-                    if (!currentNoteId || notesUser.id !== loginUser.id) return;
                     handleDeleteNote();
                     break;
             }
-        };
-        window.onwheel = (e: WheelEvent) => {
-            if (disableShortcut) return;
+        },
+        [disableShortcut, handlePrevPage, handleNextPage, currentNoteId, handleAddNote, handleDeleteNote]
+    );
 
-            if (e.deltaY < 0) {
-                if (pageNumber === 1) return;
-                dispatch(prevPage);
-            } else {
-                if (!canNextPage) return;
-                dispatch(nextPage);
-            }
-        };
-    });
+    useEffect(() => {
+        window.addEventListener("wheel", handleWheelEvent);
+        return () => window.removeEventListener("wheel", handleWheelEvent);
+    }, [handleWheelEvent]);
+    useEffect(() => {
+        window.addEventListener("keydown", handleKeyEvent);
+        return () => window.removeEventListener("keydown", handleKeyEvent);
+    }, [handleKeyEvent]);
 
     useEffect(() => {
         if (currentNoteId && notesUser.id !== loginUser.id) {
