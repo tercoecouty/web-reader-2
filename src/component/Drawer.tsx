@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import classNames from "classnames";
 import "./Drawer.less";
 
@@ -38,6 +38,8 @@ export default function Drawer(props: IDrawerProps) {
         right: position === "right",
     });
 
+    const Children = useMemo(() => props.children, []);
+
     return (
         <div className={classNames("drawer", { show, visible: _visible })} onTransitionEnd={handleTransEnd}>
             <div className="drawer-background" onClick={() => setShow(false)}></div>
@@ -47,7 +49,7 @@ export default function Drawer(props: IDrawerProps) {
                         <div>{props.title}</div>
                     </div>
                 )}
-                <div>{props.children}</div>
+                <div>{Children}</div>
             </div>
         </div>
     );

@@ -1,5 +1,6 @@
-import classNames from "classnames";
+import { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import classNames from "classnames";
 import "./LeftSidebar.less";
 
 import Icon from "../../component/Icon";
@@ -35,6 +36,62 @@ export default function LeftSidebar() {
     const loginUser = useSelector(selectLoginUser);
     const notesUser = useSelector(selectNotesUser);
 
+    const ClassesDrawer = useMemo(
+        () => (
+            <Drawer
+                visible={showClasses}
+                title="班级列表"
+                position="left"
+                onClose={() => dispatch(appActions.setShowClasses(false))}
+            >
+                <Classes />
+            </Drawer>
+        ),
+        [showClasses]
+    );
+
+    const NoteDrawer = useMemo(
+        () => (
+            <Drawer
+                visible={showNotes}
+                title="笔记"
+                position="left"
+                onClose={() => dispatch(appActions.setShowNotes(false))}
+            >
+                <Notes />
+            </Drawer>
+        ),
+        [showNotes]
+    );
+
+    const BookmarksDrawer = useMemo(
+        () => (
+            <Drawer
+                visible={showBookmarks}
+                title="书签"
+                position="left"
+                onClose={() => dispatch(appActions.setShowBookmarks(false))}
+            >
+                <Bookmarks />
+            </Drawer>
+        ),
+        [showBookmarks]
+    );
+
+    const SearchDrawer = useMemo(
+        () => (
+            <Drawer
+                visible={showSearch}
+                title="搜索"
+                position="left"
+                onClose={() => dispatch(appActions.setShowSearch(false))}
+            >
+                <Search />
+            </Drawer>
+        ),
+        [showSearch]
+    );
+
     return (
         <div className="left-sidebar">
             <Icon svg={TeamSvg} onClick={() => dispatch(appActions.setShowClasses(true))} />
@@ -54,38 +111,10 @@ export default function LeftSidebar() {
                 className={classNames({ disabled: notesUser?.id !== loginUser?.id })}
             />
             <Icon svg={SettingSvg} className="disabled" />
-            <Drawer
-                visible={showClasses}
-                title="班级列表"
-                position="left"
-                onClose={() => dispatch(appActions.setShowClasses(false))}
-            >
-                <Classes />
-            </Drawer>
-            <Drawer
-                visible={showNotes}
-                title="笔记"
-                position="left"
-                onClose={() => dispatch(appActions.setShowNotes(false))}
-            >
-                <Notes />
-            </Drawer>
-            <Drawer
-                visible={showBookmarks}
-                title="书签"
-                position="left"
-                onClose={() => dispatch(appActions.setShowBookmarks(false))}
-            >
-                <Bookmarks />
-            </Drawer>
-            <Drawer
-                visible={showSearch}
-                title="搜索"
-                position="left"
-                onClose={() => dispatch(appActions.setShowSearch(false))}
-            >
-                <Search />
-            </Drawer>
+            {ClassesDrawer}
+            {NoteDrawer}
+            {BookmarksDrawer}
+            {SearchDrawer}
             {notesUser?.id !== loginUser?.id && (
                 <Prompt userName={notesUser?.name} onClose={() => dispatch(appActions.setNotesUser(loginUser))} />
             )}

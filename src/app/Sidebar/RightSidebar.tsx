@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import "./RightSidebar.less";
@@ -122,6 +122,15 @@ export default function RightSidebar() {
         }
     }, [currentNoteId]);
 
+    const NoteDrawer = useMemo(
+        () => (
+            <Drawer visible={showNoteInfo} title="笔记信息" position="right" onClose={hideNoteInfo} header={false}>
+                <Note />
+            </Drawer>
+        ),
+        [showNoteInfo]
+    );
+
     return (
         <div className="right-sidebar">
             <Icon
@@ -149,9 +158,7 @@ export default function RightSidebar() {
                 onClick={() => dispatch(appActions.setShowNoteInfo(true))}
                 className={classNames({ disabled: !currentNoteId })}
             />
-            <Drawer visible={showNoteInfo} title="笔记信息" position="right" onClose={hideNoteInfo} header={false}>
-                <Note />
-            </Drawer>
+            {NoteDrawer}
         </div>
     );
 }

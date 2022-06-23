@@ -24,7 +24,7 @@ interface IPageProps {
 function Page(props: IPageProps) {
     const dispatch = useDispatch();
     const pages = useSelector(selectPages);
-    const _pageNumber = useSelector(selectPageNumber);
+    const pageNumber = useSelector(selectPageNumber);
     const loading = useSelector(selectPageLoading);
     const indent = useSelector(selectIndent);
     const lineSpacing = useSelector(selectLineSpacing);
@@ -33,10 +33,10 @@ function Page(props: IPageProps) {
     const pagePadding = useSelector(selectPagePadding);
 
     const { setCurrentNoteId } = bookActions;
-    const pageNumber = props.isSecondPage ? _pageNumber + 1 : _pageNumber;
+    const _pageNumber = props.isSecondPage ? pageNumber + 1 : pageNumber;
 
     const getPageContent = () => {
-        const lines = pages[pageNumber - 1].lines;
+        const lines = pages[_pageNumber - 1].lines;
         const dom_lines = [];
         for (let index_line = 0; index_line < lines.length; index_line++) {
             const line = lines[index_line];
@@ -85,16 +85,16 @@ function Page(props: IPageProps) {
     return (
         <div className="page">
             <div className="page-head">
-                {loading || pageNumber > pages.length ? null : <Bookmark pageNumber={pageNumber} />}
+                {loading || _pageNumber > pages.length ? null : <Bookmark pageNumber={_pageNumber} />}
             </div>
             <div className="page-body" style={{ padding: pagePadding }}>
                 <div id="page-content" className="page-content" onClick={handleClick} style={{ fontSize, fontFamily }}>
                     {!props.isSecondPage && <span id="char-measurement" className="char-measurement"></span>}
-                    {loading ? pageLoading : pageNumber > pages.length ? null : getPageContent()}
+                    {loading ? pageLoading : _pageNumber > pages.length ? null : getPageContent()}
                 </div>
             </div>
             <div className="page-foot">
-                {loading || pageNumber > pages.length ? null : `${pageNumber} / ${pages.length}`}
+                {loading || _pageNumber > pages.length ? null : `${_pageNumber} / ${pages.length}`}
             </div>
         </div>
     );
