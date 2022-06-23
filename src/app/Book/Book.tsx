@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./Book.less";
 
@@ -23,39 +23,42 @@ export default function Book() {
     const [bookText, setBookText] = useState("");
     const [resizeTimeoutId, setResizeTimeoutId] = useState(null);
 
-    const updatePage = (_bookText: string, charId?: number) => {
-        const domPageContent = document.getElementById("page-content");
-        const totalWidth = domPageContent.getBoundingClientRect().width;
-        const totalHeight = domPageContent.getBoundingClientRect().height;
-        const domMeasure = document.getElementById("char-measurement");
-        const book = new BookLayout(_bookText, totalWidth, totalHeight, domMeasure, {
-            lineSpacing,
-            indent,
-        });
-        // console.log(_bookText.length);
-        // console.time("pageBreaking");
-        const pages = book.pageBreaking();
-        // console.timeEnd("pageBreaking");
+    const updatePage = useCallback(
+        (_bookText: string, charId?: number) => {
+            const domPageContent = document.getElementById("page-content");
+            const totalWidth = domPageContent.getBoundingClientRect().width;
+            const totalHeight = domPageContent.getBoundingClientRect().height;
+            const domMeasure = document.getElementById("char-measurement");
+            const book = new BookLayout(_bookText, totalWidth, totalHeight, domMeasure, {
+                lineSpacing,
+                indent,
+            });
+            // console.log(_bookText.length);
+            // console.time("pageBreaking");
+            const pages = book.pageBreaking();
+            // console.timeEnd("pageBreaking");
 
-        dispatch(bookActions.setPages(pages));
-        dispatch(bookActions.setPageLoading(false));
+            dispatch(bookActions.setPages(pages));
+            dispatch(bookActions.setPageLoading(false));
 
-        // 窗口尺寸改变后尽量调整到当前阅读的地方
-        if (charId) {
-            let pageNumber = 1;
-            for (let i = 0; i < pages.length; i++) {
-                const page = pages[i];
-                const lastLine = page.lines[page.lines.length - 1];
-                const firstCharId = page.lines[0].firstCharId;
-                const lastCharId = lastLine.firstCharId + lastLine.text.length;
-                if (firstCharId <= charId && charId <= lastCharId) {
-                    pageNumber = i + 1;
-                    break;
+            // 窗口尺寸改变后尽量调整到当前阅读的地方
+            if (charId) {
+                let pageNumber = 1;
+                for (let i = 0; i < pages.length; i++) {
+                    const page = pages[i];
+                    const lastLine = page.lines[page.lines.length - 1];
+                    const firstCharId = page.lines[0].firstCharId;
+                    const lastCharId = lastLine.firstCharId + lastLine.text.length;
+                    if (firstCharId <= charId && charId <= lastCharId) {
+                        pageNumber = i + 1;
+                        break;
+                    }
                 }
+                dispatch(bookActions.setPageNumber(pageNumber));
             }
-            dispatch(bookActions.setPageNumber(pageNumber));
-        }
-    };
+        },
+        [indent, lineSpacing]
+    );
 
     useEffect(() => {
         setTimeout(async () => {
@@ -80,6 +83,9 @@ export default function Book() {
             dispatch(appActions.setLoginUser(user));
             dispatch(appActions.setNotesUser(user));
         };
+    }, []);
+
+    useEffect(() => {
         (window as any).setBook = (bookId: number) => {
             dispatch(bookActions.setPageLoading(true));
             setTimeout(async () => {
@@ -92,7 +98,7 @@ export default function Book() {
                 setTimeout(() => updatePage(_bookText), 100);
             }, 0);
         };
-    });
+    }, [updatePage]);
 
     useEffect(() => {
         if (!notesUser) return;
@@ -109,7 +115,7 @@ export default function Book() {
             const timer = setTimeout(() => updatePage(bookText, parseInt(charId)), 1000); // 有意增加加载时间
             setResizeTimeoutId(timer);
         };
-    });
+    }, [resizeTimeoutId, updatePage]);
 
     const handleMouseUp = () => {
         const _selection = document.getSelection();
