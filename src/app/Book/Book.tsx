@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./Book.less";
 
@@ -138,10 +138,13 @@ export default function Book() {
         dispatch(bookActions.setSelection({ firstCharId, lastCharId, text: text.replace(/\n/g, "") }));
     };
 
+    const PageMemo = useMemo(() => <Page />, []);
+    const SecondPageMemo = useMemo(() => <Page isSecondPage />, []);
+
     return (
         <div className="book" onMouseUp={handleMouseUp}>
-            <Page />
-            {twoPage && <Page isSecondPage />}
+            {PageMemo}
+            {twoPage && SecondPageMemo}
         </div>
     );
 }

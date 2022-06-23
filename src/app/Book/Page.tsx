@@ -21,7 +21,7 @@ interface IPageProps {
     isSecondPage?: boolean;
 }
 
-function Page(props: IPageProps) {
+export default function Page(props: IPageProps) {
     const dispatch = useDispatch();
     const pages = useSelector(selectPages);
     const pageNumber = useSelector(selectPageNumber);
@@ -99,5 +99,3 @@ function Page(props: IPageProps) {
         </div>
     );
 }
-
-export default React.memo(Page);
