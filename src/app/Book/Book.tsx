@@ -115,7 +115,7 @@ export default function Book() {
             const timer = setTimeout(() => updatePage(bookText, parseInt(charId)), 1000); // 有意增加加载时间
             setResizeTimeoutId(timer);
         };
-    }, [resizeTimeoutId, updatePage]);
+    }, [resizeTimeoutId, updatePage, bookText]);
 
     const handleMouseUp = () => {
         const _selection = document.getSelection();
