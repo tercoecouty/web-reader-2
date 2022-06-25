@@ -98,7 +98,7 @@ export default function Book() {
                 setTimeout(() => updatePage(_bookText), 100);
             }, 0);
         };
-    }, [updatePage]);
+    }, [updatePage, notesUser]);
 
     useEffect(() => {
         if (!notesUser) return;
