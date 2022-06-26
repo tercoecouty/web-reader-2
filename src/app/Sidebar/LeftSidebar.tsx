@@ -15,6 +15,7 @@ import Classes from "../Classes";
 import Notes from "../Notes";
 import Bookmarks from "../Bookmarks";
 import Search from "../Search";
+import Settings from "../Settings";
 import Prompt from "./Prompt";
 
 import {
@@ -22,6 +23,7 @@ import {
     selectShowBookmarks,
     selectShowNotes,
     selectShowSearch,
+    selectShowSettings,
     selectLoginUser,
     selectNotesUser,
     appActions,
@@ -33,6 +35,7 @@ export default function LeftSidebar() {
     const showBookmarks = useSelector(selectShowBookmarks);
     const showNotes = useSelector(selectShowNotes);
     const showSearch = useSelector(selectShowSearch);
+    const showSettings = useSelector(selectShowSettings);
     const loginUser = useSelector(selectLoginUser);
     const notesUser = useSelector(selectNotesUser);
 
@@ -92,6 +95,20 @@ export default function LeftSidebar() {
         [showSearch]
     );
 
+    const SettingsDrawer = useMemo(
+        () => (
+            <Drawer
+                visible={showSettings}
+                title="搜索"
+                position="left"
+                onClose={() => dispatch(appActions.setShowSettings(false))}
+            >
+                <Settings />
+            </Drawer>
+        ),
+        [showSettings]
+    );
+
     return (
         <div className="left-sidebar">
             <Icon svg={TeamSvg} onClick={() => dispatch(appActions.setShowClasses(true))} />
@@ -110,11 +127,16 @@ export default function LeftSidebar() {
                 onClick={() => dispatch(appActions.setShowSearch(true))}
                 className={classNames({ disabled: notesUser?.id !== loginUser?.id })}
             />
-            <Icon svg={SettingSvg} className="disabled" />
+            <Icon
+                svg={SettingSvg}
+                onClick={() => dispatch(appActions.setShowSettings(true))}
+                className={classNames({ disabled: notesUser?.id !== loginUser?.id })}
+            />
             {ClassesDrawer}
             {NoteDrawer}
             {BookmarksDrawer}
             {SearchDrawer}
+            {SettingsDrawer}
             {notesUser?.id !== loginUser?.id && (
                 <Prompt userName={notesUser?.name} onClose={() => dispatch(appActions.setNotesUser(loginUser))} />
             )}

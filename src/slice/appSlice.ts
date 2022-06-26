@@ -8,6 +8,7 @@ interface IAppState {
     showBookmarks: boolean;
     showNotes: boolean;
     showSearch: boolean;
+    showSettings: boolean;
     showNoteInfo: boolean;
     disableShortcut: boolean;
 }
@@ -19,6 +20,7 @@ const initialState: IAppState = {
     showBookmarks: false,
     showNotes: false,
     showSearch: false,
+    showSettings: false,
     showNoteInfo: false,
     disableShortcut: false,
 };
@@ -49,6 +51,10 @@ const appSlice = createSlice({
             state.showSearch = actions.payload;
             state.disableShortcut = actions.payload;
         },
+        setShowSettings: (state, actions: PayloadAction<boolean>) => {
+            state.showSettings = actions.payload;
+            state.disableShortcut = actions.payload;
+        },
         setShowNoteInfo: (state, actions: PayloadAction<boolean>) => {
             state.showNoteInfo = actions.payload;
             state.disableShortcut = actions.payload;
@@ -64,5 +70,6 @@ export const selectShowClasses = (state: RootState) => state.app.showClasses;
 export const selectShowBookmarks = (state: RootState) => state.app.showBookmarks;
 export const selectShowNotes = (state: RootState) => state.app.showNotes;
 export const selectShowSearch = (state: RootState) => state.app.showSearch;
+export const selectShowSettings = (state: RootState) => state.app.showSettings;
 export const selectShowNoteInfo = (state: RootState) => state.app.showNoteInfo;
 export const selectDisableShortcut = (state: RootState) => state.app.disableShortcut;
