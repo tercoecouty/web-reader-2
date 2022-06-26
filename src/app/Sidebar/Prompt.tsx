@@ -21,7 +21,9 @@ export default function Prompt(props: IPromptProps) {
 
     return (
         <div className={classNames("view-others-prompt", { show })} onTransitionEnd={handleTransEnd}>
-            正在查看 <span>{userName}</span> 的笔记，点击 <button onClick={() => setShow(false)}>退出</button>
+            <span>
+                正在查看 <span>{userName}</span> 的笔记，点击 <button onClick={() => setShow(false)}>退出</button>
+            </span>
         </div>
     );
 }
