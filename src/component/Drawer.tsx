@@ -8,11 +8,13 @@ interface IDrawerProps {
     title: string;
     position: "right" | "left";
     header?: boolean;
+    width?: string;
     onClose: () => void;
 }
 
 export default function Drawer(props: IDrawerProps) {
     const { visible, position, onClose } = props;
+    const width = props.width || "400px";
     const showHeader = props.header === false ? false : true;
     const [show, setShow] = useState(false);
     const [_visible, _setVisible] = useState(false);
@@ -43,7 +45,7 @@ export default function Drawer(props: IDrawerProps) {
     return (
         <div className={classNames("drawer", { show, visible: _visible })} onTransitionEnd={handleTransEnd}>
             <div className="drawer-background" onClick={() => setShow(false)}></div>
-            <div className={className}>
+            <div className={className} style={{ width }}>
                 {showHeader && (
                     <div className="drawer-header">
                         <div>{props.title}</div>

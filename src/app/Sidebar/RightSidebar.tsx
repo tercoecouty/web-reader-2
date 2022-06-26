@@ -141,7 +141,14 @@ export default function RightSidebar() {
 
     const NoteDrawer = useMemo(
         () => (
-            <Drawer visible={showNoteInfo} title="笔记信息" position="right" onClose={hideNoteInfo} header={false}>
+            <Drawer
+                visible={showNoteInfo}
+                title="笔记信息"
+                position="right"
+                onClose={hideNoteInfo}
+                header={false}
+                width="30%"
+            >
                 <Note />
             </Drawer>
         ),
