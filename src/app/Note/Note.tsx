@@ -93,7 +93,10 @@ export default function Note() {
     }, []);
 
     useEffect(() => {
-        if (!showNoteInfo) setShowEdit(false);
+        if (!showNoteInfo) {
+            setShowEdit(false);
+            setList("comments");
+        }
     }, [showNoteInfo]);
 
     const renderNoteContent = () => {
