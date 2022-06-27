@@ -11,6 +11,7 @@ interface IAppState {
     showSettings: boolean;
     showNoteInfo: boolean;
     disableShortcut: boolean;
+    searchKeyword: string;
 }
 
 const initialState: IAppState = {
@@ -23,6 +24,7 @@ const initialState: IAppState = {
     showSettings: false,
     showNoteInfo: false,
     disableShortcut: false,
+    searchKeyword: "",
 };
 
 const appSlice = createSlice({
@@ -59,6 +61,9 @@ const appSlice = createSlice({
             state.showNoteInfo = actions.payload;
             state.disableShortcut = actions.payload;
         },
+        setSearchKeyword: (state, actions: PayloadAction<string>) => {
+            state.searchKeyword = actions.payload;
+        },
     },
 });
 
@@ -73,3 +78,4 @@ export const selectShowSearch = (state: RootState) => state.app.showSearch;
 export const selectShowSettings = (state: RootState) => state.app.showSettings;
 export const selectShowNoteInfo = (state: RootState) => state.app.showNoteInfo;
 export const selectDisableShortcut = (state: RootState) => state.app.disableShortcut;
+export const selectSearchKeyword = (state: RootState) => state.app.searchKeyword;

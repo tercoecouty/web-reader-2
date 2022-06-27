@@ -1,3 +1,61 @@
 .search {
     padding: 16px;
 }
+
+.search-header {
+    display: flex;
+
+    > input {
+        width: 100%;
+        outline: none;
+        padding: 8px;
+        margin-right: 8px;
+        border-radius: 3px;
+        border: 1px solid #bfbfbf;
+    }
+
+    > button {
+        width: 64px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 3px;
+
+        &:hover {
+            background-color: var(--primary-light-color);
+        }
+    }
+}
+
+.search-result {
+    font-size: 14px;
+    text-align: justify;
+    padding: 16px 0;
+
+    > .search-result-item {
+        padding: 8px 0;
+        border-bottom: 1px solid #bfbfbf;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        > .search-result-text {
+            width: 100%;
+        }
+
+        > .search-result-pageNumber {
+            padding: 0 16px;
+        }
+
+        &:hover {
+            background-color: var(--hover-bg-color);
+        }
+    }
+
+    .search-keyword {
+        padding: 2px;
+        background-color: #ffc069;
+    }
+}
