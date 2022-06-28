@@ -5,13 +5,13 @@ import "./Search.less";
 import { selectPages, bookActions } from "../slice/bookSlice";
 import { appActions } from "../slice/appSlice";
 
-// 一个段落的前一行可能在第一页，后一行就在第二页了
-// 高亮的前一个字在第一页，后一个字在第二页
 export default function Search() {
     const dispatch = useDispatch();
     const pages = useSelector(selectPages);
     const [value, setValue] = useState("");
     const [searchResult, setSearchResult] = useState<Generator>(null);
+    const [done, setDone] = useState(false);
+    const [domResults, setDomResults] = useState([]);
 
     const getParas = function* (pages: IPage[]) {
         let firstCharId = 1;
@@ -51,37 +51,19 @@ export default function Search() {
         }
     };
 
-    // useEffect(() => {
-    //     const searchResult = search("藤野先生");
-    //     console.log(searchResult.next());
-    //     console.log(searchResult.next());
-    //     console.log(searchResult.next());
-    // }, [pages]);
-
-    const handleSearch = () => {
-        if (value === "") {
-            dispatch(appActions.setSearchRange(null));
-            setSearchResult(null);
-        } else {
-            dispatch(appActions.setSearchRange(null));
-            const _searchResult = search(value);
-            setSearchResult(_searchResult);
-        }
-    };
-
-    const handleClick = (pageNumber: number, firstCharId: number, lastCharId: number) => {
-        dispatch(appActions.setSearchRange({ firstCharId, lastCharId: lastCharId - 1 }));
-        dispatch(bookActions.setPageNumber(pageNumber));
-        dispatch(appActions.setShowSearch(false));
-    };
-
-    const renderSearchResult = () => {
+    const loadMore = () => {
         if (!searchResult) return null;
 
-        const domResults = [];
+        const _domResults = [];
+        let count = 1;
         while (true) {
+            if (count++ > 10) break;
+
             const next = searchResult.next();
-            if (next.done) break;
+            if (next.done) {
+                setDone(true);
+                break;
+            }
 
             const { keyword, firstCharId, left, right } = next.value;
 
@@ -97,7 +79,7 @@ export default function Search() {
                 }
             }
 
-            domResults.push(
+            _domResults.push(
                 <div
                     key={firstCharId}
                     className="search-result-item"
@@ -113,18 +95,67 @@ export default function Search() {
             );
         }
 
-        return domResults;
+        setDomResults([...domResults, ..._domResults]);
     };
 
-    const domResults = useMemo(() => renderSearchResult(), [searchResult]);
+    useEffect(() => {
+        if (searchResult) loadMore();
+        else setDomResults([]);
+    }, [searchResult]);
+
+    const handleSearch = () => {
+        if (value === "") {
+            dispatch(appActions.setSearchRange(null));
+            setSearchResult(null);
+        } else {
+            dispatch(appActions.setSearchRange(null));
+            const _searchResult = search(value);
+            setSearchResult(_searchResult);
+        }
+
+        setDone(false);
+        setDomResults([]);
+    };
+
+    const handleClick = (pageNumber: number, firstCharId: number, lastCharId: number) => {
+        dispatch(appActions.setSearchRange({ firstCharId, lastCharId: lastCharId - 1 }));
+        dispatch(bookActions.setPageNumber(pageNumber));
+        dispatch(appActions.setShowSearch(false));
+    };
+
+    const handleInput = (e) => {
+        const _value = e.target.value;
+        if (_value.length > 10) return;
+        setValue(_value);
+    };
+
+    const handleClear = () => {
+        dispatch(appActions.setSearchRange(null));
+        setValue("");
+        setDone(false);
+        setSearchResult(null);
+    };
 
     return (
         <div className="search">
             <div className="search-header">
-                <input type="text" value={value} onChange={(e) => setValue(e.target.value)} />
+                <input type="text" value={value} onChange={handleInput} />
+                <button onClick={handleClear}>清空</button>
                 <button onClick={handleSearch}>搜索</button>
             </div>
             <div className="search-result">{domResults}</div>
+            {searchResult && done && (
+                <div className="search-footer">
+                    <span className="no-more">没有更多</span>
+                </div>
+            )}
+            {searchResult && !done && (
+                <div className="search-footer">
+                    <span className="load-more" onClick={() => loadMore()}>
+                        加载更多
+                    </span>
+                </div>
+            )}
         </div>
     );
 }
