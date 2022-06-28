@@ -60,14 +60,17 @@ export default function Search() {
 
     const handleSearch = () => {
         if (value === "") {
+            dispatch(appActions.setSearchRange(null));
             setSearchResult(null);
         } else {
+            dispatch(appActions.setSearchRange(null));
             const _searchResult = search(value);
             setSearchResult(_searchResult);
         }
     };
 
-    const handleClick = (pageNumber: number) => {
+    const handleClick = (pageNumber: number, firstCharId: number, lastCharId: number) => {
+        dispatch(appActions.setSearchRange({ firstCharId, lastCharId: lastCharId - 1 }));
         dispatch(bookActions.setPageNumber(pageNumber));
         dispatch(appActions.setShowSearch(false));
     };
@@ -80,22 +83,26 @@ export default function Search() {
             const next = searchResult.next();
             if (next.done) break;
 
-            const { keyword, firstCharId: keywordFirstCharId, left, right } = next.value;
+            const { keyword, firstCharId, left, right } = next.value;
 
             let pageNumber = 1;
             for (let i = 0; i < pages.length; i++) {
                 const page = pages[i];
-                const firstCharId = page.lines[0].firstCharId;
+                const paraFirstCharId = page.lines[0].firstCharId;
                 const lastLine = page.lines[page.lines.length - 1];
-                const lastCharId = lastLine.firstCharId + lastLine.text.length;
-                if (keywordFirstCharId > firstCharId && keywordFirstCharId < lastCharId) {
+                const paraLastCharId = lastLine.firstCharId + lastLine.text.length;
+                if (firstCharId > paraFirstCharId && firstCharId < paraLastCharId) {
                     pageNumber = i + 1;
                     break;
                 }
             }
 
             domResults.push(
-                <div key={keywordFirstCharId} className="search-result-item" onClick={() => handleClick(pageNumber)}>
+                <div
+                    key={firstCharId}
+                    className="search-result-item"
+                    onClick={() => handleClick(pageNumber, firstCharId, firstCharId + keyword.length)}
+                >
                     <div className="search-result-text">
                         <span>{left}</span>
                         <span className="search-keyword">{keyword}</span>

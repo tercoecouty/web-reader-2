@@ -4,7 +4,7 @@ import "./Line.less";
 
 import { selectNotesByLine } from "../../slice/noteSlice";
 import { selectCurrentNoteIdByLine } from "../../slice/bookSlice";
-import { selectLoginUser, selectNotesUser } from "../../slice/appSlice";
+import { selectLoginUser, selectNotesUser, selectSearchRange } from "../../slice/appSlice";
 
 interface ILineProps {
     line: ILine;
@@ -23,6 +23,7 @@ export default function Line(props: ILineProps) {
     const notes = JSON.parse(useSelector((state) => selectNotesByLine(state, line)));
     const loginUser = useSelector(selectLoginUser);
     const notesUser = useSelector(selectNotesUser);
+    const searchRange = useSelector(selectSearchRange);
 
     const renderSpans = () => {
         const spans: ISpan[] = [];
@@ -37,7 +38,7 @@ export default function Line(props: ILineProps) {
 
             let isNoteChar = false;
             for (const note of notes) {
-                if (charId >= note.firstCharId && charId <= note.lastCharId) {
+                if (note.firstCharId <= charId && charId <= note.lastCharId) {
                     isNoteChar = true;
                     lastNoteId = noteId;
                     noteId = note.id;
@@ -108,9 +109,73 @@ export default function Line(props: ILineProps) {
         return dom_spans;
     };
 
+    const renderSpansWithHighlight = () => {
+        const domSpans = [];
+        for (let index = 0; index < line.text.length; index++) {
+            const char = line.text[index];
+            const charId = line.firstCharId + index;
+
+            let isNoteChar = false;
+            let noteId = null;
+            for (const note of notes) {
+                if (note.firstCharId <= charId && charId <= note.lastCharId) {
+                    isNoteChar = true;
+                    noteId = note.id;
+                    break;
+                }
+            }
+
+            let isHighlightChar = false;
+            if (searchRange && searchRange.firstCharId <= charId && charId <= searchRange.lastCharId) {
+                isHighlightChar = true;
+            }
+
+            if (isNoteChar) {
+                const selected = noteId && currentNoteId === noteId;
+                const others = !selected && loginUser.id !== notesUser.id;
+
+                domSpans.push(
+                    <span
+                        data-note-id={noteId}
+                        className={classNames("underline", { selected, others, highlight: isHighlightChar })}
+                        data-first-char-id={charId}
+                        key={charId}
+                    >
+                        {char}
+                    </span>
+                );
+            } else {
+                domSpans.push(
+                    <span
+                        className={classNames({ highlight: isHighlightChar })}
+                        data-first-char-id={charId}
+                        key={charId}
+                    >
+                        {char}
+                    </span>
+                );
+            }
+        }
+
+        return domSpans;
+    };
+
+    const render = () => {
+        if (!searchRange) return renderSpans();
+
+        if (
+            searchRange.lastCharId < line.firstCharId ||
+            searchRange.firstCharId > line.firstCharId + line.text.length
+        ) {
+            return renderSpans();
+        } else {
+            return renderSpansWithHighlight();
+        }
+    };
+
     return (
         <div className="line" style={props.style}>
-            {renderSpans()}
+            {render()}
         </div>
     );
 }
