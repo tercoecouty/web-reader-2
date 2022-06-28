@@ -1,9 +1,33 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./Search.less";
 
 import { selectPages, bookActions } from "../slice/bookSlice";
 import { appActions } from "../slice/appSlice";
+
+function indexOf(text, chars, index) {
+    for (let i = index; i < text.length; i++) {
+        for (const char of chars) {
+            if (char === text[i]) {
+                return i;
+            }
+        }
+    }
+
+    return -1;
+}
+
+function lastIndexOf(text, chars, index) {
+    for (let i = index; i >= 0; i--) {
+        for (const char of chars) {
+            if (char === text[i]) {
+                return i;
+            }
+        }
+    }
+
+    return -1;
+}
 
 export default function Search() {
     const dispatch = useDispatch();
@@ -36,8 +60,8 @@ export default function Search() {
             for (const match of para.text.matchAll(new RegExp(keyword, "g"))) {
                 const paraText = match.input as string;
                 const index = match.index;
-                let leftIndex = paraText.lastIndexOf("。", index);
-                let rightIndex = paraText.indexOf("。", index);
+                let leftIndex = lastIndexOf(paraText, "。？.;", index);
+                let rightIndex = indexOf(paraText, "。？.;", index);
                 leftIndex = leftIndex === -1 ? 0 : leftIndex + 1;
                 rightIndex = rightIndex === -1 ? paraText.length : rightIndex + 1;
 
