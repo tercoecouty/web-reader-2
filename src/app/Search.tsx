@@ -1,38 +1,62 @@
-import { useEffect, useState, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useState, useMemo, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import "./Search.less";
 
-import { selectPages } from "../slice/bookSlice";
+import { selectPages, bookActions } from "../slice/bookSlice";
+import { appActions } from "../slice/appSlice";
 
 // 一个段落的前一行可能在第一页，后一行就在第二页了
+// 高亮的前一个字在第一页，后一个字在第二页
 export default function Search() {
+    const dispatch = useDispatch();
     const pages = useSelector(selectPages);
     const [value, setValue] = useState("");
     const [searchResult, setSearchResult] = useState<Generator>(null);
 
     const getParas = function* (pages: IPage[]) {
-        let paraText = "";
+        let firstCharId = 1;
+        let text = "";
         for (const page of pages) {
             for (const line of page.lines) {
                 if (line.isFirstLine) {
-                    if (paraText) yield paraText;
-                    paraText = line.text;
+                    if (text) yield { firstCharId, text };
+                    text = line.text;
+                    firstCharId = line.firstCharId;
                 } else {
-                    paraText += line.text;
+                    text += line.text;
                 }
             }
         }
 
-        yield paraText;
+        yield { firstCharId, text };
     };
 
     const search = function* (keyword: string) {
-        for (const paraText of getParas(pages)) {
-            for (const match of paraText.matchAll(new RegExp(keyword, "g"))) {
-                yield match;
+        for (const para of getParas(pages)) {
+            for (const match of para.text.matchAll(new RegExp(keyword, "g"))) {
+                const paraText = match.input as string;
+                const index = match.index;
+                let leftIndex = paraText.lastIndexOf("。", index);
+                let rightIndex = paraText.indexOf("。", index);
+                leftIndex = leftIndex === -1 ? 0 : leftIndex + 1;
+                rightIndex = rightIndex === -1 ? paraText.length : rightIndex + 1;
+
+                yield {
+                    keyword,
+                    firstCharId: para.firstCharId + index,
+                    left: paraText.slice(leftIndex, index),
+                    right: paraText.slice(index + keyword.length, rightIndex),
+                };
             }
         }
     };
+
+    // useEffect(() => {
+    //     const searchResult = search("藤野先生");
+    //     console.log(searchResult.next());
+    //     console.log(searchResult.next());
+    //     console.log(searchResult.next());
+    // }, [pages]);
 
     const handleSearch = () => {
         if (value === "") {
@@ -43,29 +67,43 @@ export default function Search() {
         }
     };
 
+    const handleClick = (pageNumber: number) => {
+        dispatch(bookActions.setPageNumber(pageNumber));
+        dispatch(appActions.setShowSearch(false));
+    };
+
     const renderSearchResult = () => {
         if (!searchResult) return null;
 
         const domResults = [];
-        let count = 0;
         while (true) {
             const next = searchResult.next();
-            if (next.done || count > 10) break;
+            if (next.done) break;
 
-            const input = next.value.input;
-            const index = next.value.index;
-            const keyword = next.value[0];
+            const { keyword, firstCharId: keywordFirstCharId, left, right } = next.value;
+
+            let pageNumber = 1;
+            for (let i = 0; i < pages.length; i++) {
+                const page = pages[i];
+                const firstCharId = page.lines[0].firstCharId;
+                const lastLine = page.lines[page.lines.length - 1];
+                const lastCharId = lastLine.firstCharId + lastLine.text.length;
+                if (keywordFirstCharId > firstCharId && keywordFirstCharId < lastCharId) {
+                    pageNumber = i + 1;
+                    break;
+                }
+            }
+
             domResults.push(
-                <div key={count} className="search-result-item">
+                <div key={keywordFirstCharId} className="search-result-item" onClick={() => handleClick(pageNumber)}>
                     <div className="search-result-text">
-                        <span>{input.slice(0, index)}</span>
-                        <span className="search-keyword">{input.slice(index, index + keyword.length)}</span>
-                        <span>{input.slice(index + keyword.length)}</span>
+                        <span>{left}</span>
+                        <span className="search-keyword">{keyword}</span>
+                        <span>{right}</span>
                     </div>
-                    <div className="search-result-pageNumber">1</div>
+                    <div className="search-result-pageNumber">{pageNumber}</div>
                 </div>
             );
-            count++;
         }
 
         return domResults;
