@@ -4,7 +4,7 @@ import "./Line.less";
 
 import { selectNotesByLine } from "../../slice/noteSlice";
 import { selectCurrentNoteIdByLine } from "../../slice/bookSlice";
-import { selectLoginUser, selectNotesUser, selectSearchRange } from "../../slice/appSlice";
+import { selectLoginUser, selectNotesUser, selectSearchRangeByLine } from "../../slice/appSlice";
 
 interface ILineProps {
     line: ILine;
@@ -23,7 +23,7 @@ export default function Line(props: ILineProps) {
     const notes = JSON.parse(useSelector((state) => selectNotesByLine(state, line)));
     const loginUser = useSelector(selectLoginUser);
     const notesUser = useSelector(selectNotesUser);
-    const searchRange = useSelector(selectSearchRange);
+    const searchRange = JSON.parse(useSelector((state) => selectSearchRangeByLine(state, line)));
 
     const renderSpans = () => {
         const spans: ISpan[] = [];
@@ -160,22 +160,9 @@ export default function Line(props: ILineProps) {
         return domSpans;
     };
 
-    const render = () => {
-        if (!searchRange) return renderSpans();
-
-        if (
-            searchRange.lastCharId < line.firstCharId ||
-            searchRange.firstCharId > line.firstCharId + line.text.length
-        ) {
-            return renderSpans();
-        } else {
-            return renderSpansWithHighlight();
-        }
-    };
-
     return (
         <div className="line" style={props.style}>
-            {render()}
+            {searchRange ? renderSpansWithHighlight() : renderSpans()}
         </div>
     );
 }

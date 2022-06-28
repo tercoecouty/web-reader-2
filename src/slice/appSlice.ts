@@ -83,4 +83,13 @@ export const selectShowSearch = (state: RootState) => state.app.showSearch;
 export const selectShowSettings = (state: RootState) => state.app.showSettings;
 export const selectShowNoteInfo = (state: RootState) => state.app.showNoteInfo;
 export const selectDisableShortcut = (state: RootState) => state.app.disableShortcut;
-export const selectSearchRange = (state: RootState) => state.app.searchRange;
+export const selectSearchRangeByLine = (state, line: ILine) => {
+    const searchRange = state.app.searchRange;
+    if (!searchRange) return JSON.stringify(null);
+
+    if (searchRange.lastCharId < line.firstCharId || searchRange.firstCharId > line.firstCharId + line.text.length) {
+        return JSON.stringify(null);
+    }
+
+    return JSON.stringify(searchRange);
+};
