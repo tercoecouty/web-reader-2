@@ -178,7 +178,7 @@ export default function Note() {
                             <Icon svg={EditSvg} onClick={editNote} />
                             <Icon
                                 svg={DeleteSvg}
-                                className={classNames({ disabled: note.content === "" && note.imageUrls.length === 0 })}
+                                disabled={note.content === "" && note.imageUrls.length === 0}
                                 onClick={() => dispatch(updateNote(currentNoteId, "", []))}
                             />
                         </div>

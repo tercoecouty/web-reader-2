@@ -1,8 +1,14 @@
 .icon {
     display: inline-block;
+
     > svg {
         height: 1em;
         width: 1em;
         fill: currentColor;
+    }
+
+    &.disabled {
+        color: var(--disabled-color);
+        cursor: auto;
     }
 }

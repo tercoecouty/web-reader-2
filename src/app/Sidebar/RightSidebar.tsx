@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import classNames from "classnames";
 import "./RightSidebar.less";
 
 import Icon from "../../component/Icon";
@@ -157,30 +156,18 @@ export default function RightSidebar() {
 
     return (
         <div className="right-sidebar">
-            <Icon
-                svg={ArrowLeftSvg}
-                onClick={() => dispatch(prevPage)}
-                className={classNames({ disabled: pageNumber === 1 })}
-            />
-            <Icon
-                svg={ArrowRightSvg}
-                onClick={() => dispatch(nextPage)}
-                className={classNames({ disabled: !canNextPage })}
-            />
-            <Icon
-                svg={UnderlineSvg}
-                onClick={handleAddNote}
-                className={classNames({ disabled: !selection || notesUser.id !== loginUser.id })}
-            />
+            <Icon svg={ArrowLeftSvg} onClick={() => dispatch(prevPage)} disabled={pageNumber === 1} />
+            <Icon svg={ArrowRightSvg} onClick={() => dispatch(nextPage)} disabled={!canNextPage} />
+            <Icon svg={UnderlineSvg} onClick={handleAddNote} disabled={!selection || notesUser.id !== loginUser.id} />
             <Icon
                 svg={DeleteSvg}
                 onClick={handleDeleteNote}
-                className={classNames({ disabled: !currentNoteId || notesUser.id !== loginUser.id })}
+                disabled={!currentNoteId || notesUser.id !== loginUser.id}
             />
             <Icon
                 svg={notesUser?.id === loginUser?.id ? EditSvg : EyeSvg}
                 onClick={() => dispatch(appActions.setShowNoteInfo(true))}
-                className={classNames({ disabled: !currentNoteId })}
+                disabled={!currentNoteId}
             />
             {NoteDrawer}
         </div>

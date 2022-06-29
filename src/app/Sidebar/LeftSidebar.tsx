@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import classNames from "classnames";
 import "./LeftSidebar.less";
 
 import Icon from "../../component/Icon";
@@ -115,22 +114,22 @@ export default function LeftSidebar() {
             <Icon
                 svg={BarsSvg}
                 onClick={() => dispatch(appActions.setShowNotes(true))}
-                className={classNames({ disabled: notesUser?.id !== loginUser?.id })}
+                disabled={notesUser?.id !== loginUser?.id}
             />
             <Icon
                 svg={BookSvg}
                 onClick={() => dispatch(appActions.setShowBookmarks(true))}
-                className={classNames({ disabled: notesUser?.id !== loginUser?.id })}
+                disabled={notesUser?.id !== loginUser?.id}
             />
             <Icon
                 svg={SearchSvg}
                 onClick={() => dispatch(appActions.setShowSearch(true))}
-                className={classNames({ disabled: notesUser?.id !== loginUser?.id })}
+                disabled={notesUser?.id !== loginUser?.id}
             />
             <Icon
                 svg={SettingSvg}
                 onClick={() => dispatch(appActions.setShowSettings(true))}
-                className={classNames({ disabled: notesUser?.id !== loginUser?.id })}
+                disabled={notesUser?.id !== loginUser?.id}
             />
             {ClassesDrawer}
             {NoteDrawer}
