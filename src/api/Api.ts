@@ -24,7 +24,7 @@ class Storage<T> {
 
     set(value: T[]) {
         this.value = value;
-        if (import.meta.env.DEV) this.save();
+        this.save();
     }
 
     add(item: T) {
