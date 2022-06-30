@@ -9,6 +9,8 @@ export default class Books {
     private lineHeight = 0;
 
     private indent: number;
+    private lineSpacing: number;
+    private options: IBookLayoutOptions;
 
     constructor(
         bookText: string,
@@ -26,8 +28,14 @@ export default class Books {
         this.chineseCharWidth = this.domMeasure.getBoundingClientRect().width;
         this.lineHeight = this.domMeasure.getBoundingClientRect().height;
 
-        this.lineHeight += options.lineSpacing * 2 || 0; // 上下边距
         this.indent = options.indent ? 2 : 0;
+        this.lineSpacing = options.lineSpacing;
+        this.options = options;
+        this.lineHeight += options.lineSpacing * 2 || 0; // 上下边距
+    }
+
+    public getBookOptions() {
+        return this.options;
     }
 
     public pageBreaking() {
@@ -45,6 +53,7 @@ export default class Books {
                 pages.push({
                     lines: pageLines,
                     spacing,
+                    lineSpacing: this.lineSpacing,
                 });
                 pageHeight = this.lineHeight;
                 pageLines = [line];
@@ -58,6 +67,7 @@ export default class Books {
         pages.push({
             lines: pageLines,
             spacing: 0,
+            lineSpacing: this.lineSpacing,
         });
 
         return pages;
@@ -107,6 +117,7 @@ export default class Books {
                     text: lineText,
                     spacing,
                     isFirstLine,
+                    indent: isFirstLine && this.indent,
                     firstCharId: charId - lineText.length,
                     spacingType: "letter",
                 });
@@ -127,6 +138,7 @@ export default class Books {
             text: lineText,
             spacing: 0,
             isFirstLine,
+            indent: isFirstLine && this.indent,
             firstCharId: charId - lineText.length,
             spacingType: "letter",
         });
@@ -155,6 +167,7 @@ export default class Books {
                     text: lineText,
                     spacing,
                     isFirstLine,
+                    indent: isFirstLine && this.indent,
                     firstCharId: charId - lineText.length,
                     spacingType: "word",
                 });
@@ -178,6 +191,7 @@ export default class Books {
             text: lineText,
             spacing: 0,
             isFirstLine,
+            indent: isFirstLine && this.indent,
             firstCharId: charId - lineText.length,
             spacingType: "word",
         });

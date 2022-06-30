@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./Page.less";
 
@@ -10,8 +9,6 @@ import {
     selectPageNumber,
     selectPageLoading,
     bookActions,
-    selectIndent,
-    selectLineSpacing,
     selectFontSize,
     selectFontFamily,
     selectPagePadding,
@@ -26,8 +23,6 @@ export default function Page(props: IPageProps) {
     const pages = useSelector(selectPages);
     const pageNumber = useSelector(selectPageNumber);
     const loading = useSelector(selectPageLoading);
-    const indent = useSelector(selectIndent);
-    const lineSpacing = useSelector(selectLineSpacing);
     const fontSize = useSelector(selectFontSize);
     const fontFamily = useSelector(selectFontFamily);
     const pagePadding = useSelector(selectPagePadding);
@@ -42,7 +37,7 @@ export default function Page(props: IPageProps) {
             const line = lines[index_line];
             let style: any = {
                 // 因为行高相同，每一页的行的数量都是相同的，所以每一页的spacing都相同
-                padding: `${lineSpacing + pages[0].spacing / 2}px 0`,
+                padding: `${pages[0].lineSpacing + pages[0].spacing / 2}px 0`,
             };
 
             if (line.spacingType === "letter") {
@@ -51,7 +46,7 @@ export default function Page(props: IPageProps) {
                 style.wordSpacing = line.spacing + "px";
             }
 
-            if (line.isFirstLine && indent) {
+            if (line.indent) {
                 style.marginLeft = "2em";
             }
 

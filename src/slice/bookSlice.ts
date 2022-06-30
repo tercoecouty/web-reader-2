@@ -79,6 +79,12 @@ const bookSlice = createSlice({
         setTwoPage: (state, actions: PayloadAction<boolean>) => {
             state.twoPage = actions.payload;
         },
+        setIndent: (state, actions: PayloadAction<boolean>) => {
+            state.indent = actions.payload;
+        },
+        setLineSpacing: (state, actions: PayloadAction<number>) => {
+            state.lineSpacing = actions.payload;
+        },
     },
 });
 

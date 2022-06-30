@@ -117,6 +117,15 @@ export default function Book() {
         };
     }, [resizeTimeoutId, updatePage, bookText]);
 
+    useEffect(() => {
+        const dom = document.querySelector(".line>span") as HTMLElement;
+        if (!dom) return;
+
+        const charId = dom.dataset.firstCharId;
+        dispatch(bookActions.setPageLoading(true));
+        setTimeout(() => updatePage(bookText, parseInt(charId)), 1000); // 有意增加加载时间
+    }, [indent, lineSpacing]);
+
     const handleMouseUp = () => {
         const _selection = document.getSelection();
         const text = _selection.toString();

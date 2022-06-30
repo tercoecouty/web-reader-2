@@ -66,11 +66,18 @@ interface ILine {
     isFirstLine: boolean;
     firstCharId: number;
     spacingType: "letter" | "word";
+    indent: number;
 }
 
 interface IPage {
     lines: ILine[];
     spacing: number;
+    lineSpacing: number;
+}
+
+interface IBookLayoutOptions {
+    lineSpacing: number;
+    indent: boolean;
 }
 
 // app/Book/index.tsx
@@ -78,9 +85,4 @@ interface ISelection {
     firstCharId: number;
     lastCharId: number;
     text: string;
-}
-
-interface IBookLayoutOptions {
-    lineSpacing?: number;
-    indent?: boolean;
 }
