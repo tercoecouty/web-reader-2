@@ -14,16 +14,16 @@ export default function Settings() {
         <div className="settings">
             <div className="settings-item">
                 <span>双页显示</span>
-                <Switch open={twoPage} onChange={() => dispatch(bookActions.setTwoPage(!twoPage))} />
+                <Switch checked={twoPage} onChange={() => dispatch(bookActions.setTwoPage(!twoPage))} />
             </div>
             <div className="settings-item">
                 <span>缩进</span>
-                <Switch open={indent} onChange={() => dispatch(bookActions.setIndent(!indent))} />
+                <Switch checked={indent} onChange={() => dispatch(bookActions.setIndent(!indent))} />
             </div>
             <div className="settings-item">
                 <span>行间距</span>
                 <Switch
-                    open={!!lineSpacing}
+                    checked={!!lineSpacing}
                     onChange={() => {
                         dispatch(bookActions.setLineSpacing(lineSpacing ? 0 : 6));
                     }}

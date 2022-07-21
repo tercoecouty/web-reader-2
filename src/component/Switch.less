@@ -1,28 +1,41 @@
 .switch {
-    display: inline-block;
-    width: 42px;
-    height: 20px;
-    background-color: #bfbfbf;
-    border-radius: 10px;
     position: relative;
-    cursor: pointer;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    transform: scale(0.6);
 
-    > .switch-circle {
-        width: 16px;
-        height: 16px;
-        background-color: white;
-        border-radius: 7px;
+    > .slider {
         position: absolute;
-        top: 2px;
-        left: 2px;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.2s;
+        border-radius: 34px;
+
+        &:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.2s;
+            border-radius: 50%;
+        }
     }
+}
 
-    &.open {
-        background-color: var(--primary-color);
+.switch.checked {
+    > .slider {
+        background-color: #2196f3;
 
-        > .switch-circle {
-            left: auto;
-            right: 2px;
+        &::before {
+            transform: translateX(26px);
         }
     }
 }
