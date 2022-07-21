@@ -35,8 +35,8 @@ export default function NoteImages(props: INoteImagesProps) {
                 <div className="image-item" key={url}>
                     <img src={url} />
                     <div className="image-item-hover">
-                        <Icon svg={EyeSvg} onClick={() => handleShowPreview(url)} />
                         {onDelete && <Icon svg={DeleteSvg} onClick={() => onDelete(url)} />}
+                        <Icon svg={EyeSvg} onClick={() => handleShowPreview(url)} />
                     </div>
                 </div>
             );
@@ -73,7 +73,7 @@ export default function NoteImages(props: INoteImagesProps) {
                 />
             )}
             {renderImages()}
-            {showPreview && <ImagePreview previewUrl={previewUrl} onClose={() => setShowPreview(false)} />}
+            {showPreview && <ImagePreview urls={urls} currentUrl={previewUrl} onClose={() => setShowPreview(false)} />}
         </div>
     );
 }

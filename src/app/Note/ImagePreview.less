@@ -28,6 +28,32 @@
         opacity: 0;
     }
 
+    > .image-preview-arrow {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 64px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        visibility: hidden;
+
+        > span.icon {
+            color: white;
+            font-size: 36px;
+            cursor: pointer;
+            display: inline-flex;
+        }
+
+        &.left {
+            left: 0;
+        }
+
+        &.right {
+            right: 0;
+        }
+    }
+
     &.show {
         > .image-preview-background {
             background-color: rgba(0, 0, 0, 0.4);
@@ -36,6 +62,10 @@
         > img {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
+        }
+
+        > .image-preview-arrow {
+            visibility: visible;
         }
     }
 }
