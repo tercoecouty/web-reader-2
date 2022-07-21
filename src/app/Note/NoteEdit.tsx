@@ -50,9 +50,17 @@ export default function NoteEdit(props: INoteEditProps) {
         dom.style.height = dom.scrollHeight + "px";
     };
 
-    const handleUpload = (file: File) => {
-        const url = URL.createObjectURL(file);
-        fileMap.set(url, file);
+    const handleUpload = (files: File[]) => {
+        if (fileMap.size + files.length > 9) {
+            alert("图片数量不能超过九张");
+            return;
+        }
+
+        for (const file of files) {
+            const url = URL.createObjectURL(file);
+            fileMap.set(url, file);
+        }
+
         setFileMap(new Map(fileMap));
         setHasChange(true);
     };
@@ -95,7 +103,7 @@ export default function NoteEdit(props: INoteEditProps) {
             </div>
             <div className="note-edit-submit">
                 <span className="letter-count">{value.length} / 200</span>
-                <Icon svg={SendSvg} onClick={submit} className={classNames({ disabled: !hasChange })} />
+                <Icon svg={SendSvg} onClick={submit} disabled={!hasChange} />
             </div>
         </div>
     );

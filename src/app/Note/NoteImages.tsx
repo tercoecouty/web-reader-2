@@ -9,7 +9,7 @@ import ImagePreview from "./ImagePreview";
 
 interface INoteImagesProps {
     urls: string[];
-    onUpload?: (file: File) => void;
+    onUpload?: (files: File[]) => void;
     onDelete?: (url: string) => void;
 }
 
@@ -19,8 +19,8 @@ export default function NoteImages(props: INoteImagesProps) {
     const [showPreview, setShowPreview] = useState(false);
 
     const handleFileChange = (e) => {
-        const file = e.target.files[0] as File;
-        onUpload(file);
+        const files = e.target.files as File[];
+        onUpload(files);
     };
 
     const handleShowPreview = (url: string) => {
@@ -69,6 +69,7 @@ export default function NoteImages(props: INoteImagesProps) {
                     type="file"
                     accept=".jpg,.png"
                     onInput={handleFileChange}
+                    multiple
                 />
             )}
             {renderImages()}
