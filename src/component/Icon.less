@@ -1,14 +1,95 @@
 .icon {
-    display: inline-block;
+    display: inline-flex;
+    position: relative;
+
+    &.disabled {
+        color: var(--disabled-color);
+        cursor: auto;
+    }
+}
+
+.icon-svg {
+    display: inline-flex;
 
     > svg {
         height: 1em;
         width: 1em;
         fill: currentColor;
     }
+}
 
-    &.disabled {
-        color: var(--disabled-color);
-        cursor: auto;
+.icon-tooltip {
+    position: absolute;
+
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: #262626;
+    color: white;
+    cursor: default;
+
+    visibility: hidden;
+    opacity: 0;
+    z-index: 1;
+    white-space: nowrap;
+
+    > .icon-tooltip-arrow {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: inherit;
     }
+
+    &.left {
+        right: 100%;
+        top: 50%;
+        transform: translate(-8px, -50%);
+
+        > .icon-tooltip-arrow {
+            left: 100%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+    }
+
+    &.right {
+        left: 100%;
+        top: 50%;
+        transform: translate(8px, -50%);
+
+        > .icon-tooltip-arrow {
+            right: 100%;
+            top: 50%;
+            transform: translate(50%, -50%) rotate(45deg);
+        }
+    }
+
+    &.top {
+        bottom: 100%;
+        left: 50%;
+        transform: translate(-50%, -8px);
+
+        > .icon-tooltip-arrow {
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+    }
+
+    &.bottom {
+        top: 100%;
+        left: 50%;
+        transform: translate(-50%, 8px);
+
+        > .icon-tooltip-arrow {
+            bottom: 100%;
+            left: 50%;
+            transform: translate(-50%, 50%) rotate(45deg);
+        }
+    }
+}
+
+.icon:hover > .icon-tooltip {
+    visibility: visible;
+    opacity: 1;
 }

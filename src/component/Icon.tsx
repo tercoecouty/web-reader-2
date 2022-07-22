@@ -6,11 +6,13 @@ interface IIconProps {
     svg: string;
     onClick?: () => void;
     disabled?: boolean;
+    position?: "left" | "right" | "top" | "bottom";
+    tooltipText?: string;
 }
 
 export default function Icon(props: IIconProps) {
     const ref = useRef(null);
-    const { svg, onClick, disabled } = props;
+    const { svg, onClick, disabled, position, tooltipText } = props;
 
     useEffect(() => {
         ref.current.innerHTML = svg;
@@ -20,5 +22,15 @@ export default function Icon(props: IIconProps) {
         if (!disabled && onClick) onClick();
     };
 
-    return <span onClick={handleClick} ref={ref} className={classNames("icon", { disabled })}></span>;
+    return (
+        <span onClick={handleClick} className={classNames("icon", { disabled })}>
+            <span className="icon-svg" ref={ref}></span>
+            {position && (
+                <span className={classNames("icon-tooltip", position)}>
+                    <span>{tooltipText}</span>
+                    <span className="icon-tooltip-arrow"></span>
+                </span>
+            )}
+        </span>
+    );
 }
