@@ -8,12 +8,14 @@ import BarsSvg from "../../svg/bars.svg?raw";
 import SearchSvg from "../../svg/search.svg?raw";
 import BookSvg from "../../svg/book.svg?raw";
 import SettingSvg from "../../svg/setting.svg?raw";
+import BookshelfSvg from "../../svg/bookshelf.svg?raw";
 
 import Drawer from "../../component/Drawer";
 import Classes from "../Classes";
 import Notes from "../Notes";
 import Bookmarks from "../Bookmarks";
 import Search from "../Search";
+import Bookshelf from "../Bookshelf";
 import Settings from "../Settings";
 import Prompt from "./Prompt";
 
@@ -22,6 +24,7 @@ import {
     selectShowBookmarks,
     selectShowNotes,
     selectShowSearch,
+    selectShowBookshelf,
     selectShowSettings,
     selectLoginUser,
     selectNotesUser,
@@ -34,6 +37,7 @@ export default function LeftSidebar() {
     const showBookmarks = useSelector(selectShowBookmarks);
     const showNotes = useSelector(selectShowNotes);
     const showSearch = useSelector(selectShowSearch);
+    const showBookshelf = useSelector(selectShowBookshelf);
     const showSettings = useSelector(selectShowSettings);
     const loginUser = useSelector(selectLoginUser);
     const notesUser = useSelector(selectNotesUser);
@@ -94,6 +98,20 @@ export default function LeftSidebar() {
         [showSearch]
     );
 
+    const BookshelfDrawer = useMemo(
+        () => (
+            <Drawer
+                visible={showBookshelf}
+                title="班级书架"
+                position="left"
+                onClose={() => dispatch(appActions.setShowBookshelf(false))}
+            >
+                <Bookshelf />
+            </Drawer>
+        ),
+        [showBookshelf]
+    );
+
     const SettingsDrawer = useMemo(
         () => (
             <Drawer
@@ -127,6 +145,11 @@ export default function LeftSidebar() {
                 disabled={notesUser?.id !== loginUser?.id}
             />
             <Icon
+                svg={BookshelfSvg}
+                onClick={() => dispatch(appActions.setShowBookshelf(true))}
+                disabled={notesUser?.id !== loginUser?.id}
+            />
+            <Icon
                 svg={SettingSvg}
                 onClick={() => dispatch(appActions.setShowSettings(true))}
                 disabled={notesUser?.id !== loginUser?.id}
@@ -135,6 +158,7 @@ export default function LeftSidebar() {
             {NoteDrawer}
             {BookmarksDrawer}
             {SearchDrawer}
+            {BookshelfDrawer}
             {SettingsDrawer}
             {notesUser?.id !== loginUser?.id && (
                 <Prompt userName={notesUser?.name} onClose={() => dispatch(appActions.setNotesUser(loginUser))} />
