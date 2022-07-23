@@ -18,6 +18,7 @@ interface IAppState {
     showNoteInfo: boolean;
     disableShortcut: boolean;
     searchRange: ISearchRange;
+    bookId: number;
 }
 
 const initialState: IAppState = {
@@ -32,6 +33,7 @@ const initialState: IAppState = {
     showNoteInfo: false,
     disableShortcut: false,
     searchRange: null,
+    bookId: 1,
 };
 
 const appSlice = createSlice({
@@ -75,6 +77,9 @@ const appSlice = createSlice({
         setSearchRange: (state, actions: PayloadAction<ISearchRange>) => {
             state.searchRange = actions.payload;
         },
+        setBookId: (state, actions: PayloadAction<number>) => {
+            state.bookId = actions.payload;
+        },
     },
 });
 
@@ -100,3 +105,4 @@ export const selectSearchRangeByLine = (state, line: ILine) => {
 
     return JSON.stringify(searchRange);
 };
+export const selectBookId = (state: RootState) => state.app.bookId;

@@ -29,7 +29,7 @@ export default classSlice.reducer;
 export const classActions = classSlice.actions;
 export const selectClasses = (state: RootState) => state.class.classes;
 export const selectCurrentClassId = (state: RootState) => state.class.currentClassId;
-export const fetchClasses = async (dispatch: Dispatch, getState: () => RootState) => {
+export const fetchClasses = async (dispatch: Dispatch) => {
     const _classes = await api.getClasses();
     dispatch(classSlice.actions.setClasses(_classes));
 };

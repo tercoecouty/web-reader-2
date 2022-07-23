@@ -11,7 +11,8 @@ import { bookActions, selectSelection, selectTwoPage, selectIndent, selectLineSp
 import { fetchBookmarks } from "../../slice/bookmarkSlice";
 import { fetchNotes } from "../../slice/noteSlice";
 import { fetchClasses } from "../../slice/classSlice";
-import { appActions, selectNotesUser } from "../../slice/appSlice";
+import { appActions, selectNotesUser, selectBookId } from "../../slice/appSlice";
+import { fetchBookshelf } from "../../slice/bookshelfSlice";
 
 export default function Book() {
     const dispatch = useDispatch();
@@ -20,6 +21,7 @@ export default function Book() {
     const notesUser = useSelector(selectNotesUser);
     const indent = useSelector(selectIndent);
     const lineSpacing = useSelector(selectLineSpacing);
+    const bookId = useSelector(selectBookId);
     const [bookText, setBookText] = useState("");
     const [resizeTimeoutId, setResizeTimeoutId] = useState(null);
 
@@ -69,12 +71,27 @@ export default function Book() {
             dispatch(appActions.setNotesUser(user));
             dispatch(bookActions.setPageNumber(lastRead));
             dispatch(fetchClasses);
-
-            const _bookText = await api.getBookText(1);
-            setBookText(_bookText);
-            setTimeout(() => updatePage(_bookText), 100); // 有意增加一些加载时间
+            dispatch(fetchBookshelf);
         }, 0);
     }, []);
+
+    useEffect(() => {
+        dispatch(bookActions.setPageLoading(true));
+        setTimeout(async () => {
+            const _bookText = await api.getBookText(bookId);
+            setBookText(_bookText);
+
+            dispatch(bookActions.setPageNumber(1));
+            setTimeout(() => updatePage(_bookText), 100); // 有意增加一些加载时间
+        }, 0);
+    }, [bookId]);
+
+    useEffect(() => {
+        if (!notesUser) return;
+
+        dispatch(fetchNotes(notesUser.id));
+        dispatch(fetchBookmarks(notesUser.id));
+    }, [bookId, notesUser]);
 
     useEffect(() => {
         (window as any).setCurrentUser = async (userId: number) => {
@@ -84,28 +101,6 @@ export default function Book() {
             dispatch(appActions.setNotesUser(user));
         };
     }, []);
-
-    useEffect(() => {
-        (window as any).setBook = (bookId: number) => {
-            dispatch(bookActions.setPageLoading(true));
-            setTimeout(async () => {
-                const _bookText = await api.getBookText(bookId);
-                setBookText(_bookText);
-                dispatch(fetchNotes(notesUser.id));
-                dispatch(fetchBookmarks(notesUser.id));
-
-                dispatch(bookActions.setPageNumber(1));
-                setTimeout(() => updatePage(_bookText), 100);
-            }, 0);
-        };
-    }, [updatePage, notesUser]);
-
-    useEffect(() => {
-        if (!notesUser) return;
-
-        dispatch(fetchNotes(notesUser.id));
-        dispatch(fetchBookmarks(notesUser.id));
-    }, [notesUser]);
 
     useEffect(() => {
         window.onresize = () => {

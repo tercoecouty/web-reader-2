@@ -7,6 +7,7 @@ import commentReducer from "./slice/commentSlice";
 import likeReducer from "./slice/likeSlice";
 import appReducer from "./slice/appSlice";
 import classReducer from "./slice/classSlice";
+import bookshelfReducer from "./slice/bookshelfSlice";
 
 const store = configureStore({
     reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
         like: likeReducer,
         app: appReducer,
         class: classReducer,
+        bookshelf: bookshelfReducer,
     },
 });
 

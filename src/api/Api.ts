@@ -5,6 +5,7 @@ import commentsData from "./data/comments.json";
 import likesData from "./data/likes.json";
 import classesData from "./data/classes.json";
 import lastReadData from "./data/lastRead.json";
+import BooksData from "./data/books.json";
 
 class Storage<T> {
     private key: string;
@@ -43,6 +44,7 @@ class Api {
     private comments = new Storage("comments", commentsData as IComment[]);
     private likes = new Storage("likes", likesData as ILike[]);
     private classes = new Storage("classes", classesData as IClass[]);
+    private books = new Storage("books", BooksData as IBook[]);
 
     private lastRead: Storage<ILastRead> = new Storage("lastRead", lastReadData as ILastRead[]);
     private currentUser: IUser = null;
@@ -64,20 +66,21 @@ class Api {
         }
     }
 
-    async getBookText(bookId: number) {
-        let bookText = "";
-        if (bookId === 1) {
-            const res = await fetch("text-demo.txt");
-            bookText = await res.text();
-        } else if (bookId === 2) {
-            const res = await fetch("text-zh.txt");
-            bookText = await res.text();
-        } else if (bookId === 3) {
-            const res = await fetch("text-en.txt");
-            bookText = await res.text();
-        }
+    async getBookshelf() {
+        return this.books.get().map((book) => {
+            const { id, title, author } = book;
+            return { id, title, author };
+        });
+    }
 
+    async getBookText(bookId: number) {
+        let book = this.books.get().find((book) => book.id === bookId);
+        if (!book) book = this.books.get()[0];
+
+        const res = await fetch(book.path);
+        const bookText = await res.text();
         this.currentBookId = bookId;
+
         return bookText;
     }
 

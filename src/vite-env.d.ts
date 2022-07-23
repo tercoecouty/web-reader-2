@@ -59,6 +59,19 @@ interface IClass {
     students: IUser[];
 }
 
+interface IBook {
+    id: number;
+    title: string;
+    author: string;
+    path: string;
+}
+
+interface IBookshelfItem {
+    id: number;
+    title: string;
+    author: string;
+}
+
 // app/Book/book.ts
 interface ILine {
     text: string;
