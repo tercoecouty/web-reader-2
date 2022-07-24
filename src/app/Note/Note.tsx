@@ -127,7 +127,9 @@ export default function Note() {
                                 svg={CommentSvg}
                                 onClick={() => handleReplyComment(comment.fromUserId, comment.fromUserName)}
                             />
-                            <Icon svg={DeleteSvg} onClick={() => dispatch(deleteComment(comment.id))} />
+                            {comment.fromUserId === loginUser.id && (
+                                <Icon svg={DeleteSvg} onClick={() => dispatch(deleteComment(comment.id))} />
+                            )}
                         </div>
                     </div>
                     {comment.content && <div className="comment-content">{comment.content}</div>}
