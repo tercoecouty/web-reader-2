@@ -90,7 +90,7 @@ export default function Note() {
             dispatch(likeActions.setLikes(_likes));
             dispatch(commentActions.setComments(_comments));
         }, 0);
-    }, []);
+    }, [currentNoteId]);
 
     useEffect(() => {
         if (!showNoteInfo) {
