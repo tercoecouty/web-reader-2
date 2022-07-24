@@ -81,8 +81,15 @@ export default function Book() {
             const _bookText = await api.getBookText(bookId);
             setBookText(_bookText);
 
-            dispatch(bookActions.setPageNumber(1));
-            setTimeout(() => updatePage(_bookText), 100); // 有意增加一些加载时间
+            const lastRead = await api.getLastRead();
+            dispatch(bookActions.setPageNumber(lastRead));
+
+            setTimeout(() => updatePage(_bookText), 1000); // 有意增加一些加载时间
+
+            if (notesUser) {
+                dispatch(fetchNotes(notesUser.id));
+                dispatch(fetchBookmarks(notesUser.id));
+            }
         }, 0);
     }, [bookId]);
 
@@ -91,7 +98,7 @@ export default function Book() {
 
         dispatch(fetchNotes(notesUser.id));
         dispatch(fetchBookmarks(notesUser.id));
-    }, [bookId, notesUser]);
+    }, [notesUser]);
 
     useEffect(() => {
         (window as any).setCurrentUser = async (userId: number) => {
