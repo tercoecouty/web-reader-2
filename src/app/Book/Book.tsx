@@ -84,7 +84,7 @@ export default function Book() {
             const lastRead = await api.getLastRead();
             dispatch(bookActions.setPageNumber(lastRead));
 
-            setTimeout(() => updatePage(_bookText), 1000); // 有意增加一些加载时间
+            setTimeout(() => updatePage(_bookText), 300); // 有意增加一些加载时间
 
             if (notesUser) {
                 dispatch(fetchNotes(notesUser.id));
