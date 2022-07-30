@@ -1,9 +1,16 @@
 .switch {
+    --width: 40px;
+    --height: 20px;
+    --gap: 4px;
+    --slider-size: calc(var(--height) - var(--gap) * 2);
+    --translate-x: calc(var(--width) - var(--slider-size) - var(--gap) * 2);
+}
+
+.switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
-    transform: scale(0.6);
+    width: var(--width);
+    height: var(--height);
 
     > .slider {
         position: absolute;
@@ -14,15 +21,15 @@
         bottom: 0;
         background-color: #ccc;
         transition: 0.2s;
-        border-radius: 34px;
+        border-radius: var(--height);
 
         &:before {
             position: absolute;
             content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
+            height: var(--slider-size);
+            width: var(--slider-size);
+            left: var(--gap);
+            bottom: var(--gap);
             background-color: white;
             transition: 0.2s;
             border-radius: 50%;
@@ -35,7 +42,7 @@
         background-color: #2196f3;
 
         &::before {
-            transform: translateX(26px);
+            transform: translateX(var(--translate-x));
         }
     }
 }
