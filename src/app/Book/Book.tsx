@@ -75,23 +75,23 @@ export default function Book() {
         }, 0);
     }, []);
 
-    // useEffect(() => {
-    //     dispatch(bookActions.setPageLoading(true));
-    //     setTimeout(async () => {
-    //         const _bookText = await api.getBookText(bookId);
-    //         setBookText(_bookText);
+    useEffect(() => {
+        dispatch(bookActions.setPageLoading(true));
+        setTimeout(async () => {
+            const _bookText = await api.getBookText(bookId);
+            setBookText(_bookText);
 
-    //         const lastRead = await api.getLastRead();
-    //         dispatch(bookActions.setPageNumber(lastRead));
+            const lastRead = await api.getLastRead();
+            dispatch(bookActions.setPageNumber(lastRead));
 
-    //         setTimeout(() => updatePage(_bookText), 300); // 有意增加一些加载时间
+            setTimeout(() => updatePage(_bookText), 300); // 有意增加一些加载时间
 
-    //         if (notesUser) {
-    //             dispatch(fetchNotes(notesUser.id));
-    //             dispatch(fetchBookmarks(notesUser.id));
-    //         }
-    //     }, 0);
-    // }, [bookId]);
+            if (notesUser) {
+                dispatch(fetchNotes(notesUser.id));
+                dispatch(fetchBookmarks(notesUser.id));
+            }
+        }, 0);
+    }, [bookId]);
 
     useEffect(() => {
         if (!notesUser) return;

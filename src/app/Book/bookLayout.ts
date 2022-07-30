@@ -28,7 +28,7 @@ export default class Books {
         this.chineseCharWidth = this.domMeasure.getBoundingClientRect().width;
         this.lineHeight = this.domMeasure.getBoundingClientRect().height;
 
-        this.indent = options.indent ? 2 : 0;
+        this.indent = options.indent;
         this.lineSpacing = options.lineSpacing;
         this.options = options;
         this.lineHeight += options.lineSpacing * 2 || 0; // 上下边距

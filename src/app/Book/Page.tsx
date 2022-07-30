@@ -12,6 +12,7 @@ import {
     selectFontSize,
     selectFontFamily,
     selectPagePadding,
+    selectIndent,
 } from "../../slice/bookSlice";
 
 interface IPageProps {
@@ -23,6 +24,7 @@ export default function Page(props: IPageProps) {
     const pages = useSelector(selectPages);
     const pageNumber = useSelector(selectPageNumber);
     const loading = useSelector(selectPageLoading);
+    const indent = useSelector(selectIndent);
     const fontSize = useSelector(selectFontSize);
     const fontFamily = useSelector(selectFontFamily);
     const pagePadding = useSelector(selectPagePadding);
@@ -47,7 +49,7 @@ export default function Page(props: IPageProps) {
             }
 
             if (line.indent) {
-                style.marginLeft = "2em";
+                style.marginLeft = indent + "em";
             }
 
             if (line.text === "") {
