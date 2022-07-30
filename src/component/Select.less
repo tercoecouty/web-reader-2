@@ -1,0 +1,42 @@
+.select {
+    position: relative;
+
+    .select-face {
+        display: flex;
+        align-items: center;
+        padding: 4px 8px;
+
+        cursor: pointer;
+        border: 1px solid #bfbfbf;
+        border-radius: 2px;
+
+        > .select-value {
+            margin-right: 4px;
+        }
+
+        > span.icon {
+            font-size: 14px;
+        }
+    }
+
+    > .select-options {
+        z-index: 1;
+        position: absolute;
+        background-color: white;
+        width: 100%;
+        left: 0;
+        top: 110%;
+
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.18);
+        user-select: none;
+
+        > .select-options-item {
+            padding: 8px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--hover-bg-color);
+            }
+        }
+    }
+}
