@@ -90,7 +90,7 @@ interface IPage {
 
 interface IBookLayoutOptions {
     lineSpacing: number;
-    indent: boolean;
+    indent: number;
 }
 
 // app/Book/index.tsx

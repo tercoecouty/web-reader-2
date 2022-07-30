@@ -10,7 +10,7 @@ interface IBookState {
     currentNoteId: number;
     twoPage: boolean;
     canNextPage: boolean;
-    indent: boolean;
+    indent: number;
     lineSpacing: number;
     fontSize: number;
     fontFamily: string;
@@ -25,7 +25,7 @@ const initialState: IBookState = {
     currentNoteId: null,
     twoPage: true,
     canNextPage: true,
-    indent: true,
+    indent: 2,
     lineSpacing: 6,
     fontSize: 16,
     fontFamily: "Georgia, Arial",
@@ -79,7 +79,7 @@ const bookSlice = createSlice({
         setTwoPage: (state, actions: PayloadAction<boolean>) => {
             state.twoPage = actions.payload;
         },
-        setIndent: (state, actions: PayloadAction<boolean>) => {
+        setIndent: (state, actions: PayloadAction<number>) => {
             state.indent = actions.payload;
         },
         setLineSpacing: (state, actions: PayloadAction<number>) => {
