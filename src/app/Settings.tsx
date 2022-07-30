@@ -13,10 +13,12 @@ export default function Settings() {
     const showSettings = useSelector(selectShowSettings);
     const _twoPage = useSelector(selectTwoPage);
     const _indent = useSelector(selectIndent);
+    const _lineSpacing = useSelector(selectLineSpacing);
 
     const [hasChange, setHasChange] = useState(false);
     const [twoPage, setTwoPage] = useState(_twoPage);
     const [indent, setIndent] = useState(_indent);
+    const [lineSpacing, setLineSpacing] = useState(_lineSpacing);
 
     useEffect(() => {
         if (!showSettings) {
@@ -36,12 +38,20 @@ export default function Settings() {
         setHasChange(true);
     };
 
+    const handleLineSpacingChange = (value: number) => {
+        setLineSpacing(value);
+        setHasChange(true);
+    };
+
     const saveSettings = () => {
         if (twoPage !== _twoPage) {
             dispatch(bookActions.setTwoPage(twoPage));
         }
         if (indent !== _indent) {
             dispatch(bookActions.setIndent(indent));
+        }
+        if (lineSpacing !== _lineSpacing) {
+            dispatch(bookActions.setLineSpacing(lineSpacing));
         }
         setHasChange(false);
     };
@@ -55,6 +65,10 @@ export default function Settings() {
             <div className="settings-item">
                 <span>缩进</span>
                 <Select options={[0, 1, 2, 4]} value={indent} onChange={handleIndentChange} />
+            </div>
+            <div className="settings-item">
+                <span>行间距</span>
+                <Select options={[0, 2, 6, 10]} value={lineSpacing} onChange={handleLineSpacingChange} />
             </div>
             {hasChange && (
                 <div className="settings-save" onClick={saveSettings}>
