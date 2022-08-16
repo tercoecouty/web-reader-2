@@ -116,32 +116,28 @@ class Api {
     }
 
     async getLastRead() {
-        const lastRead = this.lastRead.get().filter((item) => item.userId === this.currentUser.id);
+        const lastRead = this.lastRead.get().filter((item) => {
+            return item.userId === this.currentUser.id && item.bookId === this.currentBookId;
+        });
         if (lastRead.length === 0) return 1;
         return lastRead[0].pageNumber;
     }
 
     async setLastRead(pageNumber: number) {
-        if (this.lastRead.get().length === 0) {
+        const lastReadData = this.lastRead.get();
+        const lastReadItem = lastReadData.find((item) => {
+            return item.userId === this.currentUser.id && item.bookId === this.currentBookId;
+        });
+        if (!lastReadItem) {
             this.lastRead.add({
                 bookId: this.currentBookId,
                 userId: this.currentUser.id,
                 pageNumber,
             });
+        } else {
+            lastReadItem.pageNumber = pageNumber;
+            this.lastRead.set(lastReadData);
         }
-        this.lastRead.set(
-            this.lastRead.get().map((item) => {
-                if (item.userId === this.currentUser.id) {
-                    return {
-                        bookId: this.currentBookId,
-                        userId: this.currentUser.id,
-                        pageNumber,
-                    };
-                } else {
-                    return item;
-                }
-            })
-        );
     }
 
     async getNotes(userId: number) {
