@@ -43,8 +43,8 @@ export default function Book() {
             dispatch(bookActions.setPages(pages));
             dispatch(bookActions.setPageLoading(false));
 
-            // 窗口尺寸改变后尽量调整到当前阅读的地方
             if (charId) {
+                // 窗口尺寸改变导致页面重拍，尽量调整到当前阅读的地方
                 let pageNumber = 1;
                 for (let i = 0; i < pages.length; i++) {
                     const page = pages[i];
@@ -57,6 +57,11 @@ export default function Book() {
                     }
                 }
                 dispatch(bookActions.setPageNumber(pageNumber));
+            } else {
+                // 书籍切换导致页面重拍
+                api.getLastRead().then((lastRead) => {
+                    dispatch(bookActions.setPageNumber(lastRead));
+                });
             }
         },
         [indent, lineSpacing]
@@ -65,11 +70,9 @@ export default function Book() {
     useEffect(() => {
         setTimeout(async () => {
             const user = await api.getCurrentUser();
-            const lastRead = await api.getLastRead();
 
             dispatch(appActions.setLoginUser(user));
             dispatch(appActions.setNotesUser(user));
-            dispatch(bookActions.setPageNumber(lastRead));
             dispatch(fetchClasses);
             dispatch(fetchBookshelf);
         }, 0);
@@ -80,9 +83,6 @@ export default function Book() {
         setTimeout(async () => {
             const _bookText = await api.getBookText(bookId);
             setBookText(_bookText);
-
-            const lastRead = await api.getLastRead();
-            dispatch(bookActions.setPageNumber(lastRead));
 
             setTimeout(() => updatePage(_bookText), 300); // 有意增加一些加载时间
 
