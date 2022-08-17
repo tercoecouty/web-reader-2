@@ -35,10 +35,7 @@ export default function Book() {
                 lineSpacing,
                 indent,
             });
-            // console.log(_bookText.length);
-            // console.time("pageBreaking");
             const pages = book.pageBreaking();
-            // console.timeEnd("pageBreaking");
 
             dispatch(bookActions.setPages(pages));
             dispatch(bookActions.setPageLoading(false));
