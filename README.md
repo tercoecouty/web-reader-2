@@ -169,16 +169,16 @@ selectNotesByLine 会将 note 数组用 JSON.stringify 将数组转换成字符�
 ```
 .
 ├── images/
-├── public/
+├── public/					# t
 │   ├── text-demo.txt
 │   ├── text-en.txt
 │   └── text-zh.txt
 ├── src/
 │   ├── api/
-│   │   ├── data/	# 一些 json 文件，包含默认的测试数据
+│   │   ├── data/			# 一些 json 文件，包含默认的测试数据
 │   │   └── Api.ts
 │   ├── app/
-│   │   ├── Book/ # 图书排版和显示
+│   │   ├── Book/			# 图书排版和显示
 │   │   │   ├── Book.less
 │   │   │   ├── Book.tsx
 │   │   │   ├── bookLayout.ts
