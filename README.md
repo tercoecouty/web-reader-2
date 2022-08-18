@@ -169,16 +169,16 @@ selectNotesByLine 会将 note 数组用 JSON.stringify 将数组转换成字符�
 ```
 .
 ├── images/
-├── public/					# t
+├── public/        # 一些图书文本文件
 │   ├── text-demo.txt
 │   ├── text-en.txt
 │   └── text-zh.txt
 ├── src/
 │   ├── api/
-│   │   ├── data/			# 一些 json 文件，包含默认的测试数据
+│   │   ├── data/        # 一些 json 文件，包含默认的测试数据
 │   │   └── Api.ts
 │   ├── app/
-│   │   ├── Book/			# 图书排版和显示
+│   │   ├── Book/        # 图书排版和显示
 │   │   │   ├── Book.less
 │   │   │   ├── Book.tsx
 │   │   │   ├── bookLayout.ts
@@ -188,7 +188,7 @@ selectNotesByLine 会将 note 数组用 JSON.stringify 将数组转换成字符�
 │   │   │   ├── Line.tsx
 │   │   │   ├── Page.less
 │   │   │   └── Page.tsx
-│   │   ├── Note/			# 笔记编辑，图片预览
+│   │   ├── Note/           # 笔记编辑，图片预览
 │   │   │   ├── ImagePreview.less
 │   │   │   ├── ImagePreview.tsx
 │   │   │   ├── Note.less
@@ -199,23 +199,23 @@ selectNotesByLine 会将 note 数组用 JSON.stringify 将数组转换成字符�
 │   │   │   ├── NoteImages.tsx
 │   │   │   ├── NoteUser.less
 │   │   │   └── NoteUser.tsx
-│   │   ├── Sidebar/		# 侧边栏
+│   │   ├── Sidebar/        # 侧边栏
 │   │   ├── App.less
-│   │   ├── App.tsx			# 项目入口
+│   │   ├── App.tsx         # 项目入口
 # 左、右侧边栏的各项功能的实现
 │   │   ├── Bookmarks.less
-│   │   ├── Bookmarks.tsx	# 书签列表
+│   │   ├── Bookmarks.tsx   # 书签列表
 │   │   ├── Bookshelf.less
-│   │   ├── Bookshelf.tsx	# 班级书架
+│   │   ├── Bookshelf.tsx   # 班级书架
 │   │   ├── Classes.less
-│   │   ├── Classes.tsx		# 班级列表
+│   │   ├── Classes.tsx     # 班级列表
 │   │   ├── Notes.less
-│   │   ├── Notes.tsx		# 笔记列表
+│   │   ├── Notes.tsx       # 笔记列表
 │   │   ├── Search.less
-│   │   ├── Search.tsx		# 搜索
+│   │   ├── Search.tsx      # 搜索
 │   │   ├── Settings.less
-│   │   └── Settings.tsx	# 设置
-│   ├── component/			# 公用的组件
+│   │   └── Settings.tsx    # 设置
+│   ├── component/          # 公用的组件
 │   │   ├── Drawer.less
 │   │   ├── Drawer.tsx
 │   │   ├── Icon.less
@@ -224,7 +224,7 @@ selectNotesByLine 会将 note 数组用 JSON.stringify 将数组转换成字符�
 │   │   ├── Select.tsx
 │   │   ├── Switch.less
 │   │   └── Switch.tsx
-│   ├── slice/				# Redux Slice
+│   ├── slice/              # Redux Slice
 │   │   ├── appSlice.ts
 │   │   ├── bookmarkSlice.ts
 │   │   ├── bookshelfSlice.ts
