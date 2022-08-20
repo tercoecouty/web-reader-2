@@ -246,7 +246,3 @@ selectNotesByLine 会将 note 数组用 JSON.stringify 将数组转换成字符�
 ├── vite.config.ts
 └── yarn.lock
 ```
-
-## React 总结
-
-TODO
