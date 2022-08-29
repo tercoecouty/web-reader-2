@@ -10,12 +10,3 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <App />
     </Provider>
 );
-
-// import "./index.less";
-// function Demo() {
-//     return (
-//         <h1>hello world</h1>
-//     );
-// }
-
-// ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
