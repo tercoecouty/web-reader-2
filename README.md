@@ -92,7 +92,7 @@
 
 然后把这一行分成几个 span，每个 span 都有一个 first-char-id 属性。
 
-除了显示划线，还需要在文本中高亮显示搜索关键字，考虑到如果有交叉的话会非常麻烦，因此对于这样的行，行中的每一行都用一个 span 来显式，遍历行中的每一个字符，判断是否要显示下划线或者显示高亮效果。
+除了显示划线，还需要在文本中高亮显示搜索关键字，考虑到如果划线和高亮有交叉的话会非常麻烦，因此对于这样的行，行中的每一个字符都用一个 span 来显示，遍历行中的每一个字符，判断是否要显示下划线或者显示高亮效果。
 
 ## 性能优化
 
@@ -100,7 +100,7 @@
 
 - 选中文字会导致 Page 刷新
 
-原因在于 Page 组件的父组件 Book 监听了鼠标抬起事件，如果用户选择了文本，会更新 Book 的 selection 状态，Book 刷新导致占据了页面的绝大部分的两个 Page 组件刷新，而 Page 并没有任何需要改变的地方。优化的方法是使用 useMemo：
+原因在于 Page 组件的父组件 Book 监听了鼠标抬起事件，如果用户选择了文本，会更新 Book 的 selection 状态，Book 刷新导致两个 Page 子组件刷新，而 Page 并没有任何需要改变的地方。优化的方法是使用 useMemo：
 
 ```
 const PageMemo = useMemo(() => <Page />, []);
@@ -108,7 +108,7 @@ const PageMemo = useMemo(() => <Page />, []);
 
 - 更改书签会导致 Page 刷新
 
-修改书签会导致 Page 刷新是因为书签是放在了 Page 组件里面的，状态改变了 Page 组件必然会刷新，因此需要做的是合理分割组件，使用 Bookmark 组件来实现书签功能，避免 Page 的不必要刷新。
+因为书签是放在了 Page 组件里面的，状态改变了 Page 组件必然会刷新，因此需要做的是合理分割组件，使用 Bookmark 组件来实现书签功能，避免 Page 的不必要刷新。
 
 - 点击划线会导致所有行刷新
 
@@ -142,7 +142,7 @@ const currentNoteId = useSelector((state) => selectCurrentNoteIdByLine(state, li
 
 - 添加划线会导致所有行刷新
 
-这个问题同样时因为每个 Line 组件都会获取 notes 状态，当状态改变时全部都会刷新，解决办法还是确保只有需要改变的行刷新
+这个问题同样是因为每个 Line 组件都会获取 notes 状态，当状态改变时全部都会刷新，解决办法还是确保只有需要改变的行刷新
 
 ```
 const notes = JSON.parse(useSelector((state) => selectNotesByLine(state, line)));
@@ -161,8 +161,6 @@ selectNotesByLine 会将 note 数组用 JSON.stringify 将数组转换成字符�
 这两种方法，来实现相同的显示效果。
 
 ## 目录结构
-
-这个项目的名字叫做 web-reader-2，是因为还有一个 web-reader。最开始整个项目是用 webpack 打包的，后来我发现 vite 能提供更好的开发体验，主要是 react 热加载开箱即用、默认支持多种静态资源处理、启动速度快而且依赖小，不需要下载一堆依赖项。因此整个项目从 webpack 改用了 vite，为了避免重构的麻烦另开了一个项目，叫做 web-reader-2。
 
 下面是整个项目的目录结构：
 
