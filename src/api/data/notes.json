@@ -1,1 +1,50 @@
-[]
+[
+    {
+        "id": 1,
+        "bookId": 1,
+        "userId": 1,
+        "userName": "董经义",
+        "dateTime": 1655824037464,
+        "firstCharId": 243,
+        "lastCharId": 255,
+        "text": "到别的地方去看看，如何呢？",
+        "content": "",
+        "imageUrls": []
+    },
+    {
+        "id": 2,
+        "bookId": 1,
+        "userId": 1,
+        "userName": "董经义",
+        "dateTime": 1655901266112,
+        "firstCharId": 363,
+        "lastCharId": 437,
+        "text": "大概是物以稀为贵罢。北京的白菜运往浙江，便用红头绳系住菜根，倒挂在水果店头，尊为“胶菜”；福建野生着的芦荟，一到北京就请进温室，且美其名曰“龙舌兰”。",
+        "content": "我对划线句子的批注或者感想",
+        "imageUrls": []
+    },
+    {
+        "id": 3,
+        "bookId": 1,
+        "userId": 1,
+        "userName": "董经义",
+        "dateTime": 1658637853035,
+        "firstCharId": 2406,
+        "lastCharId": 2434,
+        "text": "这种欢呼，是每看一片都有的，但在我，这一声却特别听得刺耳。",
+        "content": "",
+        "imageUrls": []
+    },
+    {
+        "id": 4,
+        "bookId": 1,
+        "userId": 1,
+        "userName": "董经义",
+        "dateTime": 1658637860790,
+        "firstCharId": 2052,
+        "lastCharId": 2099,
+        "text": "我当时虽然觉到圈得可笑，但是毫不介意，这回才悟出那字也在讥刺我了，犹言我得了教员漏泄出来的题目。",
+        "content": "",
+        "imageUrls": []
+    }
+]

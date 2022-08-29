@@ -1,1 +1,46 @@
-[]
+[
+    {
+        "id": 1,
+        "noteId": 2,
+        "fromUserId": 1,
+        "fromUserName": "董经义",
+        "toUserId": null,
+        "toUserName": null,
+        "dateTime": 1658637014181,
+        "content": "我对自己的批注的回复",
+        "imageUrls": []
+    },
+    {
+        "id": 2,
+        "noteId": 2,
+        "fromUserId": 2,
+        "fromUserName": "石采珊",
+        "toUserId": null,
+        "toUserName": null,
+        "dateTime": 1658637060217,
+        "content": "石采珊对董经义批注的评论",
+        "imageUrls": []
+    },
+    {
+        "id": 3,
+        "noteId": 2,
+        "fromUserId": 2,
+        "fromUserName": "石采珊",
+        "toUserId": 1,
+        "toUserName": "董经义",
+        "dateTime": 1658637102060,
+        "content": "石采珊对董经义评论的回复",
+        "imageUrls": []
+    },
+    {
+        "id": 4,
+        "noteId": 2,
+        "fromUserId": 1,
+        "fromUserName": "董经义",
+        "toUserId": 2,
+        "toUserName": "石采珊",
+        "dateTime": 1658637151641,
+        "content": "董经义对石采珊的回复",
+        "imageUrls": []
+    }
+]
