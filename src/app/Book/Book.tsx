@@ -109,8 +109,9 @@ export default function Book() {
     useEffect(() => {
         window.onresize = () => {
             clearTimeout(resizeTimeoutId);
+            const charId = (document.querySelector(".line>span") as HTMLElement)?.dataset.firstCharId;
+
             dispatch(bookActions.setPageLoading(true));
-            const charId = (document.querySelector(".line>span") as HTMLElement).dataset.firstCharId;
             const timer = setTimeout(() => updatePage(bookText, parseInt(charId)), 1000); // 有意增加加载时间
             setResizeTimeoutId(timer);
         };
