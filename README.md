@@ -72,7 +72,7 @@
 - 设置 letter-spacing 或者 word-spacing，可以对齐文本并且选择文本也不会有问题，一个问题是 word-spacing 对中文无效，而对英文设置 letter-spacing，在一般情况下看不出来和 word-spacing 的区别，但是如果这一行有长单词，那么字符之间的分隔会很明显。最后的解决办法是如果一行全部是英文，那么使用 word-spacing，否则使用 letter-spacing。
 - text-align-last 属性，这个属性是用来对齐文本的最后一行，因此在一行文字的宽度小于父元素的宽度的时候可以使用它来对齐文本，是最佳解决方案，之前并没有注意过这个属性。
 
-Update：text-align-last 在 Safari 上有兼容性问题，直到最近的 15.6 版本（2022-7-20）都不支持。因此改回 letter-spacing 和 word-spacing。
+Update：text-align-last 在 Safari 上有兼容性问题，直到最近的 15.6 版本（2022-7-20）都不支持，因此改回 letter-spacing 和 word-spacing。
 
 ### 划线
 
