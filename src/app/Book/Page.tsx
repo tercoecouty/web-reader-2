@@ -39,14 +39,14 @@ export default function Page(props: IPageProps) {
             const line = lines[index];
             let style: any = {};
 
-            // if (line.spacingType === "letter") {
-            //     style.letterSpacing = line.spacing + "px";
-            // } else {
-            //     style.wordSpacing = line.spacing + "px";
-            // }
-            if (line.spacing) {
-                style.textAlignLast = "justify";
+            if (line.spacingType === "letter") {
+                style.letterSpacing = line.spacing + "px";
+            } else {
+                style.wordSpacing = line.spacing + "px";
             }
+            // if (line.spacing) {
+            //     style.textAlignLast = "justify";
+            // }
 
             if (line.indent) {
                 style.marginLeft = indent + "em";
